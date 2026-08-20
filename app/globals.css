@@ -1,26 +1,132 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@config "../tailwind.config.ts";
+@import "lenis/dist/lenis.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: auto;
+  }
+
+  html.lenis {
+    height: auto;
+  }
+
+  html.lenis body {
+    height: auto;
+  }
+
+  body {
+    @apply bg-background font-sans text-text-primary antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display text-text-primary;
+  }
+
+  ::selection {
+    @apply bg-primary-light/40 text-text-primary;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .section-y {
+    @apply py-16 md:py-20 lg:py-section xl:py-section-lg;
+  }
+
+  .scroll-anchor {
+    @apply scroll-mt-24 md:scroll-mt-28;
+  }
+
+  .animate-handle-hint {
+    animation: handle-hint 2.5s ease-in-out infinite;
+  }
+
+  .hero-enter {
+    animation: hero-enter 500ms ease-out both;
+  }
+
+  .hero-word-breathe {
+    display: inline-block;
+    transform-origin: left bottom;
+    animation: hero-word-breathe 4.5s ease-in-out infinite;
+  }
+
+  .pb-mobile-nav {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@keyframes handle-hint {
+  0%,
+  100% {
+    box-shadow:
+      0 4px 20px -4px rgba(15, 92, 92, 0.3),
+      0 0 0 0 rgba(94, 201, 196, 0);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow:
+      0 6px 24px -4px rgba(15, 92, 92, 0.35),
+      0 0 0 6px rgba(94, 201, 196, 0.12);
+    transform: scale(1.04);
+  }
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-word-breathe {
+  0%,
+  100% {
+    opacity: 0.98;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.015);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+
+  .animate-handle-hint {
+    animation: none;
+  }
+
+  .hero-enter,
+  .hero-word-breathe {
+    animation: none;
+  }
 }

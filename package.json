@@ -1,17 +1,25 @@
 {
-  "name": "drakarmijos-web",
+  "name": "drakarmijos",
   "version": "0.1.0",
   "private": true,
+  "description": "Sitio web profesional de la Dra. Karla Armijos — Otorrinolaringología, rinología y trastornos del sueño.",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^13.1.0",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
+    "lucide-react": "^1.33.0",
     "next": "16.3.1",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-hook-form": "^7.85.0",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
