@@ -10,11 +10,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
 HIGHLIGHTS_DIR = ROOT / "public" / "images" / "highlights"
-SOURCE_SCREENSHOT = (
-    Path.home()
-    / ".cursor/projects/Users-agustinader-Desktop-Proyectos-drakarmijos-web/assets"
-    / "Captura_de_Pantalla_2026-08-19_a_la_s__17.27.57-987b86ae-6957-4cc7-8be7-172f5b460e17.png"
-)
+SOURCE_SCREENSHOT = ROOT / "scripts" / "assets" / "highlights-source.png"
 
 OUTPUT_SIZE = 512
 UPSCALE_FACTOR = 2

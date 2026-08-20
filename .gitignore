@@ -46,3 +46,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# auto-generated AI agent files (disabled via agentRules: false in next.config)
+AGENTS.md
+CLAUDE.md
