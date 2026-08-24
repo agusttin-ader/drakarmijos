@@ -26,6 +26,7 @@ const pinyonScript = Pinyon_Script({
   subsets: ["latin"],
   display: "swap",
   adjustFontFallback: true,
+  preload: false,
 });
 
 export const metadata: Metadata = {

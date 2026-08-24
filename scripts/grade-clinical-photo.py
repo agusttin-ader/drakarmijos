@@ -18,7 +18,7 @@ from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 ROOT = Path(__file__).resolve().parent.parent
 FOTOS_DIR = ROOT / "public/images/fotos-qx"
 BACKUP_SUFFIX = ".original.jpg"
-QUALITY = 90
+QUALITY = 95
 
 # Hero: grade sin recorte agresivo (object-cover en viewport).
 HERO_FILES = {"quirofano-sala.jpg"}

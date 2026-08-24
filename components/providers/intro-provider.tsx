@@ -1,41 +1,32 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { motionTransition, premiumEase } from "@/lib/motion";
 
 type IntroProviderProps = {
   children: ReactNode;
 };
 
-const INTRO_DURATION = 0.65;
-
-/** Fade-in inicial de la página (sin estado global). */
+/** Fade-in inicial con CSS puro (sin framer-motion en el layout). */
 export function IntroProvider({ children }: IntroProviderProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const [showOverlay, setShowOverlay] = useState(!shouldReduceMotion);
+  const [showOverlay, setShowOverlay] = useState(true);
 
   useEffect(() => {
-    if (shouldReduceMotion) {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
       setShowOverlay(false);
     }
-  }, [shouldReduceMotion]);
+  }, []);
 
   return (
     <>
       {showOverlay ? (
-        <motion.div
+        <div
           aria-hidden
-          className="pointer-events-none fixed inset-0 z-[100] bg-background"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
-          transition={{
-            ...motionTransition,
-            duration: INTRO_DURATION,
-            ease: premiumEase,
-            delay: 0.08,
-          }}
-          onAnimationComplete={() => setShowOverlay(false)}
+          className="intro-overlay pointer-events-none fixed inset-0 z-[100] bg-background"
+          onAnimationEnd={() => setShowOverlay(false)}
         />
       ) : null}
       {children}

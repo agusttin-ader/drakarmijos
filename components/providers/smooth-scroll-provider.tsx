@@ -53,8 +53,10 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const prefersCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
 
-    if (prefersReducedMotion) {
+    // Mobile / touch: scroll nativo (más liviano que Lenis + ticker GSAP).
+    if (prefersReducedMotion || prefersCoarsePointer) {
       return;
     }
 

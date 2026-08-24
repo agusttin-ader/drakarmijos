@@ -134,6 +134,60 @@ html[data-menu-open] [data-mobile-nav] {
   .hero-enter {
     animation: none;
   }
+
+  .select-dropdown-enter,
+  .select-dropdown-exit,
+  .intro-overlay {
+    animation: none !important;
+  }
+}
+
+@keyframes select-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes select-dropdown-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.99);
+  }
+}
+
+.select-dropdown-enter {
+  animation: select-dropdown-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+.select-dropdown-exit {
+  animation: select-dropdown-out 150ms ease-in both;
+  transform-origin: top center;
+}
+
+@keyframes intro-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.intro-overlay {
+  animation: intro-fade-out 650ms cubic-bezier(0.22, 1, 0.36, 1) 80ms forwards;
 }
 
 /* Pantallas ultra-anchas: patrón un poco más amplio */

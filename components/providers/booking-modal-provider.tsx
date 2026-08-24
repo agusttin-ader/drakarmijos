@@ -12,10 +12,15 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import dynamic from "next/dynamic";
 import { createPortal } from "react-dom";
-import { BookingForm } from "@/components/booking-form";
 import { Button } from "@/components/ui/button";
 import { useScrollLock } from "@/lib/hooks/use-scroll-lock";
+
+const BookingForm = dynamic(
+  () => import("@/components/booking-form").then((m) => m.BookingForm),
+  { ssr: false },
+);
 import { motionTransition } from "@/lib/motion";
 import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";

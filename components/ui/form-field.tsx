@@ -160,6 +160,9 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
     const hiddenRef = useRef<HTMLSelectElement | null>(null);
 
     const [open, setOpen] = useState(false);
+    const [menuMounted, setMenuMounted] = useState(false);
+    const [menuClosing, setMenuClosing] = useState(false);
+    const closeTimerRef = useRef<number | null>(null);
     const [mounted, setMounted] = useState(false);
     const [menuRect, setMenuRect] = useState<{
       top: number;
@@ -177,6 +180,11 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
 
     useEffect(() => {
       setMounted(true);
+      return () => {
+        if (closeTimerRef.current !== null) {
+          window.clearTimeout(closeTimerRef.current);
+        }
+      };
     }, []);
 
     useEffect(() => {
@@ -197,6 +205,33 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
       });
     }, []);
 
+    const closeMenu = useCallback(() => {
+      setOpen(false);
+      setMenuClosing(true);
+
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+
+      closeTimerRef.current = window.setTimeout(() => {
+        setMenuMounted(false);
+        setMenuClosing(false);
+        closeTimerRef.current = null;
+      }, 150);
+    }, []);
+
+    const openMenu = useCallback(() => {
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+
+      updateMenuRect();
+      setMenuClosing(false);
+      setMenuMounted(true);
+      setOpen(true);
+    }, [updateMenuRect]);
+
     useEffect(() => {
       if (!open) return;
 
@@ -208,12 +243,12 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
           !rootRef.current?.contains(target) &&
           !(event.target as Element).closest?.(`#${listboxId}`)
         ) {
-          setOpen(false);
+          closeMenu();
         }
       };
 
       const onKeyDown = (event: KeyboardEvent) => {
-        if (event.key === "Escape") setOpen(false);
+        if (event.key === "Escape") closeMenu();
       };
 
       window.addEventListener("mousedown", onPointerDown);
@@ -227,7 +262,7 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
         window.removeEventListener("resize", updateMenuRect);
         window.removeEventListener("scroll", updateMenuRect, true);
       };
-    }, [listboxId, open, updateMenuRect]);
+    }, [closeMenu, listboxId, open, updateMenuRect]);
 
     const setRefs = (node: HTMLSelectElement | null) => {
       hiddenRef.current = node;
@@ -237,7 +272,7 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
 
     const commitValue = (next: string) => {
       setInternalValue(next);
-      setOpen(false);
+      closeMenu();
 
       const selectEl = hiddenRef.current;
       if (selectEl) {
@@ -255,7 +290,7 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
     };
 
     const dropdown =
-      open && menuRect && mounted ? (
+      menuMounted && menuRect && mounted ? (
         <ul
           id={listboxId}
           role="listbox"
@@ -267,7 +302,10 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
             width: menuRect.width,
             zIndex: 120,
           }}
-          className="max-h-[min(16rem,calc(100dvh-6rem))] overflow-auto rounded-brand border border-primary/10 bg-background p-1.5 shadow-elevated ring-1 ring-primary/5"
+          className={cn(
+            "max-h-[min(16rem,calc(100dvh-6rem))] overflow-auto rounded-brand border border-primary/10 bg-background p-1.5 shadow-elevated ring-1 ring-primary/5 will-change-[transform,opacity]",
+            menuClosing ? "select-dropdown-exit" : "select-dropdown-enter",
+          )}
         >
           {options.map((option) => {
             const isSelected = option.value === selectedValue;
@@ -355,11 +393,8 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
           }
           onClick={() => {
             if (disabled) return;
-            setOpen((prev) => {
-              const next = !prev;
-              if (next) updateMenuRect();
-              return next;
-            });
+            if (open) closeMenu();
+            else openMenu();
           }}
           className={cn(
             fieldStyles,

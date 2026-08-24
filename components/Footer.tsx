@@ -119,7 +119,13 @@ export function Footer() {
             <p className="mt-1 text-xs text-white/50">Buenos Aires, Argentina</p>
           </div>
 
-          <p className="inline-flex items-center gap-2.5 text-xs text-white/65 sm:shrink-0">
+          <a
+            href="https://www.agustinaderdev.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Desarrollado por Agustin Ader — agustinaderdev.com (se abre en una pestaña nueva)"
+            className="inline-flex items-center gap-2.5 rounded-md text-xs text-white/65 transition-colors duration-300 hover:text-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary sm:shrink-0"
+          >
             <SiteImage
               src="/images/logo-dev/logo-dev.webp"
               alt=""
@@ -132,7 +138,7 @@ export function Footer() {
               Desarrollado por{" "}
               <span className="font-medium text-white/85">Agustin Ader</span>
             </span>
-          </p>
+          </a>
         </div>
       </Container>
     </footer>
