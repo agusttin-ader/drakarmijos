@@ -28,7 +28,7 @@ const specialties: Specialty[] = [
     title: "Respirá Mejor",
     focus: "Rinología · oído, nariz y garganta",
     description:
-      "Desviación de tabique, sinusitis, pérdida de olfato o respiración bucal en niños. Evaluación endoscópica y plan quirúrgico o médico según cada caso.",
+      "Desviación de tabique, sinusitis, alergias, pérdida de olfato o respiración bucal en niños. Evaluación endoscópica y plan médico o quirúrgico según cada caso.",
   },
   {
     highlight: "dormirBien",
@@ -36,7 +36,7 @@ const specialties: Specialty[] = [
     title: "Dormí Mejor",
     focus: "Ronquidos · apnea · bruxismo nocturno",
     description:
-      "Estudio del sueño, CPAP, cirugía de vías aéreas superiores y la relación entre bruxismo, pausas respiratorias y despertares con fatiga diurna.",
+      "Estudio del sueño, CPAP, cirugía de vías aéreas superiores y la relación entre bruxismo, pausas respiratorias y fatiga diurna. Si no respirás bien, no dormís bien.",
   },
   {
     highlight: "orl",
@@ -44,7 +44,7 @@ const specialties: Specialty[] = [
     title: "Cirugía Nasal",
     focus: "Rinoplastia funcional y estética",
     description:
-      "Corrección de obstrucción nasal con criterio estético conservador. Resultados documentados con consentimiento; cada nariz responde de forma distinta.",
+      "Corrección de obstrucción nasal con criterio estético conservador. Cada nariz responde de forma distinta, así que el plan se define sobre tu anatomía y expectativas.",
   },
 ];
 
@@ -70,15 +70,15 @@ export function Specialties() {
     <section
       id="specialties"
       aria-labelledby="specialties-heading"
-      className="scroll-anchor section-y"
+      className="scroll-anchor border-t border-primary/8 bg-background-alt/50 section-y"
     >
       <Container>
         <SectionHeading
           id="specialties-heading"
           variant="editorial"
-          eyebrow="Áreas de práctica"
-          title="Lo que tratamos en consulta"
-          subheading="Tres focos de la práctica de la Dra. Armijos — sin protocolos genéricos: cada historia clínica define el camino."
+          eyebrow="Especialidades"
+          title="Qué veo en consulta."
+          subheading="Problemas de respiración nasal, ronquidos, apnea y cirugía nasal. Te explico opciones, tiempos y límites con claridad."
           className="mb-14 lg:mb-20"
         />
 
@@ -102,7 +102,7 @@ export function Specialties() {
               >
                 <p
                   aria-hidden
-                  className="font-display text-3xl leading-none text-primary/20 sm:text-4xl"
+                  className="font-display text-3xl font-light leading-none text-brand-aqua sm:text-4xl"
                 >
                   {index}
                 </p>
@@ -113,7 +113,7 @@ export function Specialties() {
                   </p>
                   <h3
                     id={`specialty-${title.replace(/\s+/g, "-").toLowerCase()}`}
-                    className="mt-2 font-display text-2xl tracking-tight text-text-primary sm:text-[1.65rem]"
+                    className="mt-2 font-display text-2xl font-light tracking-tight text-text-primary sm:text-[1.65rem]"
                   >
                     {title}
                   </h3>

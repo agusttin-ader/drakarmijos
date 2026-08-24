@@ -11,7 +11,7 @@ export function ScrollProgress() {
       className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px] bg-primary/10"
     >
       <div
-        className="h-full origin-left bg-primary-light will-change-transform"
+        className="h-full origin-left bg-brand-aqua will-change-transform"
         style={{ transform: `scaleX(${scrollProgress})` }}
       />
     </div>

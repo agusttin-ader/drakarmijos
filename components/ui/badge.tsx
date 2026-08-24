@@ -13,9 +13,9 @@ const variantStyles: Record<BadgeVariant, string> = {
   editorial:
     "text-[0.6875rem] font-medium uppercase tracking-[0.2em] text-text-secondary before:mr-2 before:content-['—']",
   credential:
-    "border-l-2 border-accent-gold/70 py-0.5 pl-3 text-sm text-text-primary",
+    "border-l-2 border-brand-aqua/80 py-0.5 pl-3 text-sm text-text-primary",
   inline:
-    "text-sm text-text-secondary before:mr-1.5 before:text-accent-gold before:content-['·'] first:before:content-none",
+    "text-sm text-text-secondary before:mr-1.5 before:text-brand-aqua before:content-['·'] first:before:content-none",
 };
 
 export function Badge({

@@ -106,6 +106,57 @@ export const FloatingTextarea = forwardRef<
   );
 });
 
+type ConsentCheckboxProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> & {
+  /** Acepta nodos para poder enlazar el aviso de privacidad. */
+  label: React.ReactNode;
+  error?: string;
+};
+
+export const ConsentCheckbox = forwardRef<HTMLInputElement, ConsentCheckboxProps>(
+  function ConsentCheckbox({ label, error, className, id, name, ...props }, ref) {
+    const generatedId = useId();
+    const fieldId = id ?? name ?? generatedId;
+    const errorId = `${fieldId}-error`;
+
+    return (
+      <div className={className}>
+        <div className="flex items-start gap-3">
+          <input
+            ref={ref}
+            type="checkbox"
+            id={fieldId}
+            name={name}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? errorId : undefined}
+            className={cn(
+              "mt-0.5 size-5 shrink-0 cursor-pointer appearance-none rounded-[0.375rem_0.125rem_0.375rem_0.125rem] border border-primary/25 bg-background bg-center bg-no-repeat transition-colors",
+              "bg-[length:0.875rem] checked:border-primary checked:bg-primary",
+              "checked:bg-[image:url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23FFFFFF%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M20 6 9 17l-5-5%22/%3E%3C/svg%3E')]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+              error && "border-red-500/70",
+            )}
+            {...props}
+          />
+          <label
+            htmlFor={fieldId}
+            className="cursor-pointer text-xs leading-relaxed text-text-secondary sm:text-sm"
+          >
+            {label}
+          </label>
+        </div>
+        {error ? (
+          <p id={errorId} className="mt-1.5 text-sm text-red-700" role="alert">
+            {error}
+          </p>
+        ) : null}
+      </div>
+    );
+  },
+);
+
 type FloatingSelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   label: string;
   error?: string;

@@ -129,16 +129,16 @@ export function Testimonials() {
           }}
         >
           {/* Columna izquierda — meta de la reseña */}
-          <div className="flex flex-col justify-between gap-10 border-l-2 border-accent-gold/45 pl-6 sm:pl-8 lg:min-h-[320px]">
+          <div className="flex flex-col justify-between gap-10 border-l-2 border-brand-aqua/70 pl-6 sm:pl-8 lg:min-h-[320px]">
             <div>
               <p className="text-[0.6875rem] font-medium uppercase tracking-[0.24em] text-text-secondary">
-                Testimonios
+                Opiniones
               </p>
               <h2
                 id="testimonials-heading"
-                className="mt-3 font-display text-[clamp(1.65rem,3vw,2.25rem)] leading-[1.12] tracking-tight text-text-primary"
+                className="mt-3 font-display text-[clamp(1.65rem,3vw,2.25rem)] font-light leading-[1.12] tracking-tight text-text-primary"
               >
-                Confianza en consulta
+                Lo que escriben pacientes.
               </h2>
 
               <div className="mt-8 sm:mt-10">
@@ -197,7 +197,7 @@ export function Testimonials() {
                     className={cn(
                       "h-px flex-1 transition-colors duration-300 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                       activeIndex === index
-                        ? "bg-accent-gold"
+                        ? "bg-brand-aqua"
                         : "bg-primary/15 hover:bg-primary/30",
                     )}
                   />
@@ -239,8 +239,8 @@ export function Testimonials() {
                 className="relative"
               >
                 <blockquote>
-                  <p className="font-display text-[clamp(1.35rem,2.6vw,2rem)] leading-[1.5] text-text-primary lg:leading-[1.45]">
-                    <span className="italic">{active.quote}</span>
+                  <p className="font-display text-[clamp(1.35rem,2.6vw,2rem)] font-light leading-[1.5] text-text-primary lg:leading-[1.45]">
+                    “{active.quote}”
                   </p>
                 </blockquote>
 

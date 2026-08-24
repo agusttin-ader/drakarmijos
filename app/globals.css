@@ -3,13 +3,16 @@
 @import "lenis/dist/lenis.css";
 
 @theme inline {
-  --font-display: var(--font-fraunces);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-source-sans);
+  --font-sans: var(--font-source-sans);
+  --font-script: var(--font-great-vibes);
 }
 
 @layer base {
   html {
     scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   html.lenis {
@@ -22,6 +25,8 @@
 
   body {
     @apply bg-background font-sans text-text-primary antialiased;
+    /* Reduce zoom por doble tap en mobile sin afectar pinch en desktop. */
+    touch-action: manipulation;
   }
 
   h1,
@@ -30,11 +35,11 @@
   h4,
   h5,
   h6 {
-    @apply font-display text-text-primary;
+    @apply font-display font-light tracking-tight text-text-primary;
   }
 
   ::selection {
-    @apply bg-primary-light/40 text-text-primary;
+    @apply bg-brand-aqua/50 text-text-primary;
   }
 
   :focus:not(:focus-visible) {
@@ -44,29 +49,30 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-primary;
   }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
 }
 
 @layer utilities {
   .section-y {
-    @apply py-16 md:py-20 lg:py-section xl:py-section-lg;
+    @apply py-16 md:py-20 lg:py-section xl:py-section-lg 2xl:py-section-xl 3xl:py-section-2xl;
   }
 
   .scroll-anchor {
-    @apply scroll-mt-24 md:scroll-mt-28;
-  }
-
-  .animate-handle-hint {
-    animation: handle-hint 2.5s ease-in-out infinite;
+    @apply scroll-mt-24 md:scroll-mt-28 2xl:scroll-mt-32;
   }
 
   .hero-enter {
-    animation: hero-enter 500ms ease-out both;
+    animation: hero-enter 600ms ease-out both;
   }
 
-  .hero-word-breathe {
-    display: inline-block;
-    transform-origin: left bottom;
-    animation: hero-word-breathe 4.5s ease-in-out infinite;
+  .brand-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24 0L48 24L24 48L0 24z' fill='none' stroke='%2398D6D5' stroke-opacity='0.14' stroke-width='0.75'/%3E%3C/svg%3E");
+    background-size: 48px 48px;
   }
 
   .pb-mobile-nav {
@@ -74,27 +80,16 @@
   }
 }
 
-@keyframes handle-hint {
-  0%,
-  100% {
-    box-shadow:
-      0 4px 20px -4px rgba(15, 92, 92, 0.3),
-      0 0 0 0 rgba(94, 201, 196, 0);
-    transform: scale(1);
-  }
-
-  50% {
-    box-shadow:
-      0 6px 24px -4px rgba(15, 92, 92, 0.35),
-      0 0 0 6px rgba(94, 201, 196, 0.12);
-    transform: scale(1.04);
-  }
+/* Barra inferior oculta mientras el menú hamburguesa está abierto */
+html[data-menu-open] [data-mobile-nav] {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 @keyframes hero-enter {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
 
   to {
@@ -103,30 +98,19 @@
   }
 }
 
-@keyframes hero-word-breathe {
-  0%,
-  100% {
-    opacity: 0.98;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.015);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html.lenis.lenis-smooth {
     scroll-behavior: auto;
   }
 
-  .animate-handle-hint {
+  .hero-enter {
     animation: none;
   }
+}
 
-  .hero-enter,
-  .hero-word-breathe {
-    animation: none;
+/* Pantallas ultra-anchas: patrón un poco más amplio */
+@media (min-width: 2560px) {
+  .brand-pattern {
+    background-size: 64px 64px;
   }
 }

@@ -37,7 +37,7 @@ const baseStyles =
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "rounded-[1.625rem_0.375rem_1.625rem_0.375rem] bg-primary pl-7 text-white hover:bg-primary/92 before:absolute before:left-3 before:top-1/2 before:h-[42%] before:w-px before:-translate-y-1/2 before:bg-accent-gold/90",
+    "rounded-[1.625rem_0.375rem_1.625rem_0.375rem] bg-primary pl-7 text-white hover:bg-primary/92 before:absolute before:left-3 before:top-1/2 before:h-[42%] before:w-px before:-translate-y-1/2 before:bg-brand-aqua/90",
   outline:
     "rounded-[1.625rem_0.375rem_1.625rem_0.375rem] border border-primary/30 bg-transparent text-primary hover:border-primary/50 hover:bg-primary/[0.03]",
 };

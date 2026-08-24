@@ -7,12 +7,16 @@ import {
   FloatingSelect,
   FloatingTextarea,
 } from "@/components/ui/form-field";
+import { WhatsAppIcon } from "@/components/ui/social-icons";
+import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export const visitReasons = [
   { value: "respira-mejor", label: "Respirá Mejor — ORL (oído, nariz, garganta)" },
   { value: "dormi-mejor", label: "Dormí Mejor — Ronquidos y apnea del sueño" },
+  { value: "alergia-sueno", label: "Alergia y respiración nasal" },
   { value: "bruxismo-sueno", label: "Bruxismo y calidad del sueño" },
+  { value: "pediatria-orl", label: "Pediatría ORL — niños" },
   { value: "atencion-integral", label: "Atención Integral — Consultas ORL generales" },
 ] as const;
 
@@ -21,6 +25,7 @@ export type BookingFormValues = {
   phone: string;
   reason: string;
   message: string;
+  consent: boolean;
 };
 
 type BookingFormProps = {
@@ -46,11 +51,41 @@ export function BookingForm({
       phone: "",
       reason: "",
       message: "",
+      consent: false,
     },
   });
 
-  const onSubmit = handleSubmit(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 600));
+  const onSubmit = handleSubmit((values) => {
+    const reasonLabel =
+      visitReasons.find((reason) => reason.value === values.reason)?.label ??
+      values.reason;
+
+    const lines = [
+      "Hola, quiero coordinar una consulta.",
+      `Nombre: ${values.name.trim()}`,
+      `Teléfono: ${values.phone.trim()}`,
+      `Motivo: ${reasonLabel}`,
+    ];
+
+    const note = values.message.trim();
+    if (note) {
+      lines.push(`Mensaje: ${note}`);
+    }
+
+    // Queda constancia del consentimiento en el propio mensaje.
+    lines.push("Acepto el aviso de privacidad del sitio.");
+
+    const url = `https://wa.me/${siteData.contact.whatsappNumber}?text=${encodeURIComponent(
+      lines.join("\n"),
+    )}`;
+
+    // Si el navegador bloquea la pestaña nueva, navegamos en la actual para no
+    // perder la solicitud del paciente.
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened) {
+      window.location.assign(url);
+    }
+
     reset();
     onSuccess?.();
   });
@@ -116,11 +151,17 @@ export function BookingForm({
       <Button
         type="submit"
         variant="primary"
-        className="w-full sm:w-auto"
+        className="w-full gap-2.5 sm:w-auto"
         disabled={isSubmitting}
       >
-        {isSubmitting ? "Enviando…" : "Enviar solicitud"}
+        <WhatsAppIcon className="size-4" />
+        Continuar en WhatsApp
       </Button>
+
+      <p className="text-xs leading-relaxed text-text-secondary">
+        Al continuar se abre WhatsApp con tus datos ya escritos para que envíes
+        el mensaje.
+      </p>
     </form>
   );
 }

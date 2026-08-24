@@ -26,7 +26,7 @@ export function SectionHeading({
       <header className={cn("max-w-2xl", className)}>
         <h2
           id={id}
-          className="font-display text-3xl leading-[1.12] tracking-tight text-text-primary sm:text-4xl lg:text-[2.65rem]"
+          className="font-display text-3xl font-light leading-[1.12] tracking-tight text-text-primary sm:text-4xl lg:text-[2.65rem]"
         >
           {title}
         </h2>
@@ -67,14 +67,14 @@ export function SectionHeading({
           >
             <h2
               id={id}
-              className="font-display text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.1] tracking-tight text-text-primary"
+              className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-light leading-[1.1] tracking-tight text-text-primary 2xl:text-[clamp(2.25rem,2.2vw,3.25rem)] 3xl:text-[3.5rem]"
             >
               {title}
             </h2>
           </div>
         </div>
         {subheading ? (
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-secondary sm:mt-6 sm:text-[1.0625rem] sm:leading-8">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-secondary sm:mt-6 sm:text-[1.0625rem] sm:leading-8 2xl:mt-8 2xl:max-w-3xl 2xl:text-lg 2xl:leading-8">
             {subheading}
           </p>
         ) : null}
@@ -92,12 +92,12 @@ export function SectionHeading({
       >
         <h2
           id={id}
-          className="font-display text-[clamp(2rem,4.5vw,3rem)] leading-[1.08] tracking-tight text-text-primary"
+          className="font-display text-[clamp(2rem,4.5vw,3rem)] font-light leading-[1.08] tracking-tight text-text-primary"
         >
           {title}
         </h2>
         {subheading ? (
-          <p className="border-l border-accent-gold/50 pl-5 text-sm leading-relaxed text-text-secondary sm:text-base sm:leading-7 lg:mb-1">
+          <p className="border-l border-brand-aqua/60 pl-5 text-sm leading-relaxed text-text-secondary sm:text-base sm:leading-7 lg:mb-1">
             {subheading}
           </p>
         ) : null}
@@ -121,7 +121,7 @@ export function SectionHeading({
       ) : null}
       <h2
         id={id}
-        className="font-display text-3xl leading-[1.15] tracking-tight text-text-primary sm:text-4xl lg:text-[2.75rem]"
+        className="font-display text-3xl font-light leading-[1.15] tracking-tight text-text-primary sm:text-4xl lg:text-[2.75rem]"
       >
         {title}
       </h2>

@@ -30,6 +30,12 @@ const sizeClasses = {
   lg: "size-20",
 } as const;
 
+const sizeHints = {
+  sm: "48px",
+  md: "64px",
+  lg: "80px",
+} as const;
+
 type HighlightBadgeProps = {
   variant: HighlightVariant;
   size?: keyof typeof sizeClasses;
@@ -52,7 +58,7 @@ export function HighlightBadge({
       alt={asset.alt}
       width={HIGHLIGHT_SIZE}
       height={HIGHLIGHT_SIZE}
-      unoptimized
+      sizes={sizeHints[size]}
       className={cn("object-contain", sizeClasses[size], className)}
     />
   );
@@ -98,7 +104,7 @@ export function FooterHighlightDecor({ className }: HighlightDecorProps) {
         alt=""
         width={HIGHLIGHT_SIZE}
         height={HIGHLIGHT_SIZE}
-        unoptimized
+        sizes="80px"
         className="absolute -right-2 top-8 size-14 opacity-[0.12] sm:size-16 lg:right-12 lg:top-16 lg:size-20"
       />
       <Image
@@ -106,7 +112,7 @@ export function FooterHighlightDecor({ className }: HighlightDecorProps) {
         alt=""
         width={HIGHLIGHT_SIZE}
         height={HIGHLIGHT_SIZE}
-        unoptimized
+        sizes="72px"
         className="absolute bottom-24 right-16 size-12 opacity-[0.1] sm:size-14 lg:bottom-28 lg:right-32 lg:size-[4.5rem]"
       />
       <Image
@@ -114,7 +120,7 @@ export function FooterHighlightDecor({ className }: HighlightDecorProps) {
         alt=""
         width={HIGHLIGHT_SIZE}
         height={HIGHLIGHT_SIZE}
-        unoptimized
+        sizes="64px"
         className="absolute bottom-8 left-[58%] size-11 opacity-[0.11] sm:size-[3.25rem] lg:bottom-12 lg:left-[62%] lg:size-16"
       />
     </div>

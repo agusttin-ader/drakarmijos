@@ -15,7 +15,7 @@ import {
 import { createPortal } from "react-dom";
 import { BookingForm } from "@/components/booking-form";
 import { Button } from "@/components/ui/button";
-import { useScrollContext } from "@/components/providers/smooth-scroll-provider";
+import { useScrollLock } from "@/lib/hooks/use-scroll-lock";
 import { motionTransition } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -39,12 +39,13 @@ export function useBookingModal() {
 
 function BookingModalOverlay() {
   const { isOpen, close } = useBookingModal();
-  const { lenis } = useScrollContext();
   const shouldReduceMotion = useReducedMotion();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mounted, setMounted] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useScrollLock(isOpen);
 
   useEffect(() => {
     setMounted(true);
@@ -56,20 +57,14 @@ function BookingModalOverlay() {
       return;
     }
 
-    lenis?.stop();
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
     const focusTimer = window.setTimeout(() => {
       closeButtonRef.current?.focus();
     }, 50);
 
     return () => {
       window.clearTimeout(focusTimer);
-      lenis?.start();
-      document.body.style.overflow = previousOverflow;
     };
-  }, [isOpen, lenis]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -152,11 +147,12 @@ function BookingModalOverlay() {
                   {isSubmitted ? (
                     <div className="py-4 text-center" role="status">
                       <p className="font-display text-xl text-text-primary">
-                        ¡Gracias por tu mensaje!
+                        Te llevamos a WhatsApp
                       </p>
                       <p className="mt-2 text-sm text-text-secondary">
-                        Recibí tu solicitud y me pondré en contacto pronto para
-                        confirmar tu consulta.
+                        Tu mensaje ya está escrito con los datos del formulario.
+                        Enviálo desde WhatsApp y te respondo con el turno más
+                        cercano disponible.
                       </p>
                       <Button
                         type="button"

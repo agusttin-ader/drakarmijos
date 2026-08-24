@@ -3,12 +3,20 @@ export const siteData = {
     name: "Dra. Karla Armijos",
     shortName: "Dra. Armijos",
     title: "Otorrinolaringóloga",
+    /** Matrícula nacional, según el manual de marca. */
+    license: "MN 156125",
+    /** Denominación completa que figura en el recetario oficial. */
+    fullTitle:
+      "Especialista en Otorrinolaringología, Desórdenes Respiratorios del Dormir, Ronquido y Rinología Aplicada",
     specialty: "Rinología y Trastornos Respiratorios del Sueño",
     specialtyShort:
       "Enfermedades de oído, nariz y garganta · Ronquidos y apnea del sueño",
     location: "Ciudad Autónoma de Buenos Aires",
+    origin: "Ecuador y Argentina",
     audience: "Atención adultos y niños",
     mission: "Ayudarte a respirar mejor, dormir mejor y vivir mejor",
+    quote:
+      "Me importa que entiendas qué se puede hacer —y qué no— antes de operar o empezar un tratamiento. Si necesitás una segunda mirada, escribime.",
   },
   clinics: [
     {
@@ -25,9 +33,71 @@ export const siteData = {
       hours: null,
     },
   ] as const,
+  institutions: [
+    "CEMIC",
+    "Hospital Británico",
+    "Congreso Panamericano de ORL",
+    "Rino Argentina · FASO",
+    "Federación Argentina de Sociedades de ORL",
+  ] as const,
+  /** Actividad científica visible en su comunicación profesional. */
+  speaking: [
+    {
+      event: "Congreso Panamericano de Otorrinolaringología",
+      detail: "Río de Janeiro",
+    },
+    {
+      event: "Congreso de la Federación Argentina de Sociedades de ORL",
+      detail: "Disertante nacional · Mar del Plata",
+    },
+    {
+      event: "Rino Argentina · FASO",
+      detail: "Disertante · rinología",
+    },
+  ] as const,
+  stats: [
+    { label: "Matrícula", value: "MN 156125" },
+    { label: "Instituciones", value: "CEMIC · Británico" },
+    { label: "Consulta", value: "Adultos y niños" },
+  ] as const,
+  faqs: [
+    {
+      question: "¿Cuándo conviene consultar por ronquidos o apnea?",
+      answer:
+        "Si ronca de forma habitual, hay pausas respiratorias, despertás cansado o con dolor de cabeza, o tu pareja nota ahogos nocturnos, vale una evaluación. No todos los ronquidos son apnea, pero muchos casos leves se diagnostican tarde.",
+    },
+    {
+      question: "¿Qué estudios pedís con más frecuencia?",
+      answer:
+        "Según el motivo de consulta: endoscopia nasal, polisomnografía o estudios del sueño, audiometría y, en algunos casos, monitoreo con wearables. Te explico para qué sirve cada uno antes de pedirlo.",
+    },
+    {
+      question: "¿Atendés niños?",
+      answer:
+        "Sí. Veo respiración bucal, adenoides, amígdalas, otitis a repetición y problemas de oído, nariz y garganta en pediatría. El plan se arma con la familia, con lenguaje claro.",
+    },
+    {
+      question: "¿La cirugía nasal siempre es necesaria?",
+      answer:
+        "No. Muchas obstrucciones, alergias o sinusitis se manejan primero con tratamiento médico. La cirugía entra cuando hay un beneficio concreto y límites claros — nunca como menú genérico.",
+    },
+    {
+      question: "¿Cómo es la recuperación de una cirugía nasal?",
+      answer:
+        "Es escalonada. Los primeros días: reposo relativo y cuidados locales. En general, entre 5 y 10 días muchas personas retoman trabajo de escritorio. Deporte intenso: suele esperar algunas semanas. El ritmo exacto lo vemos en el control.",
+    },
+    {
+      question: "¿Dónde atendés y cómo saco turno?",
+      answer:
+        "Miércoles y jueves en CEMIC (Av. Las Heras 2900) y también en Hospital Británico. Podés escribirme por WhatsApp o completar el formulario: te respondo por el mismo canal.",
+    },
+  ] as const,
   contact: {
     phone: "+54 9 11 6414-4515",
     phoneHref: "+5491164144515",
+    email: "karla.armijos@outlook.com",
+    /** Solo dígitos, formato que exige wa.me. */
+    whatsappNumber: "5491164144515",
     whatsappUrl:
       "https://wa.me/5491164144515?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20con%20la%20Dra.%20Armijos.",
   },
