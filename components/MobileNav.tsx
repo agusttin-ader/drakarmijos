@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Calendar, Home, Layers, Quote, UserRound } from "lucide-react";
 import { useBookingModal } from "@/components/providers/booking-modal-provider";
+import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 const mobileNavItems = [
@@ -15,7 +16,7 @@ const mobileNavItems = [
     icon: Quote,
     action: "scroll" as const,
   },
-  { href: "#booking", label: "Turno", icon: Calendar, action: "booking" as const },
+  { href: "#booking", label: siteData.cta.bookShort, icon: Calendar, action: "booking" as const },
 ] as const;
 
 export function MobileNav() {
@@ -25,39 +26,38 @@ export function MobileNav() {
     <nav
       data-mobile-nav
       aria-label="Navegación móvil"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-primary/10 bg-background/95 backdrop-blur-md md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-primary/10 bg-background/95 shadow-nav backdrop-blur-md md:hidden"
     >
       <ul className="mx-auto grid max-w-lg grid-cols-5 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
-        {mobileNavItems.map(({ href, label, icon: Icon, action }) => (
-          <li key={href}>
-            {action === "booking" ? (
-              <button
-                type="button"
-                onClick={open}
-                className={cn(
-                  "flex w-full flex-col items-center gap-0.5 px-1 py-1.5 text-[10px] font-medium text-text-secondary transition-colors",
-                  "rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                  "hover:text-primary active:text-primary",
-                )}
-              >
-                <Icon className="size-[1.125rem] stroke-[1.5]" aria-hidden />
-                <span className="leading-tight">{label}</span>
-              </button>
-            ) : (
-              <Link
-                href={href}
-                className={cn(
-                  "flex flex-col items-center gap-0.5 px-1 py-1.5 text-[10px] font-medium text-text-secondary transition-colors",
-                  "rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                  "hover:text-primary active:text-primary",
-                )}
-              >
-                <Icon className="size-[1.125rem] stroke-[1.5]" aria-hidden />
-                <span className="leading-tight">{label}</span>
-              </Link>
-            )}
-          </li>
-        ))}
+        {mobileNavItems.map(({ href, label, icon: Icon, action }) => {
+          const isBooking = action === "booking";
+
+          const itemClassName = cn(
+            "flex w-full flex-col items-center gap-0.5 px-1 py-1.5 text-[10px] font-medium transition-all duration-300",
+            "rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            isBooking
+              ? "text-primary"
+              : "text-text-secondary hover:text-primary active:text-primary",
+          );
+
+          return (
+            <li key={href}>
+              {isBooking ? (
+                <button type="button" onClick={open} className={itemClassName}>
+                  <span className="inline-flex size-8 items-center justify-center rounded-full bg-primary text-white shadow-soft">
+                    <Icon className="size-[1.05rem] stroke-[1.75]" aria-hidden />
+                  </span>
+                  <span className="leading-tight">{label}</span>
+                </button>
+              ) : (
+                <Link href={href} className={itemClassName}>
+                  <Icon className="size-[1.125rem] stroke-[1.5]" aria-hidden />
+                  <span className="leading-tight">{label}</span>
+                </Link>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

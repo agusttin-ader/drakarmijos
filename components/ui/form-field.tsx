@@ -1,8 +1,20 @@
-import { forwardRef, useId, type SelectHTMLAttributes } from "react";
+"use client";
+
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type SelectHTMLAttributes,
+} from "react";
+import { createPortal } from "react-dom";
+import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const fieldStyles =
-  "peer w-full rounded-[0.75rem_0.25rem_0.75rem_0.25rem] border border-primary/12 bg-background px-4 pb-3 pt-6 text-text-primary outline-none transition-[border-color] duration-300 placeholder:text-transparent focus:border-primary/40 focus:ring-0 disabled:cursor-not-allowed disabled:opacity-60";
+  "peer w-full rounded-field border border-primary/18 bg-background px-4 pb-3 pt-6 text-text-primary outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-transparent focus:border-primary/45 focus:shadow-soft focus:ring-0 disabled:cursor-not-allowed disabled:opacity-60";
 
 const labelStyles =
   "pointer-events-none absolute left-4 top-4 origin-left text-sm text-text-secondary transition-all duration-300 peer-focus:top-2 peer-focus:text-xs peer-focus:text-primary peer-focus:-translate-y-0 peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-primary peer-[:not(:placeholder-shown)]:-translate-y-0 peer-valid:top-2 peer-valid:text-xs peer-valid:text-primary peer-valid:-translate-y-0";
@@ -106,88 +118,217 @@ export const FloatingTextarea = forwardRef<
   );
 });
 
-type ConsentCheckboxProps = Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "type"
+type FloatingSelectProps = Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  "children"
 > & {
-  /** Acepta nodos para poder enlazar el aviso de privacidad. */
-  label: React.ReactNode;
-  error?: string;
-};
-
-export const ConsentCheckbox = forwardRef<HTMLInputElement, ConsentCheckboxProps>(
-  function ConsentCheckbox({ label, error, className, id, name, ...props }, ref) {
-    const generatedId = useId();
-    const fieldId = id ?? name ?? generatedId;
-    const errorId = `${fieldId}-error`;
-
-    return (
-      <div className={className}>
-        <div className="flex items-start gap-3">
-          <input
-            ref={ref}
-            type="checkbox"
-            id={fieldId}
-            name={name}
-            aria-invalid={Boolean(error)}
-            aria-describedby={error ? errorId : undefined}
-            className={cn(
-              "mt-0.5 size-5 shrink-0 cursor-pointer appearance-none rounded-[0.375rem_0.125rem_0.375rem_0.125rem] border border-primary/25 bg-background bg-center bg-no-repeat transition-colors",
-              "bg-[length:0.875rem] checked:border-primary checked:bg-primary",
-              "checked:bg-[image:url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23FFFFFF%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M20 6 9 17l-5-5%22/%3E%3C/svg%3E')]",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-              error && "border-red-500/70",
-            )}
-            {...props}
-          />
-          <label
-            htmlFor={fieldId}
-            className="cursor-pointer text-xs leading-relaxed text-text-secondary sm:text-sm"
-          >
-            {label}
-          </label>
-        </div>
-        {error ? (
-          <p id={errorId} className="mt-1.5 text-sm text-red-700" role="alert">
-            {error}
-          </p>
-        ) : null}
-      </div>
-    );
-  },
-);
-
-type FloatingSelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   label: string;
   error?: string;
   options: { value: string; label: string }[];
 };
 
+/**
+ * Selector custom con identidad de marca (reemplaza el <select> nativo del SO).
+ * Compatible con react-hook-form vía ref + onChange/onBlur del input oculto.
+ */
 export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>(
   function FloatingSelect(
-    { label, error, options, className, id, name, ...props },
+    {
+      label,
+      error,
+      options,
+      className,
+      id,
+      name,
+      value,
+      defaultValue,
+      onChange,
+      onBlur,
+      disabled,
+      required,
+      "aria-invalid": ariaInvalid,
+      ...rest
+    },
     ref,
   ) {
     const generatedId = useId();
     const fieldId = id ?? name ?? generatedId;
+    const listboxId = `${fieldId}-listbox`;
     const errorId = `${fieldId}-error`;
+    const rootRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const hiddenRef = useRef<HTMLSelectElement | null>(null);
+
+    const [open, setOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    const [menuRect, setMenuRect] = useState<{
+      top: number;
+      left: number;
+      width: number;
+    } | null>(null);
+    const [internalValue, setInternalValue] = useState(
+      String(defaultValue ?? value ?? ""),
+    );
+
+    const selectedValue =
+      value !== undefined ? String(value) : internalValue;
+    const selectedOption = options.find((o) => o.value === selectedValue);
+    const hasValue = Boolean(selectedValue);
+
+    useEffect(() => {
+      setMounted(true);
+    }, []);
+
+    useEffect(() => {
+      if (value !== undefined) {
+        setInternalValue(String(value));
+      }
+    }, [value]);
+
+    const updateMenuRect = useCallback(() => {
+      const trigger = triggerRef.current;
+      if (!trigger) return;
+
+      const rect = trigger.getBoundingClientRect();
+      setMenuRect({
+        top: rect.bottom + 8,
+        left: rect.left,
+        width: rect.width,
+      });
+    }, []);
+
+    useEffect(() => {
+      if (!open) return;
+
+      updateMenuRect();
+
+      const onPointerDown = (event: MouseEvent) => {
+        const target = event.target as Node;
+        if (
+          !rootRef.current?.contains(target) &&
+          !(event.target as Element).closest?.(`#${listboxId}`)
+        ) {
+          setOpen(false);
+        }
+      };
+
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Escape") setOpen(false);
+      };
+
+      window.addEventListener("mousedown", onPointerDown);
+      window.addEventListener("keydown", onKeyDown);
+      window.addEventListener("resize", updateMenuRect);
+      window.addEventListener("scroll", updateMenuRect, true);
+
+      return () => {
+        window.removeEventListener("mousedown", onPointerDown);
+        window.removeEventListener("keydown", onKeyDown);
+        window.removeEventListener("resize", updateMenuRect);
+        window.removeEventListener("scroll", updateMenuRect, true);
+      };
+    }, [listboxId, open, updateMenuRect]);
+
+    const setRefs = (node: HTMLSelectElement | null) => {
+      hiddenRef.current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    };
+
+    const commitValue = (next: string) => {
+      setInternalValue(next);
+      setOpen(false);
+
+      const selectEl = hiddenRef.current;
+      if (selectEl) {
+        const descriptor = Object.getOwnPropertyDescriptor(
+          HTMLSelectElement.prototype,
+          "value",
+        );
+        descriptor?.set?.call(selectEl, next);
+      }
+
+      onChange?.({
+        target: { value: next },
+        currentTarget: { value: next },
+      } as React.ChangeEvent<HTMLSelectElement>);
+    };
+
+    const dropdown =
+      open && menuRect && mounted ? (
+        <ul
+          id={listboxId}
+          role="listbox"
+          aria-labelledby={fieldId}
+          style={{
+            position: "fixed",
+            top: menuRect.top,
+            left: menuRect.left,
+            width: menuRect.width,
+            zIndex: 120,
+          }}
+          className="max-h-[min(16rem,calc(100dvh-6rem))] overflow-auto rounded-brand border border-primary/10 bg-background p-1.5 shadow-elevated ring-1 ring-primary/5"
+        >
+          {options.map((option) => {
+            const isSelected = option.value === selectedValue;
+
+            return (
+              <li key={option.value} role="presentation">
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => commitValue(option.value)}
+                  className={cn(
+                    "flex w-full items-center gap-3 rounded-field px-3.5 py-3.5 text-left transition-colors duration-200",
+                    "hover:bg-brand-aqua/12 focus-visible:bg-brand-aqua/12 focus-visible:outline-none",
+                    isSelected && "bg-primary/[0.06] ring-1 ring-primary/10",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "min-w-0 flex-1 text-sm leading-snug",
+                      isSelected
+                        ? "font-medium text-primary"
+                        : "text-text-primary",
+                    )}
+                  >
+                    {option.label}
+                  </span>
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "flex size-5 shrink-0 items-center justify-center rounded-full border transition-colors",
+                      isSelected
+                        ? "border-primary bg-primary text-white"
+                        : "border-primary/20 bg-background text-transparent",
+                    )}
+                  >
+                    <Check className="size-3 stroke-[2.5]" />
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null;
 
     return (
-      <FieldWrapper label={label} htmlFor={fieldId} error={error}>
+      <div ref={rootRef} className={cn("relative", className)}>
         <select
-          ref={ref}
-          id={fieldId}
+          ref={setRefs}
+          id={`${fieldId}-native`}
           name={name}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? errorId : undefined}
-          className={cn(
-            fieldStyles,
-            "invalid:text-transparent",
-            "appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%234A5858%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')] bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-10",
-            error && "border-red-500/70",
-            className,
-          )}
-          {...props}
+          required={required}
+          disabled={disabled}
+          value={selectedValue}
+          onChange={onChange}
+          onBlur={onBlur}
+          tabIndex={-1}
+          aria-hidden
+          className="sr-only"
+          {...rest}
         >
           <option value="" disabled>
             {" "}
@@ -198,7 +339,79 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
             </option>
           ))}
         </select>
-      </FieldWrapper>
+
+        <button
+          ref={triggerRef}
+          type="button"
+          id={fieldId}
+          disabled={disabled}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-controls={listboxId}
+          aria-invalid={ariaInvalid ?? Boolean(error)}
+          aria-describedby={error ? errorId : undefined}
+          onBlur={
+            onBlur as unknown as React.FocusEventHandler<HTMLButtonElement>
+          }
+          onClick={() => {
+            if (disabled) return;
+            setOpen((prev) => {
+              const next = !prev;
+              if (next) updateMenuRect();
+              return next;
+            });
+          }}
+          className={cn(
+            fieldStyles,
+            "relative flex cursor-pointer items-start justify-between gap-3 text-left",
+            open && "border-primary/45 shadow-soft",
+            error && "border-red-500/70",
+            disabled && "cursor-not-allowed opacity-60",
+          )}
+        >
+          <span className="min-w-0 flex-1">
+            <span
+              className={cn(
+                "pointer-events-none absolute left-4 top-4 origin-left text-sm text-text-secondary transition-all duration-300",
+                (hasValue || open) &&
+                  "top-2 text-xs text-primary -translate-y-0",
+              )}
+            >
+              {label}
+            </span>
+            <span
+              className={cn(
+                "block truncate text-base",
+                hasValue ? "text-text-primary" : "text-transparent",
+              )}
+            >
+              {selectedOption?.label ?? "Selecciona un motivo"}
+            </span>
+          </span>
+          <span
+            aria-hidden
+            className={cn(
+              "mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
+              open ? "bg-primary/8 text-primary" : "bg-primary/5 text-primary/70",
+            )}
+          >
+            <ChevronDown
+              className={cn(
+                "size-4 stroke-[1.75] transition-transform duration-300",
+                open && "rotate-180",
+              )}
+            />
+          </span>
+        </button>
+
+        {mounted && dropdown ? createPortal(dropdown, document.body) : null}
+
+        {error ? (
+          <p id={errorId} className="mt-1.5 text-sm text-red-700" role="alert">
+            {error}
+          </p>
+        ) : null}
+      </div>
     );
   },
 );

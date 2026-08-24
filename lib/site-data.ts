@@ -9,14 +9,13 @@ export const siteData = {
     fullTitle:
       "Especialista en Otorrinolaringología, Desórdenes Respiratorios del Dormir, Ronquido y Rinología Aplicada",
     specialty: "Rinología y Trastornos Respiratorios del Sueño",
-    specialtyShort:
-      "Enfermedades de oído, nariz y garganta · Ronquidos y apnea del sueño",
-    location: "Ciudad Autónoma de Buenos Aires",
-    origin: "Ecuador y Argentina",
     audience: "Atención adultos y niños",
-    mission: "Ayudarte a respirar mejor, dormir mejor y vivir mejor",
     quote:
-      "Me importa que entiendas qué se puede hacer —y qué no— antes de operar o empezar un tratamiento. Si necesitás una segunda mirada, escribime.",
+      "Me importa que entiendas qué se puede hacer —y qué no— antes de operar o empezar un tratamiento. Si necesitas una segunda opinión, escríbeme.",
+  },
+  cta: {
+    book: "Agendar cita",
+    bookShort: "Cita",
   },
   clinics: [
     {
@@ -40,21 +39,6 @@ export const siteData = {
     "Rino Argentina · FASO",
     "Federación Argentina de Sociedades de ORL",
   ] as const,
-  /** Actividad científica visible en su comunicación profesional. */
-  speaking: [
-    {
-      event: "Congreso Panamericano de Otorrinolaringología",
-      detail: "Río de Janeiro",
-    },
-    {
-      event: "Congreso de la Federación Argentina de Sociedades de ORL",
-      detail: "Disertante nacional · Mar del Plata",
-    },
-    {
-      event: "Rino Argentina · FASO",
-      detail: "Disertante · rinología",
-    },
-  ] as const,
   stats: [
     { label: "Matrícula", value: "MN 156125" },
     { label: "Instituciones", value: "CEMIC · Británico" },
@@ -64,15 +48,15 @@ export const siteData = {
     {
       question: "¿Cuándo conviene consultar por ronquidos o apnea?",
       answer:
-        "Si ronca de forma habitual, hay pausas respiratorias, despertás cansado o con dolor de cabeza, o tu pareja nota ahogos nocturnos, vale una evaluación. No todos los ronquidos son apnea, pero muchos casos leves se diagnostican tarde.",
+        "Si roncas de forma habitual, hay pausas respiratorias, te despiertas cansado o con dolor de cabeza, o tu pareja nota ahogos nocturnos, conviene una evaluación. No todos los ronquidos son apnea, pero muchos casos leves se diagnostican tarde.",
     },
     {
-      question: "¿Qué estudios pedís con más frecuencia?",
+      question: "¿Qué estudios pides con más frecuencia?",
       answer:
-        "Según el motivo de consulta: endoscopia nasal, polisomnografía o estudios del sueño, audiometría y, en algunos casos, monitoreo con wearables. Te explico para qué sirve cada uno antes de pedirlo.",
+        "Según el motivo de consulta: endoscopia nasal, polisomnografía o estudios del sueño, audiometría y, en algunos casos, monitoreo con wearables. Te explico para qué sirve cada uno antes de solicitarlo.",
     },
     {
-      question: "¿Atendés niños?",
+      question: "¿Atiendes niños?",
       answer:
         "Sí. Veo respiración bucal, adenoides, amígdalas, otitis a repetición y problemas de oído, nariz y garganta en pediatría. El plan se arma con la familia, con lenguaje claro.",
     },
@@ -84,12 +68,12 @@ export const siteData = {
     {
       question: "¿Cómo es la recuperación de una cirugía nasal?",
       answer:
-        "Es escalonada. Los primeros días: reposo relativo y cuidados locales. En general, entre 5 y 10 días muchas personas retoman trabajo de escritorio. Deporte intenso: suele esperar algunas semanas. El ritmo exacto lo vemos en el control.",
+        "Es escalonada. Los primeros días: reposo relativo y cuidados locales. En general, entre 5 y 10 días muchas personas retoman trabajo de oficina. Deporte intenso: suele esperar algunas semanas. El ritmo exacto lo vemos en el control.",
     },
     {
-      question: "¿Dónde atendés y cómo saco turno?",
+      question: "¿Dónde atiendes y cómo agendo una cita?",
       answer:
-        "Miércoles y jueves en CEMIC (Av. Las Heras 2900) y también en Hospital Británico. Podés escribirme por WhatsApp o completar el formulario: te respondo por el mismo canal.",
+        "Miércoles y jueves en CEMIC (Av. Las Heras 2900) y también en Hospital Británico. Puedes escribirme por WhatsApp o completar el formulario: te respondo por el mismo canal.",
     },
   ] as const,
   contact: {
@@ -99,7 +83,7 @@ export const siteData = {
     /** Solo dígitos, formato que exige wa.me. */
     whatsappNumber: "5491164144515",
     whatsappUrl:
-      "https://wa.me/5491164144515?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20con%20la%20Dra.%20Armijos.",
+      "https://wa.me/5491164144515?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita%20con%20la%20Dra.%20Armijos.",
   },
   social: {
     instagram: "https://instagram.com/dra.karmijos",

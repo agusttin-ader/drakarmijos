@@ -29,16 +29,13 @@ npm start
 ## Estructura
 
 - `app/` — layout, página principal, estilos globales
-- `components/sections/` — secciones del homepage (Hero, About, Booking, etc.)
-- `components/ui/` — componentes reutilizables
+- `components/sections/` — secciones del homepage
+- `components/ui/` — componentes reutilizables (`SiteImage`, `SitePhoto`, etc.)
 - `lib/site-data.ts` — datos del consultorio, contacto y copy compartido
-- `public/images/` — logo, íconos de highlights e imágenes del sitio
-- `scripts/` — utilidades de assets (ver más abajo)
+- `public/images/` — logo, highlights e imágenes clínicas
+- `scripts/` — generación de assets de marca y optimización de fotos
 
 ## Assets de marca
-
-El logo, los favicons y la variante con firma se generan desde el manual de marca
-en PDF. Para regenerarlos:
 
 ```bash
 python3 -m venv .venv-tools
@@ -46,19 +43,23 @@ python3 -m venv .venv-tools
 .venv-tools/bin/python scripts/build-brand-assets.py "ruta/al/MANUAL DE LOGO.pdf"
 ```
 
-Salida: `logo.png` (emblema turquesa), `logo-white.png` (negativo para el footer),
-`logo-completo.png` (emblema + firma), `app/icon.png` y `app/apple-icon.png`.
+Salida: `logo.png`, `logo-white.png`, `logo-completo.png`, `app/icon.png`, `app/apple-icon.png`.
 
-Paleta oficial: turquesa Pantone 318 C (`#98D6D5`, token `brand-aqua`) y gris
-Pantone 444 C. El turquesa es demasiado claro para texto o botones, así que los
-elementos interactivos usan `primary` (`#0F5C5C`).
+Paleta: turquesa Pantone 318 C (`brand-aqua` `#98D6D5`) y gris Pantone 444 C.
+CTAs usan `primary` (`#0F5C5C`). Tipografía web: Source Sans 3 + Pinyon Script (firma / nombre).
 
-Tipografía (equivalentes web del manual): **Source Sans 3** (Humnst Lt BT) y
-**Great Vibes** (Kaufmann BT) para la firma / nombre.
+## Imágenes
+
+`images.unoptimized: true` — sin Image Optimization de Vercel. Fotos estáticas en `/public`.
+
+```bash
+.venv-tools/bin/python scripts/optimize-site-images.py
+```
+
+Usar `SiteImage` / `SitePhoto` en componentes.
 
 ## Pendientes de contenido
 
-- Testimonios con nombres ficticios (ver disclaimer en `Testimonials.tsx`).
-- Falta un retrato profesional de rostro; "Sobre mí" usa una foto de quirófano.
-- Matrícula (`siteData.doctor.license`) y email cargados pero todavía sin mostrar.
-- Sin aviso de privacidad ni consentimiento para los datos del formulario.
+- Testimonios con nombres ficticios (disclaimer en `Testimonials.tsx`)
+- Retrato profesional de rostro (hoy hay fotos de quirófano)
+- Aviso de privacidad / consentimiento del formulario

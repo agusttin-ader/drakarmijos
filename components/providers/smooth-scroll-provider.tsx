@@ -34,6 +34,22 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    // Sin Lenis (reduced motion): igual forzar inicio al cargar.
+    if (window.location.hash) {
+      history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}`,
+      );
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -48,6 +64,20 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       wheelMultiplier: 0.9,
       anchors: true,
     });
+
+    // Al refrescar / entrar: siempre arriba, sin restaurar scroll ni anclas.
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    if (window.location.hash) {
+      history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}`,
+      );
+    }
+    window.scrollTo(0, 0);
+    instance.scrollTo(0, { immediate: true });
 
     ScrollTrigger.scrollerProxy(document.documentElement, {
       scrollTop(value) {

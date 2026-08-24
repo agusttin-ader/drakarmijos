@@ -25,7 +25,7 @@ const specialties: Specialty[] = [
   {
     highlight: "orl",
     index: "01",
-    title: "Respirá Mejor",
+    title: "Respira Mejor",
     focus: "Rinología · oído, nariz y garganta",
     description:
       "Desviación de tabique, sinusitis, alergias, pérdida de olfato o respiración bucal en niños. Evaluación endoscópica y plan médico o quirúrgico según cada caso.",
@@ -33,10 +33,10 @@ const specialties: Specialty[] = [
   {
     highlight: "dormirBien",
     index: "02",
-    title: "Dormí Mejor",
+    title: "Duerme Mejor",
     focus: "Ronquidos · apnea · bruxismo nocturno",
     description:
-      "Estudio del sueño, CPAP, cirugía de vías aéreas superiores y la relación entre bruxismo, pausas respiratorias y fatiga diurna. Si no respirás bien, no dormís bien.",
+      "Estudio del sueño, CPAP, cirugía de vías aéreas superiores y la relación entre bruxismo, pausas respiratorias y fatiga diurna. Si no respiras bien, no duermes bien.",
   },
   {
     highlight: "orl",
@@ -70,12 +70,11 @@ export function Specialties() {
     <section
       id="specialties"
       aria-labelledby="specialties-heading"
-      className="scroll-anchor border-t border-primary/8 bg-background-alt/50 section-y"
+      className="scroll-anchor section-divider bg-background-alt/50 section-y"
     >
       <Container>
         <SectionHeading
           id="specialties-heading"
-          variant="editorial"
           eyebrow="Especialidades"
           title="Qué veo en consulta."
           subheading="Problemas de respiración nasal, ronquidos, apnea y cirugía nasal. Te explico opciones, tiempos y límites con claridad."
@@ -87,7 +86,7 @@ export function Specialties() {
           initial={shouldReduceMotion ? false : "hidden"}
           whileInView={shouldReduceMotion ? undefined : "visible"}
           viewport={viewportOnce}
-          className="divide-y divide-primary/10 border-y border-primary/10"
+          className="editorial-list overflow-hidden rounded-brand bg-background/70 shadow-card"
         >
           {specialties.map(({ highlight, index, title, focus, description }) => (
             <motion.li
@@ -97,36 +96,34 @@ export function Specialties() {
             >
               <article
                 className={cn(
-                  "grid gap-6 py-10 sm:grid-cols-[auto_1fr_auto] sm:items-start sm:gap-8 sm:py-12 lg:gap-12 lg:py-14",
+                  "grid gap-5 px-4 py-9 transition-colors duration-300 sm:grid-cols-[auto_1fr_auto] sm:items-start sm:gap-8 sm:px-6 sm:py-11 lg:gap-12 lg:px-8 lg:py-12",
+                  "hover:bg-background-alt/80",
                 )}
               >
-                <p
-                  aria-hidden
-                  className="font-display text-3xl font-light leading-none text-brand-aqua sm:text-4xl"
-                >
+                <p aria-hidden className="index-number sm:pt-0.5">
                   {index}
                 </p>
 
                 <div className="min-w-0">
-                  <p className="text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-text-secondary">
-                    {focus}
-                  </p>
+                  <p className="eyebrow tracking-[0.18em]">{focus}</p>
                   <h3
                     id={`specialty-${title.replace(/\s+/g, "-").toLowerCase()}`}
                     className="mt-2 font-display text-2xl font-light tracking-tight text-text-primary sm:text-[1.65rem]"
                   >
                     {title}
                   </h3>
-                  <p className="mt-3 max-w-prose text-base leading-relaxed text-text-secondary">
+                  <p className="prose-measure mt-3 text-base leading-relaxed text-text-secondary">
                     {description}
                   </p>
                 </div>
 
                 <div
                   aria-hidden
-                  className="hidden shrink-0 opacity-90 sm:block lg:pt-1"
+                  className="flex shrink-0 items-start opacity-90 sm:pt-1"
                 >
-                  <HighlightBadge variant={highlight} size="sm" />
+                  <div className="rounded-full bg-background-alt/80 p-2 ring-1 ring-primary/8">
+                    <HighlightBadge variant={highlight} className="size-10 sm:size-12" />
+                  </div>
                 </div>
               </article>
             </motion.li>

@@ -33,13 +33,13 @@ type ButtonAsLink = ButtonBaseProps &
 type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const baseStyles =
-  "relative inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
+  "relative inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "rounded-[1.625rem_0.375rem_1.625rem_0.375rem] bg-primary pl-7 text-white hover:bg-primary/92 before:absolute before:left-3 before:top-1/2 before:h-[42%] before:w-px before:-translate-y-1/2 before:bg-brand-aqua/90",
+    "rounded-pill bg-primary pl-7 text-white shadow-soft hover:bg-primary/92 hover:shadow-card active:bg-primary/88 before:absolute before:left-3 before:top-1/2 before:h-[42%] before:w-px before:-translate-y-1/2 before:bg-brand-aqua/90",
   outline:
-    "rounded-[1.625rem_0.375rem_1.625rem_0.375rem] border border-primary/30 bg-transparent text-primary hover:border-primary/50 hover:bg-primary/[0.03]",
+    "rounded-pill border border-primary/25 bg-background/80 text-primary shadow-card hover:border-primary/45 hover:bg-primary/[0.04] hover:shadow-soft active:bg-primary/[0.06]",
 };
 
 const MAGNETIC_STRENGTH = 0.14;

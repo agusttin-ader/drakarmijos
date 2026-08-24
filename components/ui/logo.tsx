@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { SiteImage } from "@/components/ui/site-image";
 import { cn } from "@/lib/utils";
 
 /** Emblema cuadrado extraído del manual de marca (scripts/build-brand-assets.py). */
@@ -49,7 +49,7 @@ export function Logo({
       aria-label={config.ariaLabel}
       className={cn("inline-flex shrink-0", config.linkClassName, className)}
     >
-      <Image
+      <SiteImage
         src={src}
         alt=""
         width={LOGO_WIDTH}

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SiteImage } from "@/components/ui/site-image";
 import { cn } from "@/lib/utils";
 
 type BrandWatermarkProps = {
@@ -14,14 +14,13 @@ export function BrandWatermark({ className }: BrandWatermarkProps) {
         className,
       )}
     >
-      <Image
+      <SiteImage
         src="/images/logo-white.png"
         alt=""
         width={2474}
         height={2474}
         sizes="(max-width: 768px) 420px, 680px"
         className="aspect-square h-auto w-[clamp(320px,62vw,680px)] max-w-none -translate-x-[18%] translate-y-[18%] object-contain"
-        priority={false}
       />
     </div>
   );

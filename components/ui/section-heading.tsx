@@ -6,127 +6,34 @@ type SectionHeadingProps = {
   title: string;
   subheading?: ReactNode;
   className?: string;
-  align?: "left" | "center" | "right";
   id?: string;
-  /** editorial: dash + title inline · minimal: title only · statement: large with side rule */
-  variant?: "default" | "editorial" | "minimal" | "statement";
 };
 
+/** Encabezado editorial de sección (eyebrow + título + subtítulo). */
 export function SectionHeading({
   eyebrow,
   title,
   subheading,
   className,
-  align = "left",
   id,
-  variant = "default",
 }: SectionHeadingProps) {
-  if (variant === "minimal") {
-    return (
-      <header className={cn("max-w-2xl", className)}>
-        <h2
-          id={id}
-          className="font-display text-3xl font-light leading-[1.12] tracking-tight text-text-primary sm:text-4xl lg:text-[2.65rem]"
-        >
-          {title}
-        </h2>
-        {subheading ? (
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg">
-            {subheading}
-          </p>
-        ) : null}
-      </header>
-    );
-  }
-
-  if (variant === "editorial") {
-    return (
-      <header
-        className={cn(
-          "max-w-3xl",
-          align === "center" && "mx-auto text-center",
-          className,
-        )}
-      >
-        <div
-          className={cn(
-            "flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-6",
-            align === "center" && "sm:flex-col sm:items-center",
-          )}
-        >
-          {eyebrow ? (
-            <p className="shrink-0 text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-text-secondary">
-              {eyebrow}
-            </p>
-          ) : null}
-          <div
-            className={cn(
-              "min-w-0 flex-1 border-primary/15 sm:border-t sm:pt-4",
-              align === "center" && "sm:border-t-0 sm:pt-0",
-            )}
-          >
-            <h2
-              id={id}
-              className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-light leading-[1.1] tracking-tight text-text-primary 2xl:text-[clamp(2.25rem,2.2vw,3.25rem)] 3xl:text-[3.5rem]"
-            >
-              {title}
-            </h2>
-          </div>
-        </div>
-        {subheading ? (
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-text-secondary sm:mt-6 sm:text-[1.0625rem] sm:leading-8 2xl:mt-8 2xl:max-w-3xl 2xl:text-lg 2xl:leading-8">
-            {subheading}
-          </p>
-        ) : null}
-      </header>
-    );
-  }
-
-  if (variant === "statement") {
-    return (
-      <header
-        className={cn(
-          "grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-end lg:gap-12 xl:gap-16",
-          className,
-        )}
-      >
-        <h2
-          id={id}
-          className="font-display text-[clamp(2rem,4.5vw,3rem)] font-light leading-[1.08] tracking-tight text-text-primary"
-        >
-          {title}
-        </h2>
-        {subheading ? (
-          <p className="border-l border-brand-aqua/60 pl-5 text-sm leading-relaxed text-text-secondary sm:text-base sm:leading-7 lg:mb-1">
-            {subheading}
-          </p>
-        ) : null}
-      </header>
-    );
-  }
-
   return (
-    <header
-      className={cn(
-        "max-w-2xl",
-        align === "center" && "mx-auto text-center",
-        align === "right" && "ml-auto text-right",
-        className,
-      )}
-    >
-      {eyebrow ? (
-        <p className="mb-3 text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-text-secondary">
-          {eyebrow}
-        </p>
-      ) : null}
-      <h2
-        id={id}
-        className="font-display text-3xl font-light leading-[1.15] tracking-tight text-text-primary sm:text-4xl lg:text-[2.75rem]"
-      >
-        {title}
-      </h2>
+    <header className={cn("max-w-3xl", className)}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-6">
+        {eyebrow ? (
+          <p className="eyebrow shrink-0">{eyebrow}</p>
+        ) : null}
+        <div className="min-w-0 flex-1 border-primary/15 sm:border-t sm:pt-4">
+          <h2
+            id={id}
+            className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-light leading-[1.1] tracking-tight text-text-primary 2xl:text-[clamp(2.25rem,2.2vw,3.25rem)] 3xl:text-[3.5rem]"
+          >
+            {title}
+          </h2>
+        </div>
+      </div>
       {subheading ? (
-        <p className="mt-4 text-base leading-relaxed text-text-secondary sm:text-lg">
+        <p className="prose-measure mt-5 text-base leading-relaxed text-text-secondary sm:mt-6 sm:text-[1.0625rem] sm:leading-8 2xl:mt-8 2xl:text-lg 2xl:leading-8">
           {subheading}
         </p>
       ) : null}

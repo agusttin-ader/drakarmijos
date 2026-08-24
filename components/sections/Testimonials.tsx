@@ -67,7 +67,7 @@ function StarRating({
             "size-4 sm:size-[1.125rem]",
             index < rating
               ? "fill-accent-gold text-accent-gold"
-              : "fill-transparent text-primary/12",
+              : "fill-transparent text-primary/25",
           )}
           strokeWidth={1.25}
           aria-hidden
@@ -114,11 +114,11 @@ export function Testimonials() {
     <section
       id="testimonials"
       aria-labelledby="testimonials-heading"
-      className="scroll-anchor border-t border-primary/8 bg-background-alt/35 section-y"
+      className="scroll-anchor section-divider bg-background-alt/35 section-y"
     >
       <Container>
         <div
-          className="grid gap-10 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,1fr)] lg:gap-16 xl:gap-20"
+          className="grid gap-8 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,1fr)] lg:gap-16 xl:gap-20"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onFocusCapture={() => setIsPaused(true)}
@@ -128,12 +128,9 @@ export function Testimonials() {
             }
           }}
         >
-          {/* Columna izquierda — meta de la reseña */}
-          <div className="flex flex-col justify-between gap-10 border-l-2 border-brand-aqua/70 pl-6 sm:pl-8 lg:min-h-[320px]">
+          <div className="surface-panel flex flex-col justify-between gap-10 border-l-4 border-l-brand-aqua p-6 sm:p-8 lg:min-h-[340px]">
             <div>
-              <p className="text-[0.6875rem] font-medium uppercase tracking-[0.24em] text-text-secondary">
-                Opiniones
-              </p>
+              <p className="eyebrow tracking-[0.24em]">Opiniones</p>
               <h2
                 id="testimonials-heading"
                 className="mt-3 font-display text-[clamp(1.65rem,3vw,2.25rem)] font-light leading-[1.12] tracking-tight text-text-primary"
@@ -171,12 +168,12 @@ export function Testimonials() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={goToPrev}
                 aria-label="Testimonio anterior"
-                className="inline-flex size-9 items-center justify-center rounded-[0.625rem_0.125rem_0.625rem_0.125rem] text-text-secondary transition-colors hover:bg-background hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                className="inline-flex size-10 items-center justify-center rounded-control border border-primary/12 bg-background text-text-secondary shadow-card transition-all duration-300 hover:border-primary/25 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 <ChevronLeft className="size-4 stroke-[1.5]" aria-hidden />
               </button>
@@ -195,10 +192,10 @@ export function Testimonials() {
                     aria-label={`Ver testimonio de ${item.name}`}
                     onClick={() => goTo(index)}
                     className={cn(
-                      "h-px flex-1 transition-colors duration-300 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                      "h-1 flex-1 rounded-full transition-all duration-300 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                       activeIndex === index
                         ? "bg-brand-aqua"
-                        : "bg-primary/15 hover:bg-primary/30",
+                        : "bg-primary/12 hover:bg-primary/25",
                     )}
                   />
                 ))}
@@ -208,51 +205,52 @@ export function Testimonials() {
                 type="button"
                 onClick={goToNext}
                 aria-label="Testimonio siguiente"
-                className="inline-flex size-9 items-center justify-center rounded-[0.625rem_0.125rem_0.625rem_0.125rem] text-text-secondary transition-colors hover:bg-background hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                className="inline-flex size-10 items-center justify-center rounded-control border border-primary/12 bg-background text-text-secondary shadow-card transition-all duration-300 hover:border-primary/25 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 <ChevronRight className="size-4 stroke-[1.5]" aria-hidden />
               </button>
             </div>
           </div>
 
-          {/* Columna derecha — cita */}
           <div
             aria-live="polite"
             aria-atomic="true"
             aria-roledescription="carousel"
             className="relative flex items-center lg:py-4"
           >
-            <p
-              aria-hidden
-              className="pointer-events-none absolute -left-1 top-0 font-display text-[5.5rem] leading-none text-primary/[0.06] sm:text-[7rem] lg:-left-4"
-            >
-              &ldquo;
-            </p>
-
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.figure
-                key={activeIndex}
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
-                transition={slideTransition}
-                className="relative"
+            <div className="surface-panel relative w-full p-6 sm:p-8 lg:p-10">
+              <p
+                aria-hidden
+                className="pointer-events-none absolute -left-1 top-4 font-display text-[5rem] leading-none text-primary/[0.06] sm:text-[6.5rem] lg:left-2 lg:top-6 lg:text-[7rem]"
               >
-                <blockquote>
-                  <p className="font-display text-[clamp(1.35rem,2.6vw,2rem)] font-light leading-[1.5] text-text-primary lg:leading-[1.45]">
-                    “{active.quote}”
-                  </p>
-                </blockquote>
+                &ldquo;
+              </p>
 
-                <figcaption className="sr-only">
-                  {active.name}, {active.context}
-                </figcaption>
-              </motion.figure>
-            </AnimatePresence>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.figure
+                  key={activeIndex}
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
+                  transition={slideTransition}
+                  className="relative"
+                >
+                  <blockquote>
+                    <p className="prose-measure font-display text-[clamp(1.35rem,2.6vw,2rem)] font-light leading-[1.5] text-text-primary lg:leading-[1.45]">
+                      “{active.quote}”
+                    </p>
+                  </blockquote>
+
+                  <figcaption className="sr-only">
+                    {active.name}, {active.context}
+                  </figcaption>
+                </motion.figure>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
 
-        <p className="mt-10 text-xs leading-relaxed text-text-secondary lg:mt-12 lg:pl-8 lg:text-right">
+        <p className="mt-8 text-xs leading-relaxed text-text-secondary lg:mt-10 lg:text-right">
           Nombres ficticios · testimonios reales sujetos a autorización escrita
         </p>
       </Container>

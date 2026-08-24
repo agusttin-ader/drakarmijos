@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   FloatingInput,
@@ -11,38 +11,32 @@ import { WhatsAppIcon } from "@/components/ui/social-icons";
 import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
-export const visitReasons = [
-  { value: "respira-mejor", label: "Respirá Mejor — ORL (oído, nariz, garganta)" },
-  { value: "dormi-mejor", label: "Dormí Mejor — Ronquidos y apnea del sueño" },
+const visitReasons = [
+  { value: "respira-mejor", label: "Respira Mejor — ORL (oído, nariz, garganta)" },
+  { value: "dormi-mejor", label: "Duerme Mejor — Ronquidos y apnea del sueño" },
   { value: "alergia-sueno", label: "Alergia y respiración nasal" },
   { value: "bruxismo-sueno", label: "Bruxismo y calidad del sueño" },
   { value: "pediatria-orl", label: "Pediatría ORL — niños" },
   { value: "atencion-integral", label: "Atención Integral — Consultas ORL generales" },
 ] as const;
 
-export type BookingFormValues = {
+type BookingFormValues = {
   name: string;
   phone: string;
   reason: string;
   message: string;
-  consent: boolean;
 };
 
 type BookingFormProps = {
-  variant?: "default" | "compact";
   onSuccess?: () => void;
   className?: string;
 };
 
-export function BookingForm({
-  variant = "default",
-  onSuccess,
-  className,
-}: BookingFormProps) {
-  const isCompact = variant === "compact";
+export function BookingForm({ onSuccess, className }: BookingFormProps) {
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<BookingFormValues>({
@@ -51,7 +45,6 @@ export function BookingForm({
       phone: "",
       reason: "",
       message: "",
-      consent: false,
     },
   });
 
@@ -72,15 +65,10 @@ export function BookingForm({
       lines.push(`Mensaje: ${note}`);
     }
 
-    // Queda constancia del consentimiento en el propio mensaje.
-    lines.push("Acepto el aviso de privacidad del sitio.");
-
     const url = `https://wa.me/${siteData.contact.whatsappNumber}?text=${encodeURIComponent(
       lines.join("\n"),
     )}`;
 
-    // Si el navegador bloquea la pestaña nueva, navegamos en la actual para no
-    // perder la solicitud del paciente.
     const opened = window.open(url, "_blank", "noopener,noreferrer");
     if (!opened) {
       window.location.assign(url);
@@ -95,16 +83,16 @@ export function BookingForm({
       onSubmit={onSubmit}
       noValidate
       aria-label="Formulario de reserva de consulta"
-      className={cn(isCompact ? "space-y-3" : "space-y-5", className)}
+      className={cn("space-y-3", className)}
     >
-      <div className={cn(isCompact && "grid gap-3 sm:grid-cols-2")}>
+      <div className="grid gap-3 sm:grid-cols-2">
         <FloatingInput
           label="Nombre completo"
           autoComplete="name"
           aria-invalid={Boolean(errors.name)}
           error={errors.name?.message}
           {...register("name", {
-            required: "Ingresá tu nombre completo",
+            required: "Ingresa tu nombre completo",
             minLength: {
               value: 2,
               message: "El nombre debe tener al menos 2 caracteres",
@@ -119,32 +107,41 @@ export function BookingForm({
           aria-invalid={Boolean(errors.phone)}
           error={errors.phone?.message}
           {...register("phone", {
-            required: "Ingresá un teléfono de contacto",
+            required: "Ingresa un teléfono de contacto",
             minLength: {
               value: 8,
-              message: "Ingresá un número válido",
+              message: "Ingresa un número válido",
             },
           })}
         />
       </div>
 
-      <FloatingSelect
-        label="Motivo de consulta"
-        options={[...visitReasons]}
-        required
-        aria-invalid={Boolean(errors.reason)}
-        error={errors.reason?.message}
-        {...register("reason", {
-          required: "Seleccioná un motivo de consulta",
-        })}
+      <Controller
+        name="reason"
+        control={control}
+        rules={{ required: "Selecciona un motivo de consulta" }}
+        render={({ field, fieldState }) => (
+          <FloatingSelect
+            label="Motivo de consulta"
+            options={[...visitReasons]}
+            required
+            name={field.name}
+            value={field.value}
+            onBlur={field.onBlur}
+            ref={field.ref}
+            aria-invalid={Boolean(fieldState.error)}
+            error={fieldState.error?.message}
+            onChange={(event) => field.onChange(event.target.value)}
+          />
+        )}
       />
 
       <FloatingTextarea
         label="Mensaje (opcional)"
-        rows={isCompact ? 2 : 4}
+        rows={2}
         aria-invalid={Boolean(errors.message)}
         error={errors.message?.message}
-        className={cn(isCompact && "min-h-[4.5rem] resize-none")}
+        className="min-h-[4.5rem] resize-none"
         {...register("message")}
       />
 

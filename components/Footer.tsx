@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BrandWatermark } from "@/components/ui/brand-watermark";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
+import { SiteImage } from "@/components/ui/site-image";
 import {
   InstagramIcon,
   LinkedInIcon,
@@ -32,7 +33,7 @@ const socialLinks = [
     icon: LinkedInIcon,
   },
   {
-    label: "WhatsApp — Consultas y turnos",
+    label: "WhatsApp — Consultas y citas",
     href: siteData.contact.whatsappUrl,
     handle: siteData.contact.phone,
     icon: WhatsAppIcon,
@@ -47,28 +48,28 @@ export function Footer() {
       <BrandWatermark />
 
       <Container className="relative z-10 section-y pb-mobile-nav md:pb-16">
-        <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr_1fr] lg:gap-10">
-          <div>
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr] lg:gap-10">
+          <div className="md:col-span-2 lg:col-span-1">
             <Logo variant="footer" />
-            <p className="mt-5 font-script text-3xl text-brand-aqua sm:text-4xl">
+            <p className="mt-5 font-script text-3xl leading-[1.08] tracking-tight text-brand-aqua sm:text-4xl">
               {siteData.doctor.name}
             </p>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/75">
+            <p className="prose-measure mt-3 text-sm leading-relaxed text-white/80">
               {siteData.doctor.fullTitle}. {siteData.doctor.audience}.
             </p>
-            <p className="mt-4 text-sm text-white/65">{siteData.doctor.license}</p>
+            <p className="mt-4 text-sm tabular-nums text-white/65">
+              {siteData.doctor.license}
+            </p>
           </div>
 
-          <nav aria-label="Enlaces del sitio">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/60">
-              Navegación
-            </p>
+          <nav aria-label="Enlaces del sitio" className="lg:pt-2">
+            <p className="eyebrow text-white/55">Navegación</p>
             <ul className="mt-4 space-y-2.5">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="rounded-md text-sm text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+                    className="rounded-md text-sm text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
                   >
                     {link.label}
                   </Link>
@@ -77,10 +78,8 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/60">
-              Contacto
-            </p>
+          <div className="lg:pt-2">
+            <p className="eyebrow text-white/55">Contacto</p>
             <ul className="mt-4 space-y-3">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
@@ -92,7 +91,7 @@ export function Footer() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="inline-flex items-center gap-2.5 rounded-md text-sm text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+                      className="inline-flex items-center gap-2.5 rounded-md text-sm text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
                     >
                       <Icon className="text-brand-aqua" />
                       {social.handle}
@@ -112,11 +111,28 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-white/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-white/60">
-            © {year} {siteData.doctor.name}. Todos los derechos reservados.
+        <div className="mt-12 flex flex-col gap-4 border-t border-white/15 pt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+          <div>
+            <p className="text-xs text-white/60">
+              © {year} {siteData.doctor.name}. Todos los derechos reservados.
+            </p>
+            <p className="mt-1 text-xs text-white/50">Buenos Aires, Argentina</p>
+          </div>
+
+          <p className="inline-flex items-center gap-2.5 text-xs text-white/65 sm:shrink-0">
+            <SiteImage
+              src="/images/logo-dev/logo-dev.webp"
+              alt=""
+              width={256}
+              height={202}
+              sizes="36px"
+              className="h-7 w-auto shrink-0 object-contain drop-shadow-[0_0_1.5px_rgba(255,255,255,0.85)] sm:h-8"
+            />
+            <span>
+              Desarrollado por{" "}
+              <span className="font-medium text-white/85">Agustin Ader</span>
+            </span>
           </p>
-          <p className="text-xs text-white/50">Buenos Aires, Argentina</p>
         </div>
       </Container>
     </footer>

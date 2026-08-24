@@ -17,6 +17,7 @@ import { BookingForm } from "@/components/booking-form";
 import { Button } from "@/components/ui/button";
 import { useScrollLock } from "@/lib/hooks/use-scroll-lock";
 import { motionTransition } from "@/lib/motion";
+import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 type BookingModalContextValue = {
@@ -111,24 +112,24 @@ function BookingModalOverlay() {
               }
               transition={motionTransition}
               className={cn(
-                "pointer-events-auto relative w-full max-w-lg overflow-hidden rounded-[1.25rem_0.375rem_1.25rem_0.375rem] bg-background ring-1 ring-primary/12",
+                "pointer-events-auto relative w-full max-w-lg overflow-hidden rounded-modal bg-background shadow-elevated ring-1 ring-primary/12",
               )}
               onClick={(event) => event.stopPropagation()}
             >
               <div className="relative px-5 pb-5 pt-5 sm:px-7 sm:pb-7 sm:pt-6">
                 <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0 border-l-2 border-accent-gold/50 pl-4 pr-2 sm:pl-5">
+                  <div className="min-w-0 border-l-2 border-brand-aqua pl-4 pr-2 sm:pl-5">
                     <p className="text-[0.6875rem] font-medium uppercase tracking-[0.2em] text-text-secondary">
-                      Turno
+                      {siteData.cta.bookShort}
                     </p>
                     <h2
                       id="booking-modal-title"
                       className="mt-1 font-display text-2xl tracking-tight text-text-primary"
                     >
-                      Reservá tu consulta
+                      Reserva tu consulta
                     </h2>
                     <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">
-                      Completá el formulario y te responderé a la brevedad.
+                      Completa el formulario y te responderé a la brevedad.
                     </p>
                   </div>
 
@@ -137,7 +138,7 @@ function BookingModalOverlay() {
                     type="button"
                     onClick={close}
                     aria-label="Cerrar"
-                    className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-text-primary/70 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   >
                     <X className="size-4 stroke-[1.75]" aria-hidden />
                   </button>
@@ -151,8 +152,8 @@ function BookingModalOverlay() {
                       </p>
                       <p className="mt-2 text-sm text-text-secondary">
                         Tu mensaje ya está escrito con los datos del formulario.
-                        Enviálo desde WhatsApp y te respondo con el turno más
-                        cercano disponible.
+                        Envíalo desde WhatsApp y te respondo con la cita más
+                        cercana disponible.
                       </p>
                       <Button
                         type="button"
@@ -164,10 +165,7 @@ function BookingModalOverlay() {
                       </Button>
                     </div>
                   ) : (
-                    <BookingForm
-                      variant="compact"
-                      onSuccess={() => setIsSubmitted(true)}
-                    />
+                    <BookingForm onSuccess={() => setIsSubmitted(true)} />
                   )}
                 </div>
               </div>

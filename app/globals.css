@@ -5,7 +5,7 @@
 @theme inline {
   --font-display: var(--font-source-sans);
   --font-sans: var(--font-source-sans);
-  --font-script: var(--font-great-vibes);
+  --font-script: var(--font-pinyon-script);
 }
 
 @layer base {
@@ -64,6 +64,34 @@
 
   .scroll-anchor {
     @apply scroll-mt-24 md:scroll-mt-28 2xl:scroll-mt-32;
+  }
+
+  .eyebrow {
+    @apply text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-text-secondary;
+  }
+
+  .prose-measure {
+    @apply max-w-[65ch];
+  }
+
+  .editorial-list {
+    @apply divide-y divide-primary/10 border-y border-primary/10;
+  }
+
+  .photo-frame {
+    @apply overflow-hidden rounded-brand bg-background-muted ring-1 ring-primary/10 shadow-soft;
+  }
+
+  .surface-panel {
+    @apply rounded-brand bg-background ring-1 ring-primary/10 shadow-card;
+  }
+
+  .index-number {
+    @apply font-display text-2xl font-light leading-none text-brand-aqua sm:text-3xl;
+  }
+
+  .section-divider {
+    @apply border-t border-primary/8;
   }
 
   .hero-enter {

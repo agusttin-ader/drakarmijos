@@ -1,17 +1,18 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
 import { BookConsultButton } from "@/components/book-consult-button";
 import { Container } from "@/components/ui/container";
-import { brandSurfaceGradient } from "@/components/ui/image-placeholder";
+import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { SiteImage } from "@/components/ui/site-image";
 import {
   fadeUpVariants,
   motionTransition,
   staggerDelay,
   viewportOnce,
 } from "@/lib/motion";
+import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 const steps = [
@@ -19,7 +20,7 @@ const steps = [
     index: "01",
     title: "Escucha",
     description:
-      "Contame qué te pasa al respirar o al dormir: ronquidos, fatiga, obstrucción, otitis o lo que notaste en tus hijos. Arrancamos por tu historia, no por un protocolo genérico.",
+      "Cuéntame qué te pasa al respirar o al dormir: ronquidos, fatiga, obstrucción, otitis o lo que notaste en tus hijos. Empezamos por tu historia, no por un protocolo genérico.",
   },
   {
     index: "02",
@@ -63,14 +64,13 @@ export function ConsultationPath() {
     <section
       id="consulta"
       aria-labelledby="consulta-heading"
-      className="scroll-anchor border-t border-primary/8 section-y"
+      className="scroll-anchor section-divider section-y"
     >
       <Container>
-        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-16 xl:gap-24">
-          <div>
+        <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16 2xl:gap-20">
+          <div className="min-w-0">
             <SectionHeading
               id="consulta-heading"
-              variant="editorial"
               eyebrow="La consulta"
               title="Cómo es el camino."
               subheading="Desde la primera visita hasta el plan: sin menú genérico y con tiempo para entender cada paso."
@@ -82,25 +82,22 @@ export function ConsultationPath() {
               initial={shouldReduceMotion ? false : "hidden"}
               whileInView={shouldReduceMotion ? undefined : "visible"}
               viewport={viewportOnce}
-              className="divide-y divide-primary/10 border-y border-primary/10"
+              className="editorial-list overflow-hidden rounded-brand bg-background/60 shadow-card"
             >
               {steps.map(({ index, title, description }) => (
                 <motion.li
                   key={title}
                   variants={shouldReduceMotion ? undefined : itemVariants}
-                  className="grid list-none gap-3 py-7 sm:grid-cols-[auto_1fr] sm:gap-6 sm:py-8"
+                  className="relative grid list-none gap-3 px-4 py-7 transition-colors duration-300 hover:bg-background-alt/70 sm:grid-cols-[auto_1fr] sm:gap-6 sm:px-6 sm:py-8"
                 >
-                  <p
-                    aria-hidden
-                    className="font-display text-2xl font-light leading-none text-brand-aqua sm:pt-0.5"
-                  >
+                  <p aria-hidden className="index-number sm:pt-0.5">
                     {index}
                   </p>
                   <div>
                     <h3 className="font-display text-xl font-light tracking-tight text-text-primary sm:text-[1.35rem]">
                       {title}
                     </h3>
-                    <p className="mt-2 max-w-prose text-base leading-relaxed text-text-secondary">
+                    <p className="prose-measure mt-2 text-base leading-relaxed text-text-secondary">
                       {description}
                     </p>
                   </div>
@@ -109,30 +106,26 @@ export function ConsultationPath() {
             </motion.ol>
 
             <div className="mt-10">
-              <BookConsultButton variant="primary">Pedir turno</BookConsultButton>
+              <BookConsultButton variant="primary">{siteData.cta.book}</BookConsultButton>
             </div>
           </div>
 
-          <figure
+          <PhotoFrame
+            caption="Evaluación endoscópica · plan a medida"
             className={cn(
-              "relative mx-auto w-full max-w-md overflow-hidden rounded-[0.5rem_1.75rem_0.5rem_1.75rem] ring-1 ring-primary/10 lg:mx-0 lg:max-w-none lg:sticky lg:top-28",
-              brandSurfaceGradient,
+              "mx-auto w-full min-w-0 max-w-md lg:mx-0 lg:max-w-full lg:sticky lg:top-28",
             )}
           >
-            <div className="relative aspect-[4/5] w-full">
-              <Image
+            <div className="relative aspect-[3/4] w-full">
+              <SiteImage
                 src="/images/fotos-qx/quirofano-procedimiento.jpg"
                 alt="La Dra. Armijos durante una evaluación endoscópica en quirófano"
                 fill
-                quality={90}
-                sizes="(max-width: 1023px) min(90vw, 28rem), 520px"
-                className="object-cover object-[42%_center]"
+                sizes="(max-width: 1023px) min(92vw, 28rem), min(40vw, 520px)"
+                className="object-cover object-[center_15%]"
               />
             </div>
-            <figcaption className="border-t border-primary/8 bg-background/90 px-5 py-4 text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-text-secondary backdrop-blur-sm sm:px-6">
-              Evaluación endoscópica · plan a medida
-            </figcaption>
-          </figure>
+          </PhotoFrame>
         </div>
       </Container>
     </section>

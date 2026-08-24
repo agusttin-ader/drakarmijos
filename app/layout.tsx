@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Great_Vibes, Source_Sans_3 } from "next/font/google";
+import { Pinyon_Script, Source_Sans_3 } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
 import { Navbar } from "@/components/Navbar";
@@ -20,8 +20,8 @@ const sourceSans = Source_Sans_3({
 });
 
 /** Equivalente web a Kaufmann BT — firma / nombre. */
-const greatVibes = Great_Vibes({
-  variable: "--font-great-vibes",
+const pinyonScript = Pinyon_Script({
+  variable: "--font-pinyon-script",
   weight: "400",
   subsets: ["latin"],
   display: "swap",
@@ -53,8 +53,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="es"
-      className={`${sourceSans.variable} ${greatVibes.variable} lenis lenis-smooth h-full`}
+      lang="es-EC"
+      className={`${sourceSans.variable} ${pinyonScript.variable} lenis lenis-smooth h-full`}
     >
       <body className="flex min-h-full flex-col">
         <SmoothScrollProvider>

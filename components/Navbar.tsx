@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
 import { useScrollLock } from "@/lib/hooks/use-scroll-lock";
+import { useActiveSection } from "@/lib/hooks/use-active-section";
 import { motionTransition } from "@/lib/motion";
 import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -27,7 +28,17 @@ const navLinks = [
 
 const HIDE_SCROLL_THRESHOLD = 48;
 
+const TRACKED_SECTIONS = [
+  "about",
+  "specialties",
+  "consulta",
+  "testimonials",
+  "faq",
+  "booking",
+] as const;
+
 export function Navbar() {
+  const activeSection = useActiveSection(TRACKED_SECTIONS);
   const { lenis } = useScrollContext();
   const { open: openBooking } = useBookingModal();
   const shouldReduceMotion = useReducedMotion();
@@ -138,8 +149,8 @@ export function Navbar() {
         <div
           aria-hidden
           className={cn(
-            "absolute inset-0 bg-background/90 backdrop-blur-md transition-opacity duration-500 ease-out motion-reduce:transition-none",
-            onDarkChrome ? "opacity-0" : "opacity-100",
+            "absolute inset-0 bg-background/92 backdrop-blur-md transition-[opacity,box-shadow] duration-500 ease-out motion-reduce:transition-none",
+            onDarkChrome ? "opacity-0 shadow-none" : "opacity-100 shadow-nav",
           )}
         />
         <div
@@ -166,7 +177,7 @@ export function Navbar() {
             >
               <span
                 className={cn(
-                  "block truncate font-script text-[1.35rem] leading-none tracking-normal sm:text-[1.5rem] 2xl:text-[1.65rem]",
+                  "block truncate font-script text-[1.35rem] leading-[1.08] tracking-tight sm:text-[1.5rem] 2xl:text-[1.65rem]",
                   onDarkChrome ? "text-white" : "text-text-primary",
                 )}
               >
@@ -175,7 +186,7 @@ export function Navbar() {
               <span
                 className={cn(
                   "mt-1 hidden truncate text-[0.625rem] font-medium uppercase tracking-[0.16em] sm:block lg:text-[0.6875rem]",
-                  onDarkChrome ? "text-white/70" : "text-text-secondary/80",
+                  onDarkChrome ? "text-white/80" : "text-text-secondary",
                 )}
               >
                 {siteData.doctor.title}
@@ -187,20 +198,34 @@ export function Navbar() {
             aria-label="Principal"
             className="hidden items-center gap-3.5 lg:flex xl:gap-6 2xl:gap-8"
           >
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "rounded-md text-sm transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 2xl:text-[0.9375rem]",
-                  onDarkChrome
-                    ? "text-white/80 hover:text-white focus-visible:ring-brand-aqua focus-visible:ring-offset-transparent"
-                    : "text-text-secondary hover:text-primary focus-visible:ring-primary focus-visible:ring-offset-background",
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const sectionId = link.href.replace("#", "");
+              const isActive = !onDarkChrome && activeSection === sectionId;
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? "true" : undefined}
+                  className={cn(
+                    "relative rounded-md px-1 py-1 text-sm transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 2xl:text-[0.9375rem]",
+                    onDarkChrome
+                      ? "text-white/80 hover:text-white focus-visible:ring-brand-aqua focus-visible:ring-offset-transparent"
+                      : isActive
+                        ? "font-medium text-primary focus-visible:ring-primary focus-visible:ring-offset-background"
+                        : "text-text-secondary hover:text-primary focus-visible:ring-primary focus-visible:ring-offset-background",
+                  )}
+                >
+                  {link.label}
+                  {isActive ? (
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-1 -bottom-1 h-px bg-brand-aqua"
+                    />
+                  ) : null}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-3">
@@ -217,14 +242,14 @@ export function Navbar() {
             </a>
             <BookConsultButton
               variant="primary"
-              aria-label="Pedir turno"
+              aria-label={siteData.cta.book}
               className={cn(
                 "hidden px-4 py-2.5 text-xs sm:inline-flex sm:px-5 sm:text-sm",
                 onDarkChrome &&
                   "bg-brand-aqua text-primary before:bg-primary/35 hover:bg-brand-aqua/90",
               )}
             >
-              Pedir turno
+              {siteData.cta.book}
             </BookConsultButton>
 
             <button
@@ -256,33 +281,57 @@ export function Navbar() {
         ? createPortal(
             <AnimatePresence>
               {isMenuOpen ? (
-                <motion.div
+                <>
+                  <motion.button
+                    type="button"
+                    aria-label="Cerrar menú"
+                    initial={shouldReduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={shouldReduceMotion ? undefined : { opacity: 0 }}
+                    transition={
+                      shouldReduceMotion ? { duration: 0 } : motionTransition
+                    }
+                    className="fixed inset-0 z-40 bg-primary-deep/40 backdrop-blur-[2px] lg:hidden"
+                    onClick={closeMenu}
+                  />
+                  <motion.div
                   id={menuId}
                   role="dialog"
                   aria-modal="true"
                   aria-label="Menú de navegación"
-                  initial={shouldReduceMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={shouldReduceMotion ? undefined : { opacity: 0 }}
+                  initial={shouldReduceMotion ? false : { opacity: 0, x: "100%" }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={shouldReduceMotion ? undefined : { opacity: 0, x: "100%" }}
                   transition={
                     shouldReduceMotion ? { duration: 0 } : motionTransition
                   }
-                  className="fixed inset-0 z-40 bg-background lg:hidden"
+                  className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-primary/10 bg-background shadow-elevated lg:hidden"
                 >
-                  <div className="flex h-full flex-col px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6">
+                  <div className="flex h-full flex-col px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6">
                     <nav aria-label="Menú móvil" className="flex-1 overflow-y-auto">
-                      <ul className="divide-y divide-primary/10 border-y border-primary/10">
-                        {navLinks.map((link) => (
-                          <li key={link.href}>
-                            <Link
-                              href={link.href}
-                              onClick={closeMenu}
-                              className="block py-4 font-display text-xl font-light text-text-primary transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                            >
-                              {link.label}
-                            </Link>
-                          </li>
-                        ))}
+                      <ul className="space-y-1">
+                        {navLinks.map((link) => {
+                          const sectionId = link.href.replace("#", "");
+                          const isActive = activeSection === sectionId;
+
+                          return (
+                            <li key={link.href}>
+                              <Link
+                                href={link.href}
+                                onClick={closeMenu}
+                                aria-current={isActive ? "true" : undefined}
+                                className={cn(
+                                  "block rounded-brand px-4 py-3.5 font-display text-lg font-light transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                                  isActive
+                                    ? "bg-primary/5 text-primary"
+                                    : "text-text-primary hover:bg-background-alt hover:text-primary",
+                                )}
+                              >
+                                {link.label}
+                              </Link>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </nav>
 
@@ -297,17 +346,18 @@ export function Navbar() {
                         type="button"
                         variant="primary"
                         className="w-full"
-                        aria-label="Pedir turno"
+                        aria-label={siteData.cta.book}
                         onClick={() => {
                           closeMenu();
                           openBooking();
                         }}
                       >
-                        Pedir turno
+                        {siteData.cta.book}
                       </Button>
                     </div>
                   </div>
                 </motion.div>
+                </>
               ) : null}
             </AnimatePresence>,
             document.body,

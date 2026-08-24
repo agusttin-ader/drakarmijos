@@ -1,24 +1,8 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { motionTransition, premiumEase } from "@/lib/motion";
-
-type IntroContextValue = {
-  introComplete: boolean;
-};
-
-const IntroContext = createContext<IntroContextValue>({ introComplete: false });
-
-export function useIntro() {
-  return useContext(IntroContext);
-}
 
 type IntroProviderProps = {
   children: ReactNode;
@@ -26,22 +10,19 @@ type IntroProviderProps = {
 
 const INTRO_DURATION = 0.65;
 
+/** Fade-in inicial de la página (sin estado global). */
 export function IntroProvider({ children }: IntroProviderProps) {
   const shouldReduceMotion = useReducedMotion();
-  const [introComplete, setIntroComplete] = useState(
-    shouldReduceMotion ?? false,
-  );
   const [showOverlay, setShowOverlay] = useState(!shouldReduceMotion);
 
   useEffect(() => {
     if (shouldReduceMotion) {
-      setIntroComplete(true);
       setShowOverlay(false);
     }
   }, [shouldReduceMotion]);
 
   return (
-    <IntroContext.Provider value={{ introComplete }}>
+    <>
       {showOverlay ? (
         <motion.div
           aria-hidden
@@ -54,13 +35,10 @@ export function IntroProvider({ children }: IntroProviderProps) {
             ease: premiumEase,
             delay: 0.08,
           }}
-          onAnimationComplete={() => {
-            setIntroComplete(true);
-            setShowOverlay(false);
-          }}
+          onAnimationComplete={() => setShowOverlay(false)}
         />
       ) : null}
       {children}
-    </IntroContext.Provider>
+    </>
   );
 }
