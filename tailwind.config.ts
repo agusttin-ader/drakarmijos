@@ -38,11 +38,9 @@ const config: Config = {
         nav: "0 1px 0 0 rgba(15, 92, 92, 0.06), 0 8px 24px -12px rgba(15, 92, 92, 0.1)",
       },
       fontFamily: {
-        // Humnst Lt BT → Source Sans 3 (humanista, cercana al manual).
         sans: ["var(--font-source-sans)", "sans-serif"],
         display: ["var(--font-source-sans)", "sans-serif"],
-        // Kaufmann BT → Pinyon Script (firma / nombre de marca).
-        script: ["var(--font-pinyon-script)", "cursive"],
+        brand: ["var(--font-brand)", "Georgia", "serif"],
       },
       maxWidth: {
         container: "1400px",

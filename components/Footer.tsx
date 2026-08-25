@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DoctorName } from "@/components/ui/doctor-name";
 import { BrandWatermark } from "@/components/ui/brand-watermark";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
@@ -51,9 +52,9 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr] lg:gap-10">
           <div className="md:col-span-2 lg:col-span-1">
             <Logo variant="footer" />
-            <p className="mt-5 font-script text-3xl leading-[1.08] tracking-tight text-brand-aqua sm:text-4xl">
+            <DoctorName className="mt-5 text-[clamp(1.75rem,4vw,2.25rem)] leading-[1.08] text-brand-aqua sm:text-[2.375rem]">
               {siteData.doctor.name}
-            </p>
+            </DoctorName>
             <p className="prose-measure mt-3 text-sm leading-relaxed text-white/80">
               {siteData.doctor.fullTitle}. {siteData.doctor.audience}.
             </p>

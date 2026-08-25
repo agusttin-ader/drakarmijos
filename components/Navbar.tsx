@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { DoctorName } from "@/components/ui/doctor-name";
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BookConsultButton } from "@/components/book-consult-button";
@@ -175,14 +176,15 @@ export function Navbar() {
                   : "focus-visible:ring-offset-background",
               )}
             >
-              <span
+              <DoctorName
+                as="span"
                 className={cn(
-                  "block truncate font-script text-[1.35rem] leading-[1.08] tracking-tight sm:text-[1.5rem] 2xl:text-[1.65rem]",
+                  "block truncate text-[1.3125rem] leading-[1.08] sm:text-[1.4375rem] 2xl:text-[1.5625rem]",
                   onDarkChrome ? "text-white" : "text-text-primary",
                 )}
               >
                 {siteData.doctor.shortName}
-              </span>
+              </DoctorName>
               <span
                 className={cn(
                   "mt-1 hidden truncate text-[0.625rem] font-medium uppercase tracking-[0.16em] sm:block lg:text-[0.6875rem]",

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookConsultButton } from "@/components/book-consult-button";
+import { DoctorName } from "@/components/ui/doctor-name";
 import { Container } from "@/components/ui/container";
 import { SiteImage } from "@/components/ui/site-image";
 import { siteData } from "@/lib/site-data";
@@ -39,9 +40,9 @@ export function Hero() {
             Rinología · Sueño · Buenos Aires
           </p>
 
-          <p className="mt-5 font-script text-[clamp(2.75rem,8vw,5.5rem)] leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] 2xl:text-[clamp(4rem,6vw,7rem)] 3xl:text-[7.5rem] 4xl:text-[8.5rem]">
+          <DoctorName className="mt-5 text-[clamp(2.5rem,7vw,5rem)] leading-[1.05] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] 2xl:text-[clamp(3.25rem,5.5vw,5.75rem)] 3xl:text-[6rem] 4xl:text-[6.75rem]">
             {siteData.doctor.name}
-          </p>
+          </DoctorName>
 
           <h1
             id="hero-heading"

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Pinyon_Script, Source_Sans_3 } from "next/font/google";
+import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
 import { Navbar } from "@/components/Navbar";
@@ -10,22 +10,23 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 import { siteData } from "@/lib/site-data";
 import "./globals.css";
 
-/** Equivalente web a Humnst Lt BT (manual de marca). */
+/** Cuerpo e interfaz — humanista, legible (Humnst Lt BT del manual). */
 const sourceSans = Source_Sans_3({
   variable: "--font-source-sans",
   subsets: ["latin"],
   display: "swap",
   adjustFontFallback: true,
+  preload: true,
 });
 
-/** Equivalente web a Kaufmann BT — firma / nombre (preload: evita FOUT en el hero). */
-const pinyonScript = Pinyon_Script({
-  variable: "--font-pinyon-script",
-  weight: "400",
+/** Nombre de marca — didone editorial, elegante y llamativo. */
+const cormorantGaramond = Cormorant_Garamond({
+  variable: "--font-brand",
   subsets: ["latin"],
   display: "swap",
   adjustFontFallback: true,
   preload: true,
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -54,7 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es-EC"
-      className={`${sourceSans.variable} ${pinyonScript.variable} lenis lenis-smooth h-full`}
+      className={`${sourceSans.variable} ${cormorantGaramond.variable} lenis lenis-smooth h-full`}
     >
       <body className="flex min-h-full flex-col">
         <SmoothScrollProvider>

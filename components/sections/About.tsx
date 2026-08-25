@@ -3,6 +3,7 @@
 import { useReducedMotion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { BookConsultButton } from "@/components/book-consult-button";
+import { DoctorName } from "@/components/ui/doctor-name";
 import { Container } from "@/components/ui/container";
 import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SitePhoto } from "@/components/ui/site-photo";
@@ -104,9 +105,9 @@ export function About() {
                 aria-hidden
                 className="mb-4 h-px w-16 bg-brand-aqua/80 sm:w-20"
               />
-              <p className="font-script text-[clamp(2.25rem,5vw,3.25rem)] leading-[1.08] tracking-tight text-text-primary">
+              <DoctorName className="text-[clamp(2.125rem,4.75vw,3rem)] leading-[1.08] text-text-primary">
                 {siteData.doctor.name}
-              </p>
+              </DoctorName>
               <p className="mt-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-text-secondary">
                 {siteData.doctor.title} · {siteData.doctor.license}
               </p>

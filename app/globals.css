@@ -5,7 +5,6 @@
 @theme inline {
   --font-display: var(--font-source-sans);
   --font-sans: var(--font-source-sans);
-  --font-script: var(--font-pinyon-script);
 
   /* Fondos papel/tiza cálidos — crema con más calor */
   --color-background: #f0e6d8;
