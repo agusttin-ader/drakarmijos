@@ -156,6 +156,7 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
     const listboxId = `${fieldId}-listbox`;
     const errorId = `${fieldId}-error`;
     const rootRef = useRef<HTMLDivElement>(null);
+    const listboxRef = useRef<HTMLUListElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const hiddenRef = useRef<HTMLSelectElement | null>(null);
 
@@ -168,6 +169,7 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
       top: number;
       left: number;
       width: number;
+      maxHeight: number;
     } | null>(null);
     const [internalValue, setInternalValue] = useState(
       String(defaultValue ?? value ?? ""),
@@ -198,10 +200,31 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
       if (!trigger) return;
 
       const rect = trigger.getBoundingClientRect();
+      const gap = 8;
+      const edgePadding = 16;
+      const mobileNavReserve =
+        window.matchMedia("(max-width: 767px)").matches ? 84 : 0;
+      const menuCap = 256;
+
+      const spaceBelow =
+        window.innerHeight - rect.bottom - gap - edgePadding - mobileNavReserve;
+      const spaceAbove = rect.top - gap - edgePadding;
+      const openUpward = spaceBelow < 160 && spaceAbove > spaceBelow;
+      const maxHeight = Math.max(
+        120,
+        Math.min(menuCap, openUpward ? spaceAbove : spaceBelow),
+      );
+
       setMenuRect({
-        top: rect.bottom + 8,
-        left: rect.left,
+        top: openUpward
+          ? Math.max(edgePadding, rect.top - gap - maxHeight)
+          : rect.bottom + gap,
+        left: Math.max(
+          edgePadding,
+          Math.min(rect.left, window.innerWidth - rect.width - edgePadding),
+        ),
         width: rect.width,
+        maxHeight,
       });
     }, []);
 
@@ -237,27 +260,28 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
 
       updateMenuRect();
 
-      const onPointerDown = (event: MouseEvent) => {
+      const onPointerDown = (event: PointerEvent) => {
         const target = event.target as Node;
         if (
-          !rootRef.current?.contains(target) &&
-          !(event.target as Element).closest?.(`#${listboxId}`)
+          rootRef.current?.contains(target) ||
+          listboxRef.current?.contains(target)
         ) {
-          closeMenu();
+          return;
         }
+        closeMenu();
       };
 
       const onKeyDown = (event: KeyboardEvent) => {
         if (event.key === "Escape") closeMenu();
       };
 
-      window.addEventListener("mousedown", onPointerDown);
+      window.addEventListener("pointerdown", onPointerDown);
       window.addEventListener("keydown", onKeyDown);
       window.addEventListener("resize", updateMenuRect);
       window.addEventListener("scroll", updateMenuRect, true);
 
       return () => {
-        window.removeEventListener("mousedown", onPointerDown);
+        window.removeEventListener("pointerdown", onPointerDown);
         window.removeEventListener("keydown", onKeyDown);
         window.removeEventListener("resize", updateMenuRect);
         window.removeEventListener("scroll", updateMenuRect, true);
@@ -292,18 +316,21 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
     const dropdown =
       menuMounted && menuRect && mounted ? (
         <ul
+          ref={listboxRef}
           id={listboxId}
           role="listbox"
           aria-labelledby={fieldId}
+          data-floating-select-listbox=""
           style={{
             position: "fixed",
             top: menuRect.top,
             left: menuRect.left,
             width: menuRect.width,
-            zIndex: 120,
+            maxHeight: menuRect.maxHeight,
+            zIndex: 250,
           }}
           className={cn(
-            "max-h-[min(16rem,calc(100dvh-6rem))] overflow-auto rounded-brand border border-primary/10 bg-background p-1.5 shadow-elevated ring-1 ring-primary/5 will-change-[transform,opacity]",
+            "pointer-events-auto overflow-auto rounded-brand border border-primary/10 bg-background p-1.5 shadow-elevated ring-1 ring-primary/5 will-change-[transform,opacity]",
             menuClosing ? "select-dropdown-exit" : "select-dropdown-enter",
           )}
         >
@@ -316,10 +343,10 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
                   type="button"
                   role="option"
                   aria-selected={isSelected}
-                  onMouseDown={(event) => event.preventDefault()}
+                  onPointerDown={(event) => event.preventDefault()}
                   onClick={() => commitValue(option.value)}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-field px-3.5 py-3.5 text-left transition-colors duration-200",
+                    "flex w-full touch-manipulation items-center gap-3 rounded-field px-3.5 py-3.5 text-left transition-colors duration-200",
                     "hover:bg-brand-aqua/12 focus-visible:bg-brand-aqua/12 focus-visible:outline-none",
                     isSelected && "bg-primary/[0.06] ring-1 ring-primary/10",
                   )}

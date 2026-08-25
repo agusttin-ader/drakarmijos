@@ -1,3 +1,41 @@
+const clinics = [
+  {
+    name: "CEMIC",
+    logo: "/images/institutions/cemic.svg",
+    address: "Av. Las Heras 2900, Ciudad Autónoma de Buenos Aires",
+    hours: [
+      { day: "Miércoles", time: "14:00 – 18:40 hs" },
+      { day: "Jueves", time: "15:00 – 17:40 hs" },
+    ],
+  },
+  {
+    name: "Hospital Británico",
+    logo: "/images/institutions/hospital-britanico.svg",
+    address: "Perdriel 74, Ciudad Autónoma de Buenos Aires",
+    hours: null,
+  },
+] as const;
+
+const affiliations = [
+  {
+    name: "Congreso Panamericano de ORL",
+    logo: "/images/institutions/congreso-panamericano-orl.png",
+  },
+  {
+    name: "Rino Argentina",
+    logo: "/images/institutions/rino-argentina.png",
+  },
+  {
+    name: "FASO",
+    logo: "/images/institutions/faso.png",
+  },
+] as const;
+
+const institutions = [
+  ...clinics.map(({ name, logo }) => ({ name, logo })),
+  ...affiliations,
+] as const;
+
 export const siteData = {
   doctor: {
     name: "Dra. Karla Armijos",
@@ -17,28 +55,8 @@ export const siteData = {
     book: "Agendar cita",
     bookShort: "Cita",
   },
-  clinics: [
-    {
-      name: "CEMIC",
-      address: "Av. Las Heras 2900, Ciudad Autónoma de Buenos Aires",
-      hours: [
-        { day: "Miércoles", time: "14:00 – 18:40 hs" },
-        { day: "Jueves", time: "15:00 – 17:40 hs" },
-      ],
-    },
-    {
-      name: "Hospital Británico",
-      address: "Ciudad Autónoma de Buenos Aires",
-      hours: null,
-    },
-  ] as const,
-  institutions: [
-    "CEMIC",
-    "Hospital Británico",
-    "Congreso Panamericano de ORL",
-    "Rino Argentina · FASO",
-    "Federación Argentina de Sociedades de ORL",
-  ] as const,
+  clinics,
+  institutions,
   stats: [
     { label: "Matrícula", value: "MN 156125" },
     { label: "Instituciones", value: "CEMIC · Británico" },
@@ -73,13 +91,15 @@ export const siteData = {
     {
       question: "¿Dónde atiendes y cómo agendo una cita?",
       answer:
-        "Miércoles y jueves en CEMIC (Av. Las Heras 2900) y también en Hospital Británico. Puedes escribirme por WhatsApp o completar el formulario: te respondo por el mismo canal.",
+        "Miércoles y jueves en CEMIC (Av. Las Heras 2900) y también en Hospital Británico (Perdriel 74). Puedes escribirme por WhatsApp o completar el formulario: te respondo por el mismo canal.",
     },
   ] as const,
   contact: {
     phone: "+54 9 11 6414-4515",
     phoneHref: "+5491164144515",
     email: "karla.armijos@outlook.com",
+    /** Tiempo estimado de respuesta para el formulario / WhatsApp. */
+    responseTime: "24–48 hs hábiles",
     /** Solo dígitos, formato que exige wa.me. */
     whatsappNumber: "5491164144515",
     whatsappUrl:

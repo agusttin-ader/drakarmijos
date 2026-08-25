@@ -1,9 +1,8 @@
 import { SiteImage } from "@/components/ui/site-image";
 import { cn } from "@/lib/utils";
 
-/** Fondo suave mientras carga la foto. */
-export const brandSurfaceGradient =
-  "bg-[linear-gradient(145deg,#F3F7F7_0%,#FBFCFC_55%,#E8F0F0_100%)]";
+const brandSurfaceGradient =
+  "bg-[linear-gradient(145deg,#E8E0D4_0%,#F0E6D8_55%,#D9CCB8_100%)]";
 
 type SitePhotoProps = {
   src: string;

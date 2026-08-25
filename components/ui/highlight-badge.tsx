@@ -1,37 +1,26 @@
-import { SiteImage } from "@/components/ui/site-image";
+import { Moon, Wind, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const highlightAssets = {
-  orl: {
-    src: "/images/highlights/orl.png",
-    alt: "Otorrinolaringología — oído, nariz y garganta",
-  },
-  dormirBien: {
-    src: "/images/highlights/dormir-bien.png",
-    alt: "Dormir bien",
-  },
-} as const;
+const highlightIcons = {
+  orl: Wind,
+  dormirBien: Moon,
+} as const satisfies Record<string, LucideIcon>;
 
-export type HighlightVariant = keyof typeof highlightAssets;
-
-const HIGHLIGHT_SIZE = 512;
+export type HighlightVariant = keyof typeof highlightIcons;
 
 type HighlightBadgeProps = {
   variant: HighlightVariant;
   className?: string;
 };
 
+/** Icono de área (sin PNG externos — menos peso y cero roturas). */
 export function HighlightBadge({ variant, className }: HighlightBadgeProps) {
-  const asset = highlightAssets[variant];
+  const Icon = highlightIcons[variant];
 
   return (
-    <SiteImage
-      src={asset.src}
-      alt={asset.alt}
-      width={HIGHLIGHT_SIZE}
-      height={HIGHLIGHT_SIZE}
-      sizes="48px"
-      className={cn("size-12 object-contain", className)}
+    <Icon
+      aria-hidden
+      className={cn("size-10 stroke-[1.5] text-primary sm:size-12", className)}
     />
   );
 }

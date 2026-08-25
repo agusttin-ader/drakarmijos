@@ -1,11 +1,12 @@
-"use client";
-
-import { MapPin, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import { BookConsultButton } from "@/components/book-consult-button";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { InstitutionLogoImage } from "@/components/ui/institution-logo-image";
 import { WhatsAppIcon } from "@/components/ui/social-icons";
+import { institutionLogoClass } from "@/lib/institution-logos";
 import { siteData } from "@/lib/site-data";
+import { cn } from "@/lib/utils";
 
 export function Booking() {
   return (
@@ -26,8 +27,8 @@ export function Booking() {
             </h2>
             <p className="prose-measure mt-4 text-base leading-relaxed text-text-secondary">
               Miércoles y jueves en CEMIC (Las Heras 2900). También atención en
-              Hospital Británico. WhatsApp o formulario: te respondo por el
-              mismo canal.
+              Hospital Británico (Perdriel 74). WhatsApp o formulario: te respondo
+              por el mismo canal.
             </p>
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -58,35 +59,36 @@ export function Booking() {
                   key={clinic.name}
                   className="border-b border-primary/10 px-5 py-6 last:border-b-0 sm:px-6"
                 >
-                  <div className="flex gap-4">
-                    <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/5 text-primary">
-                      <MapPin className="size-4 stroke-[1.75]" aria-hidden />
-                    </span>
-                    <div>
-                      <p className="font-display text-lg font-light text-text-primary">
-                        {clinic.name}
-                      </p>
-                      <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-                        {clinic.address}
-                      </p>
-                      {clinic.hours ? (
-                        <ul className="mt-3 space-y-1.5">
-                          {clinic.hours.map(({ day, time }) => (
-                            <li
-                              key={day}
-                              className="text-sm tabular-nums text-text-secondary"
-                            >
-                              <span className="font-medium text-text-primary">
-                                {day}
-                              </span>
-                              {" · "}
-                              {time}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </div>
-                  </div>
+                  <InstitutionLogoImage
+                    src={clinic.logo}
+                    alt={clinic.name}
+                    width={180}
+                    height={56}
+                    originClass="origin-left"
+                    className={cn(
+                      "w-auto object-left",
+                      institutionLogoClass(clinic.name, "clinic", "h-9"),
+                    )}
+                  />
+                  <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+                    {clinic.address}
+                  </p>
+                  {clinic.hours ? (
+                    <ul className="mt-3 space-y-1.5">
+                      {clinic.hours.map(({ day, time }) => (
+                        <li
+                          key={day}
+                          className="text-sm tabular-nums text-text-secondary"
+                        >
+                          <span className="font-medium text-text-primary">
+                            {day}
+                          </span>
+                          {" · "}
+                          {time}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </li>
               ))}
 

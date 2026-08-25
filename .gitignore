@@ -30,6 +30,11 @@
 # entorno python de los scripts de assets
 /.venv-tools/
 
+# backups de compresión — no deployar
+*.original.jpg
+*.original.png
+*.original.webp
+
 # debug
 npm-debug.log*
 yarn-debug.log*

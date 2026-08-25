@@ -23,8 +23,9 @@ export function SiteImage({
       {...props}
       alt={alt}
       unoptimized
-      decoding={decoding}
+      decoding={priority ? "sync" : decoding}
       loading={priority ? undefined : (loading ?? "lazy")}
+      fetchPriority={priority ? "high" : undefined}
     />
   );
 }

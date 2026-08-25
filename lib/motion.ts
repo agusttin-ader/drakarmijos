@@ -22,3 +22,23 @@ export const motionTransition = {
   duration: motionDuration,
   ease: premiumEase,
 } as const;
+
+/** Hover de logos institucionales — spring lento, sin rebote. */
+export const institutionLogoHoverTransition = {
+  type: "spring",
+  stiffness: 38,
+  damping: 22,
+  mass: 2,
+} as const;
+
+export const institutionLogoHover = {
+  scale: 1.04,
+  opacity: 1,
+  filter: "grayscale(0%)",
+} as const;
+
+export const institutionLogoRest = {
+  scale: 1,
+  opacity: 0.9,
+  filter: "grayscale(35%)",
+} as const;

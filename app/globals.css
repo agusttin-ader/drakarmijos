@@ -6,6 +6,11 @@
   --font-display: var(--font-source-sans);
   --font-sans: var(--font-source-sans);
   --font-script: var(--font-pinyon-script);
+
+  /* Fondos papel/tiza cálidos — crema con más calor */
+  --color-background: #f0e6d8;
+  --color-background-alt: #e6dbc9;
+  --color-background-muted: #d9ccb8;
 }
 
 @layer base {
@@ -13,6 +18,7 @@
     scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    background-color: var(--color-background);
   }
 
   html.lenis {
@@ -106,10 +112,23 @@
   .pb-mobile-nav {
     padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
   }
+
+  .institutions-marquee {
+    animation: institutions-marquee 32s linear infinite;
+  }
+
+  .institutions-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .institutions-marquee-paused {
+    animation-play-state: paused !important;
+  }
 }
 
-/* Barra inferior oculta mientras el menú hamburguesa está abierto */
-html[data-menu-open] [data-mobile-nav] {
+/* Barra inferior oculta mientras el menú hamburguesa o el modal de cita están abiertos */
+html[data-menu-open] [data-mobile-nav],
+html[data-booking-open] [data-mobile-nav] {
   visibility: hidden;
   pointer-events: none;
 }
@@ -126,6 +145,16 @@ html[data-menu-open] [data-mobile-nav] {
   }
 }
 
+@keyframes institutions-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html.lenis.lenis-smooth {
     scroll-behavior: auto;
@@ -136,8 +165,11 @@ html[data-menu-open] [data-mobile-nav] {
   }
 
   .select-dropdown-enter,
-  .select-dropdown-exit,
-  .intro-overlay {
+  .select-dropdown-exit {
+    animation: none !important;
+  }
+
+  .institutions-marquee {
     animation: none !important;
   }
 }
@@ -174,20 +206,6 @@ html[data-menu-open] [data-mobile-nav] {
 .select-dropdown-exit {
   animation: select-dropdown-out 150ms ease-in both;
   transform-origin: top center;
-}
-
-@keyframes intro-fade-out {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-.intro-overlay {
-  animation: intro-fade-out 650ms cubic-bezier(0.22, 1, 0.36, 1) 80ms forwards;
 }
 
 /* Pantallas ultra-anchas: patrón un poco más amplio */

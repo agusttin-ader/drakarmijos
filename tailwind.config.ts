@@ -15,10 +15,10 @@ const config: Config = {
         primary: "#0F5C5C",
         "primary-deep": "#0A2E2E",
         "primary-light": "#5EC9C4",
-        // Fondos limpios cercanos al papel del manual / recetario.
-        background: "#FBFCFC",
-        "background-alt": "#F3F7F7",
-        "background-muted": "#E8F0F0",
+        // Fondos papel/tiza cálidos (crema con más calor).
+        background: "#F0E6D8",
+        "background-alt": "#E6DBC9",
+        "background-muted": "#D9CCB8",
         // Texto con contraste WCAG AA+ sobre fondos claros.
         "text-primary": "#1B2A2E",
         "text-secondary": "#4A5759",

@@ -9,11 +9,11 @@ export function Hero() {
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative scroll-anchor flex min-h-[100svh] items-end overflow-hidden"
+      className="relative scroll-anchor flex min-h-[100svh] items-end overflow-hidden bg-black"
     >
       <SiteImage
         src="/images/fotos-qx/quirofano-sala.jpg"
-        alt=""
+        alt="Dra. Karla Armijos en quirófano durante un procedimiento otorrinolaringológico"
         fill
         priority
         sizes="100vw"
@@ -22,24 +22,24 @@ export function Hero() {
 
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-primary-deep/92 via-primary-deep/50 to-primary-deep/15"
+        className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/28 to-transparent"
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-r from-primary-deep/75 via-primary-deep/30 to-transparent"
+        className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/18 to-transparent"
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,transparent_0%,primary-deep/25_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,transparent_0%,rgba(0,0,0,0.14)_100%)]"
       />
 
       <Container className="relative z-10 w-full pb-16 pt-32 sm:pb-20 sm:pt-36 md:pb-24 lg:pb-28 lg:pt-40 2xl:pb-32 2xl:pt-44 3xl:pb-36 3xl:pt-48">
         <div className="hero-enter max-w-2xl text-white 2xl:max-w-3xl 3xl:max-w-4xl">
-          <p className="eyebrow text-brand-aqua/95 2xl:text-xs">
+          <p className="eyebrow text-white drop-shadow-[0_1px_10px_rgba(0,0,0,0.55)] 2xl:text-xs">
             Rinología · Sueño · Buenos Aires
           </p>
 
-          <p className="mt-5 font-script text-[clamp(2.75rem,8vw,5.5rem)] leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_12px_rgba(10,46,46,0.35)] 2xl:text-[clamp(4rem,6vw,7rem)] 3xl:text-[7.5rem] 4xl:text-[8.5rem]">
+          <p className="mt-5 font-script text-[clamp(2.75rem,8vw,5.5rem)] leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] 2xl:text-[clamp(4rem,6vw,7rem)] 3xl:text-[7.5rem] 4xl:text-[8.5rem]">
             {siteData.doctor.name}
           </p>
 
