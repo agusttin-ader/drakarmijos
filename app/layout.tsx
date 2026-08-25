@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
+import { Allura, Source_Sans_3 } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
 import { Navbar } from "@/components/Navbar";
@@ -19,14 +19,14 @@ const sourceSans = Source_Sans_3({
   preload: true,
 });
 
-/** Nombre de marca — didone editorial, elegante y llamativo. */
-const cormorantGaramond = Cormorant_Garamond({
+/** Nombre de marca — script elegante (Allura). */
+const allura = Allura({
   variable: "--font-brand",
   subsets: ["latin"],
   display: "swap",
   adjustFontFallback: true,
   preload: true,
-  weight: ["400", "500", "600"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -55,7 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es-EC"
-      className={`${sourceSans.variable} ${cormorantGaramond.variable} lenis lenis-smooth h-full`}
+      className={`${sourceSans.variable} ${allura.variable} lenis lenis-smooth h-full`}
     >
       <body className="flex min-h-full flex-col">
         <SmoothScrollProvider>

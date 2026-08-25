@@ -52,7 +52,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr] lg:gap-10">
           <div className="md:col-span-2 lg:col-span-1">
             <Logo variant="footer" />
-            <DoctorName className="mt-5 text-[clamp(1.75rem,4vw,2.25rem)] leading-[1.08] text-brand-aqua sm:text-[2.375rem]">
+            <DoctorName className="mt-5 text-[clamp(2rem,4.5vw,2.75rem)] leading-[1.02] text-brand-aqua sm:text-[2.875rem]">
               {siteData.doctor.name}
             </DoctorName>
             <p className="prose-measure mt-3 text-sm leading-relaxed text-white/80">

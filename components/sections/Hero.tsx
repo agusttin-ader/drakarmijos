@@ -40,7 +40,7 @@ export function Hero() {
             Rinología · Sueño · Buenos Aires
           </p>
 
-          <DoctorName className="mt-5 text-[clamp(2.5rem,7vw,5rem)] leading-[1.05] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] 2xl:text-[clamp(3.25rem,5.5vw,5.75rem)] 3xl:text-[6rem] 4xl:text-[6.75rem]">
+          <DoctorName className="mt-5 text-[clamp(3rem,8.5vw,6rem)] leading-[1.02] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] 2xl:text-[clamp(3.75rem,6.5vw,6.75rem)] 3xl:text-[7rem] 4xl:text-[7.75rem]">
             {siteData.doctor.name}
           </DoctorName>
 

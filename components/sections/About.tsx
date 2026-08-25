@@ -105,7 +105,7 @@ export function About() {
                 aria-hidden
                 className="mb-4 h-px w-16 bg-brand-aqua/80 sm:w-20"
               />
-              <DoctorName className="text-[clamp(2.125rem,4.75vw,3rem)] leading-[1.08] text-text-primary">
+              <DoctorName className="text-[clamp(2.5rem,5.5vw,3.5rem)] leading-[1.02] text-text-primary">
                 {siteData.doctor.name}
               </DoctorName>
               <p className="mt-3 text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-text-secondary">

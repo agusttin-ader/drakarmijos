@@ -179,7 +179,7 @@ export function Navbar() {
               <DoctorName
                 as="span"
                 className={cn(
-                  "block truncate text-[1.3125rem] leading-[1.08] sm:text-[1.4375rem] 2xl:text-[1.5625rem]",
+                  "block truncate text-[1.5rem] leading-[1.02] sm:text-[1.625rem] 2xl:text-[1.75rem]",
                   onDarkChrome ? "text-white" : "text-text-primary",
                 )}
               >

@@ -5,7 +5,7 @@ type DoctorNameProps = ComponentPropsWithoutRef<"p" | "span"> & {
   as?: "p" | "span";
 };
 
-/** Tipografía de marca exclusiva para el nombre — Cormorant Garamond. */
+/** Tipografía de marca exclusiva para el nombre — Allura. */
 export function DoctorName({
   as: Tag = "p",
   className,
@@ -15,7 +15,7 @@ export function DoctorName({
   return (
     <Tag
       className={cn(
-        "font-brand font-medium tracking-[-0.015em]",
+        "font-brand font-normal tracking-normal",
         className,
       )}
       {...props}
