@@ -18,14 +18,6 @@ const clinics = [
 
 const affiliations = [
   {
-    name: "Congreso Panamericano de ORL",
-    logo: "/images/institutions/congreso-panamericano-orl.png",
-  },
-  {
-    name: "Rino Argentina",
-    logo: "/images/institutions/rino-argentina.png",
-  },
-  {
     name: "FASO",
     logo: "/images/institutions/faso.png",
   },
@@ -63,6 +55,11 @@ export const siteData = {
     { label: "Consulta", value: "Adultos y niños" },
   ] as const,
   faqs: [
+    {
+      question: "¿Dónde encuentro un otorrino en Buenos Aires?",
+      answer:
+        "Atiendo en CEMIC (Av. Las Heras 2900) miércoles y jueves, y en Hospital Británico (Perdriel 74). Podés agendar por WhatsApp o formulario web.",
+    },
     {
       question: "¿Cuándo conviene consultar por ronquidos o apnea?",
       answer:

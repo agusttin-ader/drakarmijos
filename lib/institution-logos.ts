@@ -10,16 +10,6 @@ export const institutionLogoSizes = {
     mobile: "h-9",
     clinic: "h-9 sm:h-10",
   },
-  "Congreso Panamericano de ORL": {
-    desktop: "h-9 sm:h-12 md:h-[3.25rem]",
-    mobile: "h-9",
-    clinic: "h-9",
-  },
-  "Rino Argentina": {
-    desktop: "h-7 sm:h-10 md:h-11",
-    mobile: "h-7",
-    clinic: "h-7",
-  },
   FASO: {
     desktop: "h-10 sm:h-14 md:h-16",
     mobile: "h-10",

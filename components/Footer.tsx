@@ -20,6 +20,12 @@ const navLinks = [
   { label: "Contacto", href: "#booking" },
 ] as const;
 
+const serviceLinks = [
+  { label: "Otorrino en Buenos Aires", href: "/otorrino-buenos-aires" },
+  { label: "Ronquidos", href: "/ronquidos" },
+  { label: "Apnea del sueño", href: "/apnea-del-sueno" },
+] as const;
+
 const socialLinks = [
   {
     label: `Instagram — ${siteData.social.instagramHandle}`,
@@ -49,7 +55,7 @@ export function Footer() {
       <BrandWatermark />
 
       <Container className="relative z-10 section-y pb-mobile-nav md:pb-16">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr] lg:gap-10">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1fr] lg:gap-8">
           <div className="md:col-span-2 lg:col-span-1">
             <Logo variant="footer" />
             <DoctorName className="mt-5 text-[clamp(2rem,4.5vw,2.75rem)] leading-[1.02] text-brand-aqua sm:text-[2.875rem]">
@@ -67,6 +73,22 @@ export function Footer() {
             <p className="eyebrow text-white/55">Navegación</p>
             <ul className="mt-4 space-y-2.5">
               {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="rounded-md text-sm text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Consultas frecuentes" className="lg:pt-2">
+            <p className="eyebrow text-white/55">Consultas</p>
+            <ul className="mt-4 space-y-2.5">
+              {serviceLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

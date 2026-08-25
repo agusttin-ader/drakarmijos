@@ -31,7 +31,7 @@ export function InstitutionLogo({
       aria-hidden={duplicate || undefined}
       className={cn(
         "flex list-none items-center",
-        isMobileStrip ? "gap-x-4" : "gap-x-7 lg:gap-x-9",
+        isMobileStrip ? "gap-x-5" : "gap-x-8 lg:gap-x-10",
         className,
       )}
     >

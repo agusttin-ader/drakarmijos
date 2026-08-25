@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/container";
 import { HighlightBadge } from "@/components/ui/highlight-badge";
@@ -19,6 +20,8 @@ type Specialty = {
   title: string;
   focus: string;
   description: string;
+  href?: string;
+  linkLabel?: string;
 };
 
 const specialties: Specialty[] = [
@@ -29,6 +32,8 @@ const specialties: Specialty[] = [
     focus: "Rinología · oído, nariz y garganta",
     description:
       "Desviación de tabique, sinusitis, alergias, pérdida de olfato o respiración bucal en niños. Evaluación endoscópica y plan médico o quirúrgico según cada caso.",
+    href: "/otorrino-buenos-aires",
+    linkLabel: "Otorrino en Buenos Aires",
   },
   {
     highlight: "dormirBien",
@@ -37,6 +42,8 @@ const specialties: Specialty[] = [
     focus: "Ronquidos · apnea · bruxismo nocturno",
     description:
       "Estudio del sueño, CPAP, cirugía de vías aéreas superiores y la relación entre bruxismo, pausas respiratorias y fatiga diurna. Si no respiras bien, no duermes bien.",
+    href: "/apnea-del-sueno",
+    linkLabel: "Apnea del sueño y ronquidos",
   },
   {
     highlight: "orl",
@@ -88,7 +95,7 @@ export function Specialties() {
           viewport={viewportOnce}
           className="editorial-list overflow-hidden rounded-brand bg-background/70 shadow-card"
         >
-          {specialties.map(({ highlight, index, title, focus, description }) => (
+          {specialties.map(({ highlight, index, title, focus, description, href, linkLabel }) => (
             <motion.li
               key={title}
               variants={shouldReduceMotion ? undefined : rowVariants}
@@ -115,6 +122,14 @@ export function Specialties() {
                   <p className="prose-measure mt-3 text-base leading-relaxed text-text-secondary">
                     {description}
                   </p>
+                  {href && linkLabel ? (
+                    <Link
+                      href={href}
+                      className="mt-4 inline-flex text-sm font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    >
+                      {linkLabel} →
+                    </Link>
+                  ) : null}
                 </div>
 
                 <div

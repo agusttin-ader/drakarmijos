@@ -38,7 +38,7 @@ export function InstitutionsMobileMarquee() {
     >
       <ul
         ref={trackRef}
-        className="institutions-marquee flex w-max items-center gap-x-4 motion-reduce:transform-none"
+        className="institutions-marquee flex w-max items-center gap-x-6 motion-reduce:transform-none"
       >
         {marqueeItems.map((item, index) => (
           <InstitutionLogo

@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { HomeJsonLd } from "@/components/seo/home-json-ld";
 import { Hero } from "@/components/sections/Hero";
 import { Institutions } from "@/components/sections/Institutions";
 
@@ -23,15 +24,18 @@ const Booking = dynamic(() =>
 
 export default function Home() {
   return (
-    <main id="main-content" className="flex-1 md:pb-0">
-      <Hero />
-      <Institutions />
-      <About />
-      <Specialties />
-      <ConsultationPath />
-      <Testimonials />
-      <Faq />
-      <Booking />
-    </main>
+    <>
+      <HomeJsonLd />
+      <main id="main-content" className="flex-1 md:pb-0">
+        <Hero />
+        <Institutions />
+        <About />
+        <Specialties />
+        <ConsultationPath />
+        <Testimonials />
+        <Faq />
+        <Booking />
+      </main>
+    </>
   );
 }

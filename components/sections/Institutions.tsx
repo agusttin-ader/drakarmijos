@@ -10,7 +10,7 @@ export function Institutions() {
       <Container className="py-6 sm:py-10 md:py-12">
         <InstitutionsMobileMarquee />
 
-        <ul className="hidden items-center justify-center md:flex">
+        <ul className="hidden items-center justify-center gap-x-8 md:flex lg:gap-x-12 xl:gap-x-16">
           {siteData.institutions.map((item, index) => (
             <InstitutionLogo
               key={item.name}

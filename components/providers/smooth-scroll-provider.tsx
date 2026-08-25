@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -32,6 +33,14 @@ type SmoothScrollProviderProps = {
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const [lenis, setLenis] = useState<Lenis | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const mountedRef = useRef(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -99,6 +108,8 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     });
 
     const onScroll = () => {
+      if (!mountedRef.current) return;
+
       ScrollTrigger.update();
       const limit = instance.limit;
       setScrollProgress(limit > 0 ? instance.scroll / limit : 0);
@@ -116,8 +127,11 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     const onRefresh = () => instance.resize();
     ScrollTrigger.addEventListener("refresh", onRefresh);
 
-    setLenis(instance);
-    ScrollTrigger.refresh();
+    requestAnimationFrame(() => {
+      if (!mountedRef.current) return;
+      setLenis(instance);
+      ScrollTrigger.refresh();
+    });
 
     return () => {
       instance.off("scroll", onScroll);

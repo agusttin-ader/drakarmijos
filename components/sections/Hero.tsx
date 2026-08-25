@@ -48,12 +48,17 @@ export function Hero() {
             id="hero-heading"
             className="mt-5 max-w-xl font-display text-[clamp(1.65rem,3.5vw,2.35rem)] font-light leading-[1.2] tracking-tight text-white 2xl:max-w-2xl 2xl:text-[clamp(2.1rem,2.4vw,3rem)] 3xl:text-[3.25rem]"
           >
-            Respira mejor. Duerme mejor.
+            Otorrino en Buenos Aires — ronquidos, apnea del sueño y rinología
           </h1>
 
+          <p className="mt-4 max-w-xl font-display text-[clamp(1.35rem,3vw,1.85rem)] font-light leading-[1.25] tracking-tight text-white/95 2xl:max-w-2xl 2xl:text-[clamp(1.65rem,2.2vw,2.25rem)]">
+            Respira mejor. Duerme mejor.
+          </p>
+
           <p className="prose-measure mt-5 text-base leading-relaxed text-white/85 sm:text-lg 2xl:text-xl 3xl:text-2xl">
-            Oído, nariz y garganta. Ronquidos y apnea del sueño. Un plan claro
-            desde la primera consulta.
+            Otorrinolaringóloga en CEMIC y Hospital Británico. Consulta por oído,
+            nariz y garganta, ronquidos, apnea, sinusitis y cirugía nasal. Un plan
+            claro desde la primera visita — adultos y niños.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4 sm:mt-12 2xl:mt-14">

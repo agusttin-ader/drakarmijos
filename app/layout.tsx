@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import { Allura, Source_Sans_3 } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
@@ -7,7 +7,7 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { SkipLink } from "@/components/SkipLink";
 import { BookingModalProvider } from "@/components/providers/booking-modal-provider";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
-import { siteData } from "@/lib/site-data";
+import { buildSiteMetadata } from "@/lib/seo";
 import "./globals.css";
 
 /** Cuerpo e interfaz — humanista, legible (Humnst Lt BT del manual). */
@@ -29,14 +29,7 @@ const allura = Allura({
   weight: "400",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Dra. Karla Armijos · Otorrinolaringóloga",
-    template: "%s | Dra. Karla Armijos",
-  },
-  description: `${siteData.doctor.title} especializada en ${siteData.doctor.specialty}. ${siteData.doctor.audience}. ${siteData.tagline.charAt(0).toUpperCase()}${siteData.tagline.slice(1)}.`,
-  generator: "Dra. Karla Armijos",
-};
+export const metadata = buildSiteMetadata();
 
 /** Bloquea zoom en mobile (pedido de producto). */
 export const viewport: Viewport = {
@@ -54,7 +47,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="es-EC"
+      lang="es-AR"
       className={`${sourceSans.variable} ${allura.variable} lenis lenis-smooth h-full`}
     >
       <body className="flex min-h-full flex-col">

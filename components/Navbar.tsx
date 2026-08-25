@@ -48,13 +48,18 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const lastScrollY = useRef(0);
+  const mountedRef = useRef(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
 
   useScrollLock(isMenuOpen);
 
   useEffect(() => {
+    mountedRef.current = true;
     setMounted(true);
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -66,6 +71,8 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = (scroll: number, direction: number) => {
+      if (!mountedRef.current) return;
+
       const atTop = scroll <= HIDE_SCROLL_THRESHOLD;
       setIsAtTop(atTop);
 
@@ -93,12 +100,16 @@ export function Navbar() {
     if (lenis) {
       const onLenisScroll = () => handleScroll(lenis.scroll, lenis.direction);
 
-      onLenisScroll();
       lenis.on("scroll", onLenisScroll);
-      return () => lenis.off("scroll", onLenisScroll);
+      const raf = requestAnimationFrame(onLenisScroll);
+
+      return () => {
+        cancelAnimationFrame(raf);
+        lenis.off("scroll", onLenisScroll);
+      };
     }
 
-    handleScroll(window.scrollY, 0);
+    const raf = requestAnimationFrame(() => handleScroll(window.scrollY, 0));
 
     const onNativeScroll = () => {
       const currentScrollY = window.scrollY;
@@ -107,7 +118,10 @@ export function Navbar() {
     };
 
     window.addEventListener("scroll", onNativeScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onNativeScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onNativeScroll);
+    };
   }, [lenis, shouldReduceMotion, isMenuOpen]);
 
   useEffect(() => {

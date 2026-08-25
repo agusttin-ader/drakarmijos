@@ -9,6 +9,8 @@ export function useActiveSection(sectionIds: readonly string[]) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
+    let active = true;
+
     const elements = sectionIds
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
@@ -17,6 +19,8 @@ export function useActiveSection(sectionIds: readonly string[]) {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        if (!active) return;
+
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
@@ -35,7 +39,10 @@ export function useActiveSection(sectionIds: readonly string[]) {
       observer.observe(element);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      active = false;
+      observer.disconnect();
+    };
   }, [sectionIds]);
 
   return activeId;
