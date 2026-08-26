@@ -1,8 +1,22 @@
 import type { Metadata } from "next";
 import { siteData } from "@/lib/site-data";
 
-export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.drakarmijos.com";
+const DEFAULT_SITE_URL = "https://www.drakarmijos.com";
+
+function resolveSiteUrl(raw?: string): string {
+  const value = (raw ?? "").trim() || DEFAULT_SITE_URL;
+  const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  try {
+    const url = new URL(withProtocol);
+    url.hash = "";
+    url.search = "";
+    return url.origin;
+  } catch {
+    return DEFAULT_SITE_URL;
+  }
+}
+
+export const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export const seoKeywords = [
   "otorrino",
@@ -78,6 +92,11 @@ export const defaultOpenGraphImage = {
   alt: "Dra. Karla Armijos — otorrinolaringóloga en Buenos Aires",
 } as const;
 
+/** Token de Google Search Console (meta tag). Configurar en Vercel: GOOGLE_SITE_VERIFICATION */
+const googleSiteVerification =
+  process.env.GOOGLE_SITE_VERIFICATION ??
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+
 export function buildSiteMetadata(overrides?: Partial<Metadata>): Metadata {
   return {
     metadataBase: new URL(siteUrl),
@@ -94,6 +113,9 @@ export function buildSiteMetadata(overrides?: Partial<Metadata>): Metadata {
     alternates: {
       canonical: "/",
     },
+    ...(googleSiteVerification
+      ? { verification: { google: googleSiteVerification } }
+      : {}),
     robots: {
       index: true,
       follow: true,
