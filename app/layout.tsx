@@ -1,5 +1,6 @@
 import type { Viewport } from "next";
 import { Allura, Source_Sans_3 } from "next/font/google";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
 import { Navbar } from "@/components/Navbar";
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${sourceSans.variable} ${allura.variable} lenis lenis-smooth h-full`}
     >
       <body className="flex min-h-full flex-col">
+        <GoogleAnalytics />
         <SmoothScrollProvider>
           <BookingModalProvider>
             <SkipLink />

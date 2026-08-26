@@ -14,14 +14,18 @@ import {
 } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
+type SpecialtyLink = {
+  href: string;
+  label: string;
+};
+
 type Specialty = {
   highlight: HighlightVariant;
   index: string;
   title: string;
   focus: string;
   description: string;
-  href?: string;
-  linkLabel?: string;
+  links?: SpecialtyLink[];
 };
 
 const specialties: Specialty[] = [
@@ -32,8 +36,9 @@ const specialties: Specialty[] = [
     focus: "Rinología · oído, nariz y garganta",
     description:
       "Desviación de tabique, sinusitis, alergias, pérdida de olfato o respiración bucal en niños. Evaluación endoscópica y plan médico o quirúrgico según cada caso.",
-    href: "/otorrino-buenos-aires",
-    linkLabel: "Otorrino en Buenos Aires",
+    links: [
+      { href: "/otorrino-buenos-aires", label: "Otorrino en Buenos Aires" },
+    ],
   },
   {
     highlight: "dormirBien",
@@ -42,8 +47,10 @@ const specialties: Specialty[] = [
     focus: "Ronquidos · apnea · bruxismo nocturno",
     description:
       "Estudio del sueño, CPAP, cirugía de vías aéreas superiores y la relación entre bruxismo, pausas respiratorias y fatiga diurna. Si no respiras bien, no duermes bien.",
-    href: "/apnea-del-sueno",
-    linkLabel: "Apnea del sueño y ronquidos",
+    links: [
+      { href: "/ronquidos", label: "Ronquidos" },
+      { href: "/apnea-del-sueno", label: "Apnea del sueño" },
+    ],
   },
   {
     highlight: "orl",
@@ -52,6 +59,12 @@ const specialties: Specialty[] = [
     focus: "Rinoplastia funcional y estética",
     description:
       "Corrección de obstrucción nasal con criterio estético conservador. Cada nariz responde de forma distinta, así que el plan se define sobre tu anatomía y expectativas.",
+    links: [
+      {
+        href: "/otorrino-buenos-aires",
+        label: "Consulta por cirugía nasal",
+      },
+    ],
   },
 ];
 
@@ -95,7 +108,7 @@ export function Specialties() {
           viewport={viewportOnce}
           className="editorial-list overflow-hidden rounded-brand bg-background/70 shadow-card"
         >
-          {specialties.map(({ highlight, index, title, focus, description, href, linkLabel }) => (
+          {specialties.map(({ highlight, index, title, focus, description, links }) => (
             <motion.li
               key={title}
               variants={shouldReduceMotion ? undefined : rowVariants}
@@ -122,13 +135,18 @@ export function Specialties() {
                   <p className="prose-measure mt-3 text-base leading-relaxed text-text-secondary">
                     {description}
                   </p>
-                  {href && linkLabel ? (
-                    <Link
-                      href={href}
-                      className="mt-4 inline-flex text-sm font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                    >
-                      {linkLabel} →
-                    </Link>
+                  {links && links.length > 0 ? (
+                    <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                      {links.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="inline-flex text-sm font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        >
+                          {link.label} →
+                        </Link>
+                      ))}
+                    </p>
                   ) : null}
                 </div>
 

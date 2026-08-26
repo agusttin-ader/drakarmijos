@@ -157,7 +157,9 @@ export function BookingForm({ onSuccess, className }: BookingFormProps) {
 
       <p className="text-xs leading-relaxed text-text-secondary">
         Al continuar se abre WhatsApp con tus datos ya escritos para que envíes
-        el mensaje. Te respondo en {siteData.contact.responseTime}.
+        el mensaje. Esos datos se usan solo para coordinar la consulta; no se
+        guardan en un servidor propio. Te respondo en{" "}
+        {siteData.contact.responseTime}.
       </p>
     </form>
   );

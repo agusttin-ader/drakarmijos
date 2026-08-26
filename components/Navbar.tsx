@@ -19,12 +19,12 @@ import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: "Sobre mí", href: "#about" },
-  { label: "Especialidades", href: "#specialties" },
-  { label: "Consulta", href: "#consulta" },
-  { label: "Opiniones", href: "#testimonials" },
-  { label: "Preguntas", href: "#faq" },
-  { label: "Contacto", href: "#booking" },
+  { label: "Sobre mí", href: "/#about" },
+  { label: "Especialidades", href: "/#specialties" },
+  { label: "Consulta", href: "/#consulta" },
+  { label: "Opiniones", href: "/#testimonials" },
+  { label: "Preguntas", href: "/#faq" },
+  { label: "Contacto", href: "/#booking" },
 ] as const;
 
 const HIDE_SCROLL_THRESHOLD = 48;
@@ -215,7 +215,7 @@ export function Navbar() {
             className="hidden items-center gap-3.5 lg:flex xl:gap-6 2xl:gap-8"
           >
             {navLinks.map((link) => {
-              const sectionId = link.href.replace("#", "");
+              const sectionId = link.href.split("#")[1] ?? "";
               const isActive = !onDarkChrome && activeSection === sectionId;
 
               return (
@@ -327,7 +327,7 @@ export function Navbar() {
                     <nav aria-label="Menú móvil" className="flex-1 overflow-y-auto">
                       <ul className="space-y-1">
                         {navLinks.map((link) => {
-                          const sectionId = link.href.replace("#", "");
+                          const sectionId = link.href.split("#")[1] ?? "";
                           const isActive = activeSection === sectionId;
 
                           return (

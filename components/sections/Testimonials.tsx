@@ -249,10 +249,6 @@ export function Testimonials() {
             </div>
           </div>
         </div>
-
-        <p className="mt-8 text-xs leading-relaxed text-text-secondary lg:mt-10 lg:text-right">
-          Nombres ficticios · testimonios reales sujetos a autorización escrita
-        </p>
       </Container>
     </section>
   );

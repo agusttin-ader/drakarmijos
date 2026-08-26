@@ -109,19 +109,7 @@
   }
 
   .pb-mobile-nav {
-    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
-  }
-
-  .institutions-marquee {
-    animation: institutions-marquee 32s linear infinite;
-  }
-
-  .institutions-marquee:hover {
-    animation-play-state: paused;
-  }
-
-  .institutions-marquee-paused {
-    animation-play-state: paused !important;
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -144,16 +132,6 @@ html[data-booking-open] [data-mobile-nav] {
   }
 }
 
-@keyframes institutions-marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html.lenis.lenis-smooth {
     scroll-behavior: auto;
@@ -165,10 +143,6 @@ html[data-booking-open] [data-mobile-nav] {
 
   .select-dropdown-enter,
   .select-dropdown-exit {
-    animation: none !important;
-  }
-
-  .institutions-marquee {
     animation: none !important;
   }
 }

@@ -223,6 +223,11 @@ export function buildHomeJsonLd() {
       identifier: siteData.doctor.license,
       telephone: siteData.contact.phone,
       email: siteData.contact.email,
+      hasCredential: {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "Matrícula profesional",
+        identifier: siteData.doctor.license,
+      },
       sameAs: [siteData.social.instagram, siteData.social.linkedin],
       areaServed: {
         "@type": "City",
@@ -249,6 +254,20 @@ export function buildHomeJsonLd() {
           url: `${siteUrl}/apnea-del-sueno`,
           description:
             "Estudio del sueño, CPAP y cirugía de vías aéreas superiores.",
+        },
+        {
+          "@type": "MedicalProcedure",
+          name: "Rinología y cirugía nasal",
+          url: `${siteUrl}/otorrino-buenos-aires`,
+          description:
+            "Evaluación de desviación de tabique, sinusitis y rinoplastia funcional.",
+        },
+        {
+          "@type": "MedicalProcedure",
+          name: "ORL pediátrica",
+          url: `${siteUrl}/otorrino-buenos-aires`,
+          description:
+            "Consulta otorrinolaringológica en niños: respiración bucal, adenoides y otitis.",
         },
       ],
       worksFor: clinics.map((clinic) => ({ "@id": clinic["@id"] })),

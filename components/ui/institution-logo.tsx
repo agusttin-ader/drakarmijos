@@ -10,7 +10,6 @@ type InstitutionLogoProps = {
   logo: string;
   context?: InstitutionLogoContext;
   showSeparator?: boolean;
-  duplicate?: boolean;
   maxWidthClass?: string;
   className?: string;
 };
@@ -20,33 +19,28 @@ export function InstitutionLogo({
   logo,
   context = "desktop",
   showSeparator = false,
-  duplicate = false,
   maxWidthClass = "max-w-[9rem] sm:max-w-[13rem] md:max-w-[15rem]",
   className,
 }: InstitutionLogoProps) {
-  const isMobileStrip = context === "mobile";
-
   return (
     <li
-      aria-hidden={duplicate || undefined}
       className={cn(
-        "flex list-none items-center",
-        isMobileStrip ? "gap-x-5" : "gap-x-8 lg:gap-x-10",
+        "flex list-none items-center gap-x-4 sm:gap-x-8 lg:gap-x-10",
         className,
       )}
     >
       {showSeparator ? (
         <span
           aria-hidden
-          className="size-1 shrink-0 rounded-full bg-primary/40"
+          className="hidden size-1 shrink-0 rounded-full bg-primary/40 sm:block"
         />
       ) : null}
       <InstitutionLogoImage
         src={logo}
-        alt={duplicate ? "" : name}
+        alt={name}
         width={260}
         height={88}
-        interactive={isMobileStrip ? "tap" : "hover"}
+        interactive="hover"
         className={cn(maxWidthClass, institutionLogoClass(name, context))}
       />
     </li>

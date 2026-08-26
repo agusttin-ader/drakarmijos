@@ -1,18 +1,15 @@
-/** Alturas por contexto — una sola fuente para la franja, marquee y contacto. */
+/** Alturas por contexto — franja de instituciones y logos en contacto. */
 export const institutionLogoSizes = {
   CEMIC: {
-    desktop: "h-8 sm:h-11 md:h-12",
-    mobile: "h-8",
+    desktop: "h-7 sm:h-11 md:h-12",
     clinic: "h-8 sm:h-9",
   },
   "Hospital Británico": {
-    desktop: "h-9 sm:h-12 md:h-[3.25rem]",
-    mobile: "h-9",
+    desktop: "h-8 sm:h-12 md:h-[3.25rem]",
     clinic: "h-9 sm:h-10",
   },
   FASO: {
-    desktop: "h-10 sm:h-14 md:h-16",
-    mobile: "h-10",
+    desktop: "h-9 sm:h-14 md:h-16",
     clinic: "h-10",
   },
 } as const;
