@@ -86,9 +86,9 @@ export function buildPageMetadata(page: {
 }
 
 export const defaultOpenGraphImage = {
-  url: "/images/fotos-qx/quirofano-sala.jpg",
-  width: 1920,
-  height: 1280,
+  url: "/images/hero/hero-atmosphere.jpg",
+  width: 1536,
+  height: 1024,
   alt: "Dra. Karla Armijos — otorrinolaringóloga en Buenos Aires",
 } as const;
 

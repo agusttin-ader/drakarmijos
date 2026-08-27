@@ -20,13 +20,13 @@ const sourceSans = Source_Sans_3({
   preload: true,
 });
 
-/** Nombre de marca — script elegante (Allura). */
+/** Nombre de marca — script elegante (Allura). No preload: no compite con LCP del hero. */
 const allura = Allura({
   variable: "--font-brand",
   subsets: ["latin"],
   display: "swap",
   adjustFontFallback: true,
-  preload: true,
+  preload: false,
   weight: "400",
 });
 
@@ -49,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es-AR"
-      className={`${sourceSans.variable} ${allura.variable} lenis lenis-smooth h-full`}
+      className={`${sourceSans.variable} ${allura.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">
         <GoogleAnalytics />

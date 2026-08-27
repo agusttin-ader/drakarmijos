@@ -16,22 +16,23 @@ import dynamic from "next/dynamic";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { useScrollLock } from "@/lib/hooks/use-scroll-lock";
+import { motionTransition } from "@/lib/motion";
+import { siteData } from "@/lib/site-data";
+import { cn } from "@/lib/utils";
 
 const BookingForm = dynamic(
   () => import("@/components/booking-form").then((m) => m.BookingForm),
   { ssr: false },
 );
-import { motionTransition } from "@/lib/motion";
-import { siteData } from "@/lib/site-data";
-import { cn } from "@/lib/utils";
 
 type BookingModalContextValue = {
   open: () => void;
   close: () => void;
-  isOpen: boolean;
 };
 
-const BookingModalContext = createContext<BookingModalContextValue | null>(null);
+const BookingModalContext = createContext<BookingModalContextValue | null>(
+  null,
+);
 
 export function useBookingModal() {
   const context = useContext(BookingModalContext);
@@ -43,12 +44,15 @@ export function useBookingModal() {
   return context;
 }
 
-function BookingModalOverlay() {
-  const { isOpen, close } = useBookingModal();
+type BookingModalOverlayProps = {
+  isOpen: boolean;
+  close: () => void;
+};
+
+function BookingModalOverlay({ isOpen, close }: BookingModalOverlayProps) {
   const shouldReduceMotion = useReducedMotion();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useScrollLock(isOpen);
@@ -95,94 +99,90 @@ function BookingModalOverlay() {
   return createPortal(
     <AnimatePresence>
       {isOpen ? (
-        <div className="fixed inset-0 z-[100]">
-          <motion.button
+        <motion.div
+          key="booking-modal"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={shouldReduceMotion ? undefined : { opacity: 0 }}
+          transition={motionTransition}
+        >
+          <button
             type="button"
             aria-label="Cerrar formulario"
-            initial={shouldReduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-            transition={motionTransition}
-            className="absolute inset-0 bg-text-primary/55 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-text-primary/55"
             onClick={close}
           />
 
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 sm:p-6">
-            <motion.div
-              ref={dialogRef}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="booking-modal-title"
-              initial={
-                shouldReduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 }
-              }
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={
-                shouldReduceMotion ? undefined : { opacity: 0, y: 12, scale: 0.98 }
-              }
-              transition={motionTransition}
-              className={cn(
-                "pointer-events-auto relative flex max-h-[min(100dvh-2rem,calc(100dvh-env(safe-area-inset-bottom)-1rem))] w-full max-w-lg flex-col overflow-hidden rounded-modal bg-background shadow-elevated ring-1 ring-primary/12",
-              )}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <div className="relative overflow-y-auto overscroll-contain px-5 pb-5 pt-5 sm:px-7 sm:pb-7 sm:pt-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0 border-l-2 border-brand-aqua pl-4 pr-2 sm:pl-5">
-                    <p className="text-[0.6875rem] font-medium uppercase tracking-[0.2em] text-text-secondary">
-                      {siteData.cta.bookShort}
-                    </p>
-                    <h2
-                      id="booking-modal-title"
-                      className="mt-1 font-display text-2xl tracking-tight text-text-primary"
-                    >
-                      Reserva tu consulta
-                    </h2>
-                    <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">
-                      Completa el formulario y te responderé a la brevedad.
-                      Respuesta estimada: {siteData.contact.responseTime}.
-                    </p>
-                  </div>
-
-                  <button
-                    ref={closeButtonRef}
-                    type="button"
-                    onClick={close}
-                    aria-label="Cerrar"
-                    className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-text-primary/70 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="booking-modal-title"
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={shouldReduceMotion ? undefined : { opacity: 0, y: 12 }}
+            transition={motionTransition}
+            className={cn(
+              "relative z-10 flex max-h-[min(100dvh-2rem,calc(100dvh-env(safe-area-inset-bottom)-1rem))] w-full max-w-lg flex-col overflow-hidden rounded-modal bg-background shadow-elevated ring-1 ring-primary/12",
+            )}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="relative overflow-y-auto overscroll-contain px-5 pb-5 pt-5 sm:px-7 sm:pb-7 sm:pt-6">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0 border-l-2 border-brand-aqua pl-4 pr-2 sm:pl-5">
+                  <p className="text-[0.6875rem] font-medium uppercase tracking-[0.2em] text-text-secondary">
+                    {siteData.cta.bookShort}
+                  </p>
+                  <h2
+                    id="booking-modal-title"
+                    className="mt-1 font-display text-2xl tracking-tight text-text-primary"
                   >
-                    <X className="size-4 stroke-[1.75]" aria-hidden />
-                  </button>
+                    Reserva tu consulta
+                  </h2>
+                  <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">
+                    Completa el formulario y te responderé a la brevedad.
+                    Respuesta estimada: {siteData.contact.responseTime}.
+                  </p>
                 </div>
 
-                <div className="mt-5">
-                  {isSubmitted ? (
-                    <div className="py-4 text-center" role="status">
-                      <p className="font-display text-xl text-text-primary">
-                        Te llevamos a WhatsApp
-                      </p>
-                      <p className="mt-2 text-sm text-text-secondary">
-                        Tu mensaje ya está escrito con los datos del formulario.
-                        Envíalo desde WhatsApp y te respondo con la cita más
-                        cercana disponible.
-                      </p>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="mt-6"
-                        onClick={close}
-                      >
-                        Cerrar
-                      </Button>
-                    </div>
-                  ) : (
-                    <BookingForm onSuccess={() => setIsSubmitted(true)} />
-                  )}
-                </div>
+                <button
+                  ref={closeButtonRef}
+                  type="button"
+                  onClick={close}
+                  aria-label="Cerrar"
+                  className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-text-primary/70 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  <X className="size-4 stroke-[1.75]" aria-hidden />
+                </button>
               </div>
-            </motion.div>
-          </div>
-        </div>
+
+              <div className="mt-5">
+                {isSubmitted ? (
+                  <div className="py-4 text-center" role="status">
+                    <p className="font-display text-xl text-text-primary">
+                      Te llevamos a WhatsApp
+                    </p>
+                    <p className="mt-2 text-sm text-text-secondary">
+                      Tu mensaje ya está escrito con los datos del formulario.
+                      Envíalo desde WhatsApp y te respondo con la cita más
+                      cercana disponible.
+                    </p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="mt-6"
+                      onClick={close}
+                    >
+                      Cerrar
+                    </Button>
+                  </div>
+                ) : (
+                  <BookingForm onSuccess={() => setIsSubmitted(true)} />
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       ) : null}
     </AnimatePresence>,
     document.body,
@@ -199,15 +199,12 @@ export function BookingModalProvider({ children }: BookingModalProviderProps) {
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
-  const value = useMemo(
-    () => ({ open, close, isOpen }),
-    [close, isOpen, open],
-  );
+  const value = useMemo(() => ({ open, close }), [close, open]);
 
   return (
     <BookingModalContext.Provider value={value}>
       {children}
-      <BookingModalOverlay />
+      <BookingModalOverlay isOpen={isOpen} close={close} />
     </BookingModalContext.Provider>
   );
 }

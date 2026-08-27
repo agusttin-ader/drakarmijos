@@ -2,24 +2,26 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useRef,
-  useState,
   type ReactNode,
 } from "react";
-import Lenis from "lenis";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+
+type ProgressListener = (progress: number) => void;
 
 type ScrollContextValue = {
-  lenis: Lenis | null;
-  scrollProgress: number;
+  /** Reservado por compatibilidad; el sitio usa scroll nativo (sin Lenis). */
+  lenis: null;
+  /** Suscripción a progreso 0–1 sin re-renderizar el árbol. */
+  subscribeProgress: (listener: ProgressListener) => () => void;
 };
 
 const ScrollContext = createContext<ScrollContextValue>({
   lenis: null,
-  scrollProgress: 0,
+  subscribeProgress: () => () => undefined,
 });
 
 export function useScrollContext() {
@@ -30,10 +32,26 @@ type SmoothScrollProviderProps = {
   children: ReactNode;
 };
 
+/** Scroll nativo inmediato — sin interpolación Lenis (evita el “delay”). */
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
-  const [lenis, setLenis] = useState<Lenis | null>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const mountedRef = useRef(false);
+  const progressListenersRef = useRef(new Set<ProgressListener>());
+  const lastProgressRef = useRef(0);
+
+  const subscribeProgress = useCallback((listener: ProgressListener) => {
+    progressListenersRef.current.add(listener);
+    listener(lastProgressRef.current);
+    return () => {
+      progressListenersRef.current.delete(listener);
+    };
+  }, []);
+
+  const emitProgress = useCallback((progress: number) => {
+    const next = Math.max(0, Math.min(1, progress));
+    if (Math.abs(next - lastProgressRef.current) < 0.0005) return;
+    lastProgressRef.current = next;
+    progressListenersRef.current.forEach((listener) => listener(next));
+  }, []);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -47,7 +65,6 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       history.scrollRestoration = "manual";
     }
 
-    // Sin Lenis (reduced motion): igual forzar inicio al cargar.
     if (window.location.hash) {
       history.replaceState(
         null,
@@ -59,93 +76,21 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   }, []);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const prefersCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
-
-    // Mobile / touch: scroll nativo (más liviano que Lenis + ticker GSAP).
-    if (prefersReducedMotion || prefersCoarsePointer) {
-      return;
-    }
-
-    const instance = new Lenis({
-      lerp: 0.08,
-      smoothWheel: true,
-      wheelMultiplier: 0.9,
-      anchors: true,
-    });
-
-    // Al refrescar / entrar: siempre arriba, sin restaurar scroll ni anclas.
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "manual";
-    }
-    if (window.location.hash) {
-      history.replaceState(
-        null,
-        "",
-        `${window.location.pathname}${window.location.search}`,
-      );
-    }
-    window.scrollTo(0, 0);
-    instance.scrollTo(0, { immediate: true });
-
-    ScrollTrigger.scrollerProxy(document.documentElement, {
-      scrollTop(value) {
-        if (arguments.length && value !== undefined) {
-          instance.scrollTo(value, { immediate: true });
-        }
-        return instance.scroll;
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
-      },
-    });
-
-    const onScroll = () => {
+    const onNativeScroll = () => {
       if (!mountedRef.current) return;
-
-      ScrollTrigger.update();
-      const limit = instance.limit;
-      setScrollProgress(limit > 0 ? instance.scroll / limit : 0);
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      emitProgress(max > 0 ? window.scrollY / max : 0);
     };
 
-    instance.on("scroll", onScroll);
-
-    const ticker = (time: number) => {
-      instance.raf(time * 1000);
-    };
-
-    gsap.ticker.add(ticker);
-    gsap.ticker.lagSmoothing(0);
-
-    const onRefresh = () => instance.resize();
-    ScrollTrigger.addEventListener("refresh", onRefresh);
-
-    requestAnimationFrame(() => {
-      if (!mountedRef.current) return;
-      setLenis(instance);
-      ScrollTrigger.refresh();
-    });
-
-    return () => {
-      instance.off("scroll", onScroll);
-      ScrollTrigger.removeEventListener("refresh", onRefresh);
-      gsap.ticker.remove(ticker);
-      ScrollTrigger.scrollerProxy(document.documentElement, {});
-      instance.destroy();
-      setLenis(null);
-    };
-  }, []);
+    onNativeScroll();
+    window.addEventListener("scroll", onNativeScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onNativeScroll);
+  }, [emitProgress]);
 
   const value = useMemo(
-    () => ({ lenis, scrollProgress }),
-    [lenis, scrollProgress],
+    () => ({ lenis: null, subscribeProgress }),
+    [subscribeProgress],
   );
 
   return (

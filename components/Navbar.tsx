@@ -8,7 +8,6 @@ import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BookConsultButton } from "@/components/book-consult-button";
 import { useBookingModal } from "@/components/providers/booking-modal-provider";
-import { useScrollContext } from "@/components/providers/smooth-scroll-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
@@ -40,7 +39,6 @@ const TRACKED_SECTIONS = [
 
 export function Navbar() {
   const activeSection = useActiveSection(TRACKED_SECTIONS);
-  const { lenis } = useScrollContext();
   const { open: openBooking } = useBookingModal();
   const shouldReduceMotion = useReducedMotion();
   const [isAtTop, setIsAtTop] = useState(true);
@@ -70,59 +68,50 @@ export function Navbar() {
   }, [isMenuOpen]);
 
   useEffect(() => {
+    let frame = 0;
+
     const handleScroll = (scroll: number, direction: number) => {
       if (!mountedRef.current) return;
 
       const atTop = scroll <= HIDE_SCROLL_THRESHOLD;
-      setIsAtTop(atTop);
+      setIsAtTop((prev) => (prev === atTop ? prev : atTop));
 
       if (shouldReduceMotion || isMenuOpen) {
-        setIsHidden(false);
+        setIsHidden((prev) => (prev ? false : prev));
         lastScrollY.current = scroll;
         return;
       }
 
       if (atTop) {
-        setIsHidden(false);
+        setIsHidden((prev) => (prev ? false : prev));
         lastScrollY.current = scroll;
         return;
       }
 
-      if (direction === -1) {
-        setIsHidden(true);
-      } else if (direction === 1) {
-        setIsHidden(false);
-      }
-
+      const nextHidden = direction === 1;
+      setIsHidden((prev) => (prev === nextHidden ? prev : nextHidden));
       lastScrollY.current = scroll;
     };
-
-    if (lenis) {
-      const onLenisScroll = () => handleScroll(lenis.scroll, lenis.direction);
-
-      lenis.on("scroll", onLenisScroll);
-      const raf = requestAnimationFrame(onLenisScroll);
-
-      return () => {
-        cancelAnimationFrame(raf);
-        lenis.off("scroll", onLenisScroll);
-      };
-    }
 
     const raf = requestAnimationFrame(() => handleScroll(window.scrollY, 0));
 
     const onNativeScroll = () => {
-      const currentScrollY = window.scrollY;
-      const direction = currentScrollY > lastScrollY.current ? -1 : 1;
-      handleScroll(currentScrollY, direction);
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const currentScrollY = window.scrollY;
+        const direction = currentScrollY > lastScrollY.current ? 1 : -1;
+        handleScroll(currentScrollY, direction);
+      });
     };
 
     window.addEventListener("scroll", onNativeScroll, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
+      if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onNativeScroll);
     };
-  }, [lenis, shouldReduceMotion, isMenuOpen]);
+  }, [shouldReduceMotion, isMenuOpen]);
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -164,8 +153,10 @@ export function Navbar() {
         <div
           aria-hidden
           className={cn(
-            "absolute inset-0 bg-background/92 backdrop-blur-md transition-[opacity,box-shadow] duration-500 ease-out motion-reduce:transition-none",
-            onDarkChrome ? "opacity-0 shadow-none" : "opacity-100 shadow-nav",
+            "absolute inset-0 bg-background/95 transition-[opacity,box-shadow,backdrop-filter] duration-500 ease-out motion-reduce:transition-none",
+            onDarkChrome
+              ? "opacity-0 shadow-none"
+              : "opacity-100 shadow-nav backdrop-blur-md",
           )}
         />
         <div
@@ -178,7 +169,7 @@ export function Navbar() {
 
         <Container className="relative flex h-16 items-center justify-between gap-3 sm:h-[4.25rem] sm:gap-4 lg:h-[4.75rem] 2xl:h-20 3xl:h-[5.5rem]">
           <div className="flex min-w-0 items-center gap-2.5 sm:gap-3.5">
-            <Logo variant="header" priority onDark={onDarkChrome} />
+            <Logo variant="header" onDark={onDarkChrome} />
 
             <Link
               href="/"

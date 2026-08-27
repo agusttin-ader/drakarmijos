@@ -33,7 +33,7 @@ type ButtonAsLink = ButtonBaseProps &
 type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const baseStyles =
-  "relative inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
+  "relative inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] motion-reduce:active:scale-100";
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
@@ -44,30 +44,23 @@ const variantStyles: Record<ButtonVariant, string> = {
 
 const MAGNETIC_STRENGTH = 0.14;
 
-export function Button({
-  variant = "primary",
+function MagneticButton({
   className,
   children,
-  href,
+  variant,
   ...props
-}: ButtonProps) {
+}: ButtonAsButton & { variant: ButtonVariant }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const shouldReduceMotion = useReducedMotion();
-  const hasFinePointer = useFinePointer();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 260, damping: 22, mass: 0.6 });
   const springY = useSpring(y, { stiffness: 260, damping: 22, mass: 0.6 });
 
   const handleMouseMove = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (variant !== "primary" || shouldReduceMotion || !buttonRef.current) {
-      return;
-    }
-
+    if (!buttonRef.current) return;
     const rect = buttonRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-
     x.set((event.clientX - centerX) * MAGNETIC_STRENGTH);
     y.set((event.clientY - centerY) * MAGNETIC_STRENGTH);
   };
@@ -77,34 +70,66 @@ export function Button({
     y.set(0);
   };
 
-  const isMagnetic =
-    variant === "primary" && !shouldReduceMotion && hasFinePointer && !href;
-  const motionProps = {
-    onMouseLeave: resetMagnet,
-    onBlur: resetMagnet,
-    whileTap: shouldReduceMotion ? undefined : { scale: 0.98 },
-    transition: { ...motionTransition, ease: premiumEase },
-    className: cn(baseStyles, variantStyles[variant], className),
-  };
-
-  if (href) {
-    return (
-      <motion.a href={href} {...motionProps} {...(props as HTMLMotionProps<"a">)}>
-        {children}
-      </motion.a>
-    );
-  }
-
   return (
     <motion.button
       ref={buttonRef}
       type="button"
-      style={isMagnetic ? { x: springX, y: springY } : undefined}
+      style={{ x: springX, y: springY }}
       onMouseMove={handleMouseMove}
-      {...motionProps}
-      {...(props as HTMLMotionProps<"button">)}
+      onMouseLeave={resetMagnet}
+      onBlur={resetMagnet}
+      transition={{ ...motionTransition, ease: premiumEase }}
+      className={cn(baseStyles, variantStyles[variant], className)}
+      {...props}
     >
       {children}
     </motion.button>
+  );
+}
+
+export function Button({
+  variant = "primary",
+  className,
+  children,
+  href,
+  ...props
+}: ButtonProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const hasFinePointer = useFinePointer();
+  const isMagnetic =
+    variant === "primary" && !shouldReduceMotion && hasFinePointer && !href;
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={cn(baseStyles, variantStyles[variant], className)}
+        {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  if (isMagnetic) {
+    return (
+      <MagneticButton
+        variant={variant}
+        className={className}
+        {...(props as ButtonAsButton)}
+      >
+        {children}
+      </MagneticButton>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className={cn(baseStyles, variantStyles[variant], className)}
+      {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+    >
+      {children}
+    </button>
   );
 }

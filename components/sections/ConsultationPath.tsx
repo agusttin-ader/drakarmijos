@@ -118,7 +118,7 @@ export function ConsultationPath() {
           >
             <div className="relative aspect-[3/4] w-full">
               <SiteImage
-                src="/images/fotos-qx/quirofano-procedimiento.jpg"
+                src="/images/fotos-qx/quirofano-procedimiento.webp"
                 alt="La Dra. Armijos durante una evaluación endoscópica en quirófano"
                 fill
                 sizes="(max-width: 1023px) min(92vw, 28rem), min(40vw, 520px)"

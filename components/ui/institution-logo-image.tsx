@@ -1,12 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { SiteImage } from "@/components/ui/site-image";
-import {
-  institutionLogoHover,
-  institutionLogoHoverTransition,
-  institutionLogoRest,
-} from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 
@@ -15,42 +9,28 @@ type InstitutionLogoImageProps = ComponentProps<typeof SiteImage> & {
   originClass?: string;
 };
 
+/** CSS-only hover — evita animar `filter` con Framer (caro en paint). */
 export function InstitutionLogoImage({
   className,
   interactive = "hover",
   originClass = "origin-center",
   ...props
 }: InstitutionLogoImageProps) {
-  const reduceMotion = useReducedMotion();
-
-  if (reduceMotion) {
-    return (
-      <SiteImage
-        {...props}
-        className={cn(
-          "w-auto shrink-0 object-contain object-left opacity-90 grayscale-[35%]",
-          className,
-        )}
-      />
-    );
-  }
-
-  const motionProps =
-    interactive === "tap"
-      ? { whileTap: institutionLogoHover }
-      : { whileHover: institutionLogoHover };
-
   return (
-    <motion.span
-      className={cn("inline-flex shrink-0", originClass)}
-      initial={institutionLogoRest}
-      transition={institutionLogoHoverTransition}
-      {...motionProps}
+    <span
+      className={cn(
+        "inline-flex shrink-0 opacity-90 grayscale-[35%] transition-[opacity,filter,transform] duration-300 ease-out motion-reduce:transition-none",
+        originClass,
+        interactive === "hover" &&
+          "hover:scale-[1.04] hover:opacity-100 hover:grayscale-0",
+        interactive === "tap" &&
+          "active:scale-[1.04] active:opacity-100 active:grayscale-0",
+      )}
     >
       <SiteImage
         {...props}
         className={cn("w-auto shrink-0 object-contain object-left", className)}
       />
-    </motion.span>
+    </span>
   );
 }

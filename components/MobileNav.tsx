@@ -26,7 +26,7 @@ export function MobileNav() {
     <nav
       data-mobile-nav
       aria-label="Navegación móvil"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-primary/10 bg-background/95 shadow-nav backdrop-blur-md md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-primary/10 bg-background/95 shadow-nav md:hidden"
     >
       <ul className="mx-auto grid max-w-lg grid-cols-5 pb-[max(0.25rem,env(safe-area-inset-bottom))] pt-1.5">
         {mobileNavItems.map(({ href, label, icon: Icon, action }) => {

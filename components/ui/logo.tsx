@@ -2,10 +2,6 @@ import Link from "next/link";
 import { SiteImage } from "@/components/ui/site-image";
 import { cn } from "@/lib/utils";
 
-/** Emblema cuadrado extraído del manual de marca (scripts/build-brand-assets.py). */
-const LOGO_WIDTH = 2474;
-const LOGO_HEIGHT = 2474;
-
 type LogoProps = {
   variant?: "header" | "footer";
   /** Forzar emblema blanco (nav sobre foto oscura). */
@@ -16,20 +12,24 @@ type LogoProps = {
 
 const variantConfig = {
   header: {
-    src: "/images/logo.png",
+    src: "/images/ui/logo-128.png",
     ariaLabel: "Dra. Karla Armijos — Inicio",
     linkClassName:
       "rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     imageClassName: "h-10 w-auto object-contain sm:h-11",
     sizes: "(max-width: 768px) 40px, 44px",
+    width: 128,
+    height: 128,
   },
   footer: {
-    src: "/images/logo-white.png",
+    src: "/images/ui/logo-white-256.png",
     ariaLabel: "Dra. Karla Armijos — Inicio",
     linkClassName:
       "rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-2 focus-visible:ring-offset-primary",
     imageClassName: "h-12 w-auto object-contain sm:h-14",
     sizes: "(max-width: 768px) 48px, 56px",
+    width: 256,
+    height: 256,
   },
 } as const;
 
@@ -41,7 +41,9 @@ export function Logo({
 }: LogoProps) {
   const config = variantConfig[variant];
   const src =
-    variant === "header" && onDark ? "/images/logo-white.png" : config.src;
+    variant === "header" && onDark
+      ? "/images/ui/logo-white-128.png"
+      : config.src;
 
   return (
     <Link
@@ -52,8 +54,8 @@ export function Logo({
       <SiteImage
         src={src}
         alt=""
-        width={LOGO_WIDTH}
-        height={LOGO_HEIGHT}
+        width={config.width}
+        height={config.height}
         priority={priority}
         sizes={config.sizes}
         className={cn("block", config.imageClassName)}

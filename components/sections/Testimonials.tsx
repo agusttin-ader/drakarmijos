@@ -2,9 +2,9 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
-import { motionTransition, premiumEase } from "@/lib/motion";
+import { premiumEase } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type Testimonial = {
@@ -80,6 +80,8 @@ function StarRating({
 export function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
   const goTo = useCallback((index: number) => {
@@ -95,24 +97,37 @@ export function Testimonials() {
   }, [activeIndex, goTo]);
 
   useEffect(() => {
-    if (isPaused || shouldReduceMotion) return;
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(Boolean(entry?.isIntersecting)),
+      { rootMargin: "80px", threshold: 0.15 },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (isPaused || shouldReduceMotion || !isInView) return;
 
     const interval = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % testimonials.length);
     }, AUTOPLAY_MS);
 
     return () => window.clearInterval(interval);
-  }, [isPaused, shouldReduceMotion]);
+  }, [isPaused, shouldReduceMotion, isInView]);
 
   const slideTransition = shouldReduceMotion
     ? { duration: 0 }
-    : { duration: motionTransition.duration, ease: premiumEase };
+    : { duration: 0.35, ease: premiumEase };
 
   const active = testimonials[activeIndex];
 
   return (
     <section
       id="testimonials"
+      ref={sectionRef}
       aria-labelledby="testimonials-heading"
       className="scroll-anchor section-divider bg-background-alt/35 section-y"
     >
@@ -153,9 +168,9 @@ export function Testimonials() {
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={activeIndex}
-                    initial={shouldReduceMotion ? false : { opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={shouldReduceMotion ? undefined : { opacity: 0, x: 8 }}
+                    initial={shouldReduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={shouldReduceMotion ? undefined : { opacity: 0 }}
                     transition={slideTransition}
                     className="mt-8"
                   >
@@ -229,9 +244,9 @@ export function Testimonials() {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.figure
                   key={activeIndex}
-                  initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
+                  initial={shouldReduceMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={shouldReduceMotion ? undefined : { opacity: 0 }}
                   transition={slideTransition}
                   className="relative"
                 >

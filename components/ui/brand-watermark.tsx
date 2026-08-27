@@ -15,12 +15,12 @@ export function BrandWatermark({ className }: BrandWatermarkProps) {
       )}
     >
       <SiteImage
-        src="/images/logo-white.png"
+        src="/images/ui/logo-white-680.png"
         alt=""
-        width={2474}
-        height={2474}
-        sizes="(max-width: 768px) 420px, 680px"
-        className="aspect-square h-auto w-[clamp(320px,62vw,680px)] max-w-none -translate-x-[18%] translate-y-[18%] object-contain"
+        width={680}
+        height={680}
+        sizes="(max-width: 768px) 320px, 520px"
+        className="aspect-square h-auto w-[clamp(280px,55vw,520px)] max-w-none -translate-x-[18%] translate-y-[18%] object-contain"
       />
     </div>
   );

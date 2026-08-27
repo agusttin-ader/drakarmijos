@@ -5,42 +5,44 @@ import { Container } from "@/components/ui/container";
 import { SiteImage } from "@/components/ui/site-image";
 import { siteData } from "@/lib/site-data";
 
+/** Hero A — atmósfera teal + bokeh aqua (sin rostros stock). */
 export function Hero() {
   return (
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative scroll-anchor flex min-h-[100svh] items-end overflow-hidden bg-black"
+      className="relative scroll-anchor flex min-h-[100svh] items-end overflow-hidden bg-primary-deep"
     >
       <SiteImage
-        src="/images/fotos-qx/quirofano-sala.jpg"
-        alt="Dra. Karla Armijos en quirófano durante un procedimiento otorrinolaringológico"
+        src="/images/hero/hero-atmosphere.webp"
+        alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover object-[42%_center] scale-[1.02]"
+        className="object-cover object-center scale-[1.02]"
       />
 
+      {/* Legibilidad: sombra izquierda/abajo sin tapar el bokeh */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/28 to-transparent"
+        className="absolute inset-0 bg-gradient-to-t from-primary-deep/78 via-primary-deep/25 to-transparent"
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/18 to-transparent"
+        className="absolute inset-0 bg-gradient-to-r from-primary-deep/70 via-primary-deep/28 to-transparent"
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,transparent_0%,rgba(0,0,0,0.14)_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_78%_22%,transparent_0%,rgba(6,28,28,0.28)_100%)]"
       />
 
       <Container className="relative z-10 w-full pb-16 pt-32 sm:pb-20 sm:pt-36 md:pb-24 lg:pb-28 lg:pt-40 2xl:pb-32 2xl:pt-44 3xl:pb-36 3xl:pt-48">
         <div className="hero-enter max-w-2xl text-white 2xl:max-w-3xl 3xl:max-w-4xl">
-          <p className="eyebrow text-white drop-shadow-[0_1px_10px_rgba(0,0,0,0.55)] 2xl:text-xs">
+          <p className="eyebrow text-brand-aqua/95 2xl:text-xs">
             Rinología · Sueño · Buenos Aires
           </p>
 
-          <DoctorName className="mt-5 text-[clamp(3rem,8.5vw,6rem)] leading-[1.02] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] 2xl:text-[clamp(3.75rem,6.5vw,6.75rem)] 3xl:text-[7rem] 4xl:text-[7.75rem]">
+          <DoctorName className="mt-5 text-[clamp(3rem,8.5vw,6rem)] leading-[1.02] text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.35)] 2xl:text-[clamp(3.75rem,6.5vw,6.75rem)] 3xl:text-[7rem] 4xl:text-[7.75rem]">
             {siteData.doctor.name}
           </DoctorName>
 
@@ -51,7 +53,7 @@ export function Hero() {
             Otorrino en Buenos Aires — ronquidos, apnea del sueño y rinología
           </h1>
 
-          <p className="mt-4 max-w-xl font-display text-[clamp(1.35rem,3vw,1.85rem)] font-light leading-[1.25] tracking-tight text-white/95 2xl:max-w-2xl 2xl:text-[clamp(1.65rem,2.2vw,2.25rem)]">
+          <p className="mt-4 max-w-xl font-display text-[clamp(1.35rem,3vw,1.85rem)] font-light leading-[1.25] tracking-tight text-brand-aqua/95 2xl:max-w-2xl 2xl:text-[clamp(1.65rem,2.2vw,2.25rem)]">
             Respira mejor. Duerme mejor.
           </p>
 
@@ -76,7 +78,7 @@ export function Hero() {
             </Link>
           </div>
 
-          <p className="mt-10 text-xs font-medium uppercase tracking-[0.16em] text-white/60 2xl:mt-12 2xl:text-sm">
+          <p className="mt-10 text-xs font-medium uppercase tracking-[0.16em] text-white/55 2xl:mt-12 2xl:text-sm">
             {siteData.doctor.title} · {siteData.doctor.license}
           </p>
         </div>

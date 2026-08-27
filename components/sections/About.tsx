@@ -50,6 +50,13 @@ export function About() {
             once: true,
             invalidateOnRefresh: true,
           },
+          onComplete: () => {
+            gsap.set([imageRef.current, contentRef.current], {
+              clearProps: "transform",
+            });
+            imageRef.current?.classList.remove("md:will-change-transform");
+            contentRef.current?.classList.remove("md:will-change-transform");
+          },
         })
         .to(
           imageRef.current,
@@ -93,10 +100,10 @@ export function About() {
           >
             <PhotoFrame className="shadow-card">
               <SitePhoto
-                src="/images/fotos-qx/quirofano-endoscopia.jpg"
-                alt={`${siteData.doctor.name} en quirófano durante un procedimiento endoscópico`}
+                src="/images/fotos-qx/quirofano-sala.webp"
+                alt={`${siteData.doctor.name} en quirófano durante un procedimiento otorrinolaringológico`}
                 sizes="(max-width: 1023px) min(90vw, 28rem), 520px"
-                objectPosition="object-[center_20%]"
+                objectPosition="object-[center_30%]"
                 className="w-full rounded-none shadow-none ring-0"
               />
             </PhotoFrame>
