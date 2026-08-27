@@ -42,49 +42,6 @@ const defaultTitle =
 const defaultDescription =
   "Otorrino en Buenos Aires (CABA). Ronquidos, apnea del sueño, rinología y ORL pediátrica. Turnos en CEMIC y Hospital Británico. Dra. Karla Armijos — adultos y niños.";
 
-export function buildPageMetadata(page: {
-  title: string;
-  description: string;
-  slug: string;
-  keywords?: string[];
-}): Metadata {
-  const canonical = `/${page.slug}`;
-  const url = `${siteUrl}${canonical}`;
-
-  return {
-    metadataBase: new URL(siteUrl),
-    title: page.title,
-    description: page.description,
-    keywords: [...seoKeywords, ...(page.keywords ?? [])],
-    alternates: { canonical },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    openGraph: {
-      type: "article",
-      locale: "es_AR",
-      url,
-      siteName: siteData.doctor.name,
-      title: page.title,
-      description: page.description,
-      images: [defaultOpenGraphImage],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: page.title,
-      description: page.description,
-      images: [defaultOpenGraphImage.url],
-    },
-  };
-}
-
 export const defaultOpenGraphImage = {
   url: "/images/hero/hero-atmosphere.jpg",
   width: 1536,
@@ -237,35 +194,28 @@ export function buildHomeJsonLd() {
         {
           "@type": "MedicalProcedure",
           name: "Consulta otorrinolaringológica",
-          url: `${siteUrl}/otorrino-buenos-aires`,
+          url: `${siteUrl}/#respira-mejor`,
           description:
             "Evaluación de oído, nariz y garganta en adultos y niños.",
         },
         {
           "@type": "MedicalProcedure",
-          name: "Tratamiento de ronquidos",
-          url: `${siteUrl}/ronquidos`,
+          name: "Tratamiento de ronquidos y apnea del sueño",
+          url: `${siteUrl}/#duerme-mejor`,
           description:
-            "Diagnóstico y tratamiento de ronquidos en Buenos Aires.",
-        },
-        {
-          "@type": "MedicalProcedure",
-          name: "Apnea del sueño",
-          url: `${siteUrl}/apnea-del-sueno`,
-          description:
-            "Estudio del sueño, CPAP y cirugía de vías aéreas superiores.",
+            "Diagnóstico, estudio del sueño, CPAP y cirugía de vías aéreas superiores.",
         },
         {
           "@type": "MedicalProcedure",
           name: "Rinología y cirugía nasal",
-          url: `${siteUrl}/otorrino-buenos-aires`,
+          url: `${siteUrl}/#cirugia-nasal`,
           description:
             "Evaluación de desviación de tabique, sinusitis y rinoplastia funcional.",
         },
         {
           "@type": "MedicalProcedure",
           name: "ORL pediátrica",
-          url: `${siteUrl}/otorrino-buenos-aires`,
+          url: `${siteUrl}/#respira-mejor`,
           description:
             "Consulta otorrinolaringológica en niños: respiración bucal, adenoides y otitis.",
         },

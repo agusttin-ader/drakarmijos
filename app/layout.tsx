@@ -1,5 +1,6 @@
 import type { Viewport } from "next";
 import { Allura, Source_Sans_3 } from "next/font/google";
+import { AnchorSmoothScroll } from "@/components/providers/anchor-smooth-scroll";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { Footer } from "@/components/Footer";
 import { MobileNav } from "@/components/MobileNav";
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <GoogleAnalytics />
+        <AnchorSmoothScroll />
         <SmoothScrollProvider>
           <BookingModalProvider>
             <SkipLink />

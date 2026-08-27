@@ -19,6 +19,12 @@
     background-color: var(--color-background);
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   body {
     @apply bg-background font-sans text-text-primary antialiased;
     /* Reduce zoom por doble tap en mobile sin afectar pinch en desktop. */

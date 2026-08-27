@@ -7,6 +7,25 @@ const nextConfig: NextConfig = {
     // ya optimizados en /public (rápido + alta calidad en cualquier host).
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/otorrino-buenos-aires",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/ronquidos",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/apnea-del-sueno",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

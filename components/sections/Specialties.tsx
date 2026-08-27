@@ -14,57 +14,49 @@ import {
 } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-type SpecialtyLink = {
-  href: string;
-  label: string;
-};
-
 type Specialty = {
+  id: string;
   highlight: HighlightVariant;
   index: string;
   title: string;
   focus: string;
   description: string;
-  links?: SpecialtyLink[];
+  details: string;
 };
 
 const specialties: Specialty[] = [
   {
+    id: "respira-mejor",
     highlight: "orl",
     index: "01",
     title: "Respira Mejor",
     focus: "Rinología · oído, nariz y garganta",
     description:
       "Desviación de tabique, sinusitis, alergias, pérdida de olfato o respiración bucal en niños. Evaluación endoscópica y plan médico o quirúrgico según cada caso.",
-    links: [
-      { href: "/otorrino-buenos-aires", label: "Otorrino en Buenos Aires" },
-    ],
+    details:
+      "Como otorrinolaringóloga en CEMIC y Hospital Británico, priorizo entender la causa antes de operar. Muchas obstrucciones se resuelven con tratamiento médico; la cirugía entra solo cuando aporta un beneficio concreto.",
   },
   {
+    id: "duerme-mejor",
     highlight: "dormirBien",
     index: "02",
     title: "Duerme Mejor",
     focus: "Ronquidos · apnea · bruxismo nocturno",
     description:
       "Estudio del sueño, CPAP, cirugía de vías aéreas superiores y la relación entre bruxismo, pausas respiratorias y fatiga diurna. Si no respiras bien, no duermes bien.",
-    links: [
-      { href: "/ronquidos", label: "Ronquidos" },
-      { href: "/apnea-del-sueno", label: "Apnea del sueño" },
-    ],
+    details:
+      "El ronquido habitual no siempre es inofensivo. Si hay somnolencia diurna, ahogos o pausas, evalúo apnea y armo un plan claro: estudio del sueño, CPAP o cirugía cuando corresponde.",
   },
   {
+    id: "cirugia-nasal",
     highlight: "orl",
     index: "03",
     title: "Cirugía Nasal",
     focus: "Rinoplastia funcional y estética",
     description:
       "Corrección de obstrucción nasal con criterio estético conservador. Cada nariz responde de forma distinta, así que el plan se define sobre tu anatomía y expectativas.",
-    links: [
-      {
-        href: "/otorrino-buenos-aires",
-        label: "Consulta por cirugía nasal",
-      },
-    ],
+    details:
+      "Septoplastia, cornetes o rinoplastia funcional cuando hay indicación. Te explico tiempos, recuperación y límites realistas antes de decidir.",
   },
 ];
 
@@ -108,59 +100,58 @@ export function Specialties() {
           viewport={viewportOnce}
           className="editorial-list overflow-hidden rounded-brand bg-background/70 shadow-card"
         >
-          {specialties.map(({ highlight, index, title, focus, description, links }) => (
-            <motion.li
-              key={title}
-              variants={shouldReduceMotion ? undefined : rowVariants}
-              className="list-none"
-            >
-              <article
-                className={cn(
-                  "grid gap-5 px-4 py-9 transition-colors duration-300 sm:grid-cols-[auto_1fr_auto] sm:items-start sm:gap-8 sm:px-6 sm:py-11 lg:gap-12 lg:px-8 lg:py-12",
-                  "hover:bg-background-alt/80",
-                )}
+          {specialties.map(
+            ({ id, highlight, index, title, focus, description, details }) => (
+              <motion.li
+                key={id}
+                variants={shouldReduceMotion ? undefined : rowVariants}
+                className="list-none"
               >
-                <p aria-hidden className="index-number sm:pt-0.5">
-                  {index}
-                </p>
-
-                <div className="min-w-0">
-                  <p className="eyebrow tracking-[0.18em]">{focus}</p>
-                  <h3
-                    id={`specialty-${title.replace(/\s+/g, "-").toLowerCase()}`}
-                    className="mt-2 font-display text-2xl font-light tracking-tight text-text-primary sm:text-[1.65rem]"
-                  >
-                    {title}
-                  </h3>
-                  <p className="prose-measure mt-3 text-base leading-relaxed text-text-secondary">
-                    {description}
-                  </p>
-                  {links && links.length > 0 ? (
-                    <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-                      {links.map((link) => (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          className="inline-flex text-sm font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                        >
-                          {link.label} →
-                        </Link>
-                      ))}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div
-                  aria-hidden
-                  className="flex shrink-0 items-start opacity-90 sm:pt-1"
+                <article
+                  id={id}
+                  className={cn(
+                    "scroll-anchor grid gap-5 px-4 py-9 transition-colors duration-300 sm:grid-cols-[auto_1fr_auto] sm:items-start sm:gap-8 sm:px-6 sm:py-11 lg:gap-12 lg:px-8 lg:py-12",
+                    "hover:bg-background-alt/80",
+                  )}
                 >
-                  <div className="rounded-full bg-background-alt/80 p-2 ring-1 ring-primary/8">
-                    <HighlightBadge variant={highlight} className="size-10 sm:size-12" />
+                  <p aria-hidden className="index-number sm:pt-0.5">
+                    {index}
+                  </p>
+
+                  <div className="min-w-0">
+                    <p className="eyebrow tracking-[0.18em]">{focus}</p>
+                    <h3 className="mt-2 font-display text-2xl font-light tracking-tight text-text-primary sm:text-[1.65rem]">
+                      {title}
+                    </h3>
+                    <p className="prose-measure mt-3 text-base leading-relaxed text-text-secondary">
+                      {description}
+                    </p>
+                    <p className="prose-measure mt-3 text-sm leading-relaxed text-text-secondary/90 sm:text-base">
+                      {details}
+                    </p>
+                    <Link
+                      href="/#booking"
+                      className="mt-4 inline-flex text-sm font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    >
+                      Agendar consulta →
+                    </Link>
                   </div>
-                </div>
-              </article>
-            </motion.li>
-          ))}
+
+                  <div
+                    aria-hidden
+                    className="flex shrink-0 items-start opacity-90 sm:pt-1"
+                  >
+                    <div className="rounded-full bg-background-alt/80 p-2 ring-1 ring-primary/8">
+                      <HighlightBadge
+                        variant={highlight}
+                        className="size-10 sm:size-12"
+                      />
+                    </div>
+                  </div>
+                </article>
+              </motion.li>
+            ),
+          )}
         </motion.ol>
       </Container>
     </section>

@@ -21,9 +21,9 @@ const navLinks = [
 ] as const;
 
 const serviceLinks = [
-  { label: "Otorrino en Buenos Aires", href: "/otorrino-buenos-aires" },
-  { label: "Ronquidos", href: "/ronquidos" },
-  { label: "Apnea del sueño", href: "/apnea-del-sueno" },
+  { label: "Respira Mejor", href: "/#respira-mejor" },
+  { label: "Duerme Mejor", href: "/#duerme-mejor" },
+  { label: "Cirugía Nasal", href: "/#cirugia-nasal" },
 ] as const;
 
 const socialLinks = [

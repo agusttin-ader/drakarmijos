@@ -66,6 +66,11 @@ export const siteData = {
         "Si roncas de forma habitual, hay pausas respiratorias, te despiertas cansado o con dolor de cabeza, o tu pareja nota ahogos nocturnos, conviene una evaluación. No todos los ronquidos son apnea, pero muchos casos leves se diagnostican tarde.",
     },
     {
+      question: "¿Apnea del sueño y ronquidos son lo mismo?",
+      answer:
+        "No. El ronquido es un síntoma; la apnea implica pausas respiratorias repetidas. Pueden coexistir, pero requieren evaluación específica — a veces con polisomnografía.",
+    },
+    {
       question: "¿Qué estudios pides con más frecuencia?",
       answer:
         "Según el motivo de consulta: endoscopia nasal, polisomnografía o estudios del sueño, audiometría y, en algunos casos, monitoreo con wearables. Te explico para qué sirve cada uno antes de solicitarlo.",

@@ -5,19 +5,4 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <url>
-    <loc>https://www.drakarmijos.com/otorrino-buenos-aires</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.drakarmijos.com/ronquidos</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.drakarmijos.com/apnea-del-sueno</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
 </urlset>
