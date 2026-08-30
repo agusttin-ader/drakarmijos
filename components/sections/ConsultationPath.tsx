@@ -118,7 +118,7 @@ export function ConsultationPath() {
           >
             <div className="relative aspect-[3/4] w-full">
               <SiteImage
-                src="/images/fotos-qx/consul1.jpeg"
+                src="/images/fotos-qx/consulta-bata.jpeg"
                 alt="La Dra. Armijos en consultorio, con bata blanca y especialización en rinología y trastornos del sueño"
                 fill
                 sizes="(max-width: 1023px) min(92vw, 28rem), min(40vw, 520px)"

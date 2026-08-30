@@ -9,7 +9,7 @@ import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SitePhoto } from "@/components/ui/site-photo";
 import { gsap } from "@/lib/gsap";
 import { gsapDuration, gsapEase } from "@/lib/motion";
-import { siteData } from "@/lib/site-data";
+import { siteCopy, siteData } from "@/lib/site-data";
 
 const MOBILE_QUERY = "(max-width: 767px)";
 
@@ -141,7 +141,7 @@ export function About() {
                 Diagnostico y trato patologías de oído, nariz y garganta, con
                 foco en obstrucción nasal, alergias, ronquidos y apnea
                 obstructiva del sueño. Atiendo adultos y niños en{" "}
-                {siteData.clinics.map((c) => c.name).join(" y ")}.
+                {siteCopy.clinicsListConjunction}.
               </p>
               <p>
                 En consulta priorizo explicar cada estudio — endoscopia,

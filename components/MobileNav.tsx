@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, Home, Layers, Quote, UserRound } from "lucide-react";
+import { Calendar, ClipboardList, Home, Quote, UserRound } from "lucide-react";
 import { useBookingModal } from "@/components/providers/booking-modal-provider";
 import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -9,10 +9,10 @@ import { cn } from "@/lib/utils";
 const mobileNavItems = [
   { href: "/#hero", label: "Inicio", icon: Home, action: "scroll" as const },
   { href: "/#about", label: "Sobre mí", icon: UserRound, action: "scroll" as const },
-  { href: "/#specialties", label: "Áreas", icon: Layers, action: "scroll" as const },
+  { href: "/#consulta", label: "Consulta", icon: ClipboardList, action: "scroll" as const },
   {
     href: "/#testimonials",
-    label: "Opiniones",
+    label: "Motivos",
     icon: Quote,
     action: "scroll" as const,
   },

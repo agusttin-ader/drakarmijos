@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/container";
 import { InstitutionLogoImage } from "@/components/ui/institution-logo-image";
 import { WhatsAppIcon } from "@/components/ui/social-icons";
 import { institutionLogoClass } from "@/lib/institution-logos";
-import { siteData } from "@/lib/site-data";
+import { siteCopy, siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 export function Booking() {
@@ -27,13 +27,10 @@ export function Booking() {
                 Agendá tu consulta en Buenos Aires
               </h2>
               <p className="mt-3 text-sm font-medium tracking-[0.12em] text-primary uppercase">
-                CEMIC · Hospital Británico · COMS
+                {siteCopy.clinicsFullLabels}
               </p>
               <p className="prose-measure mt-5 text-base leading-relaxed text-text-secondary">
-                Miércoles y jueves en CEMIC. También atención en Hospital
-                Británico y COMS. Los datos de cada sede están a la derecha —
-                o escribime por WhatsApp o formulario y te respondo en{" "}
-                {siteData.contact.responseTime}.
+                {siteCopy.bookingIntro} {siteData.contact.responseTime}.
               </p>
             </div>
 
@@ -98,6 +95,16 @@ export function Booking() {
                         </li>
                       ))}
                     </ul>
+                  ) : null}
+                  {"website" in clinic && clinic.website ? (
+                    <a
+                      href={clinic.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-block text-sm font-medium text-primary underline-offset-4 transition-colors duration-300 hover:underline"
+                    >
+                      Turno online en otorrinosdelsueno.com
+                    </a>
                   ) : null}
                 </li>
               ))}

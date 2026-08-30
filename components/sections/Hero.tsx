@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/container";
 import { PhotoFrame } from "@/components/ui/photo-frame";
 import { SiteImage } from "@/components/ui/site-image";
 import { SitePhoto } from "@/components/ui/site-photo";
-import { siteData } from "@/lib/site-data";
+import { siteCopy, siteData } from "@/lib/site-data";
 
 const HERO_IMAGE = "/images/fotos-qx/hero.jpg";
 
@@ -62,10 +62,12 @@ export function Hero() {
                 Respira mejor. Duerme mejor.
               </p>
 
-              <p className="prose-measure mt-5 text-base leading-relaxed text-white/85 sm:text-lg 2xl:text-xl 3xl:text-2xl">
-                Otorrinolaringóloga en CEMIC y Hospital Británico. Consulta por
-                oído, nariz y garganta, ronquidos, apnea, sinusitis y cirugía
-                nasal. Un plan claro desde la primera visita — adultos y niños.
+              <p className="prose-measure mt-5 text-base leading-relaxed text-white/85 sm:hidden">
+                {siteCopy.heroLeadMobile}
+              </p>
+              <p className="prose-measure mt-5 hidden text-base leading-relaxed text-white/85 sm:block sm:text-lg 2xl:text-xl 3xl:text-2xl">
+                Otorrinolaringóloga en {siteCopy.clinicsListConjunction}.{" "}
+                {siteCopy.heroLead}
               </p>
 
               <div className="mt-10 flex flex-wrap items-center gap-4 sm:mt-12 2xl:mt-14">

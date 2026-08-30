@@ -16,10 +16,10 @@ const clinics = [
   },
   {
     name: "COMS",
-    logo: "/images/institutions/coms.jpg",
-    address:
-      "Centro de Otorrinolaringología y Medicina del Sueño, Ciudad Autónoma de Buenos Aires",
-    hours: null,
+    logo: "/images/institutions/coms.png",
+    website: "https://otorrinosdelsueno.com",
+    address: "José E. Uriburu 1252, Depto 2B, Ciudad Autónoma de Buenos Aires",
+    hours: [{ day: "Jueves", time: "10:00 – 13:00 hs" }],
   },
 ] as const;
 
@@ -34,6 +34,35 @@ const institutions = [
   ...clinics.map(({ name, logo }) => ({ name, logo })),
   ...affiliations,
 ] as const;
+
+function clinicShortLabel(name: (typeof clinics)[number]["name"]): string {
+  return name === "Hospital Británico" ? "Británico" : name;
+}
+
+const clinicsShortLabels = clinics
+  .map((clinic) => clinicShortLabel(clinic.name))
+  .join(" · ");
+
+const clinicsFullLabels = clinics.map((clinic) => clinic.name).join(" · ");
+
+const clinicsListConjunction = new Intl.ListFormat("es-AR", {
+  style: "long",
+  type: "conjunction",
+}).format(clinics.map((clinic) => clinic.name));
+
+export const siteCopy = {
+  clinicsShortLabels,
+  clinicsFullLabels,
+  clinicsListConjunction,
+  heroLead:
+    "Consulta por oído, nariz y garganta, ronquidos, apnea, sinusitis y cirugía nasal. Un plan claro desde la primera visita — adultos y niños.",
+  heroLeadMobile:
+    "Otorrino en CABA. Ronquidos, apnea y rinología — adultos y niños.",
+  bookingIntro:
+    "Miércoles y jueves por la tarde en CEMIC, jueves por la mañana en COMS. También atención en Hospital Británico. Los datos de cada sede están a la derecha — o escribime por WhatsApp o formulario y te respondo en",
+  specialtiesPractice:
+    "Como otorrinolaringóloga en CEMIC, Hospital Británico y COMS, priorizo entender la causa antes de operar. Muchas obstrucciones se resuelven con tratamiento médico; la cirugía entra solo cuando aporta un beneficio concreto.",
+} as const;
 
 export const siteData = {
   doctor: {
@@ -58,14 +87,14 @@ export const siteData = {
   institutions,
   stats: [
     { label: "Matrícula", value: "MN 156125" },
-    { label: "Instituciones", value: "CEMIC · Británico" },
+    { label: "Instituciones", value: clinicsShortLabels },
     { label: "Consulta", value: "Adultos y niños" },
   ] as const,
   faqs: [
     {
       question: "¿Dónde encuentro un otorrino en Buenos Aires?",
       answer:
-        "Atiendo en CEMIC (Av. Las Heras 2900) miércoles y jueves, y en Hospital Británico (Perdriel 74). Podés agendar por WhatsApp o formulario web.",
+        "Atiendo en CEMIC (Av. Las Heras 2900) miércoles y jueves por la tarde, en COMS (José E. Uriburu 1252) los jueves de 10 a 13 hs, y en Hospital Británico (Perdriel 74). Podés agendar por WhatsApp, formulario web o turno online en otorrinosdelsueno.com.",
     },
     {
       question: "¿Cuándo conviene consultar por ronquidos o apnea?",
@@ -100,7 +129,7 @@ export const siteData = {
     {
       question: "¿Dónde atiendes y cómo agendo una cita?",
       answer:
-        "Miércoles y jueves en CEMIC (Av. Las Heras 2900) y también en Hospital Británico (Perdriel 74). Puedes escribirme por WhatsApp o completar el formulario: te respondo por el mismo canal.",
+        "Miércoles y jueves por la tarde en CEMIC (Av. Las Heras 2900); jueves de 10 a 13 hs en COMS (José E. Uriburu 1252); también en Hospital Británico (Perdriel 74). Escribime por WhatsApp, completá el formulario o pedí turno en otorrinosdelsueno.com.",
     },
   ] as const,
   contact: {

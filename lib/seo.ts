@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { siteData } from "@/lib/site-data";
+import { siteCopy, siteData } from "@/lib/site-data";
 
 const DEFAULT_SITE_URL = "https://www.drakarmijos.com";
 
@@ -32,6 +32,7 @@ export const seoKeywords = [
   "rinoplastia funcional",
   "CEMIC otorrino",
   "Hospital Británico otorrino",
+  "COMS otorrino",
   "ORL adultos y niños",
   "Dra. Karla Armijos",
 ] as const;
@@ -39,11 +40,10 @@ export const seoKeywords = [
 const defaultTitle =
   "Otorrino Buenos Aires · Ronquidos y Apnea del Sueño | Dra. Karla Armijos";
 
-const defaultDescription =
-  "Otorrino en Buenos Aires (CABA). Ronquidos, apnea del sueño, rinología y ORL pediátrica. Turnos en CEMIC y Hospital Británico. Dra. Karla Armijos — adultos y niños.";
+const defaultDescription = `Otorrino en Buenos Aires (CABA). Ronquidos, apnea del sueño, rinología y ORL pediátrica. Turnos en ${siteCopy.clinicsListConjunction}. Dra. Karla Armijos — adultos y niños.`;
 
 export const defaultOpenGraphImage = {
-  url: "/images/hero/hero-atmosphere.jpg",
+  url: "/images/fotos-qx/hero.jpg",
   width: 1536,
   height: 1024,
   alt: "Dra. Karla Armijos — otorrinolaringóloga en Buenos Aires",
@@ -115,6 +115,13 @@ const clinicGeo = {
     locality: "Ciudad Autónoma de Buenos Aires",
     region: "CABA",
     postalCode: "C1280",
+    country: "AR",
+  },
+  COMS: {
+    streetAddress: "José E. Uriburu 1252",
+    locality: "Ciudad Autónoma de Buenos Aires",
+    region: "CABA",
+    postalCode: "C1124",
     country: "AR",
   },
 } as const;

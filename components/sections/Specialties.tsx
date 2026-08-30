@@ -12,6 +12,7 @@ import {
   staggerDelay,
   viewportOnce,
 } from "@/lib/motion";
+import { siteCopy } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 type Specialty = {
@@ -33,8 +34,7 @@ const specialties: Specialty[] = [
     focus: "Rinología · oído, nariz y garganta",
     description:
       "Desviación de tabique, sinusitis, alergias, pérdida de olfato o respiración bucal en niños. Evaluación endoscópica y plan médico o quirúrgico según cada caso.",
-    details:
-      "Como otorrinolaringóloga en CEMIC y Hospital Británico, priorizo entender la causa antes de operar. Muchas obstrucciones se resuelven con tratamiento médico; la cirugía entra solo cuando aporta un beneficio concreto.",
+    details: siteCopy.specialtiesPractice,
   },
   {
     id: "duerme-mejor",

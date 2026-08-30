@@ -15,7 +15,7 @@ const navLinks = [
   { label: "Sobre mí", href: "/#about" },
   { label: "Especialidades", href: "/#specialties" },
   { label: "Consulta", href: "/#consulta" },
-  { label: "Opiniones", href: "/#testimonials" },
+  { label: "Motivos", href: "/#testimonials" },
   { label: "Preguntas", href: "/#faq" },
   { label: "Contacto", href: "/#booking" },
 ] as const;
