@@ -111,18 +111,18 @@ export function ConsultationPath() {
           </div>
 
           <PhotoFrame
-            caption="Evaluación endoscópica · plan a medida"
+            caption="Consulta personalizada · plan claro"
             className={cn(
               "mx-auto w-full min-w-0 max-w-md lg:mx-0 lg:max-w-full lg:sticky lg:top-28",
             )}
           >
             <div className="relative aspect-[3/4] w-full">
               <SiteImage
-                src="/images/fotos-qx/quirofano-procedimiento.webp"
-                alt="La Dra. Armijos durante una evaluación endoscópica en quirófano"
+                src="/images/fotos-qx/consul1.jpeg"
+                alt="La Dra. Armijos en consultorio, con bata blanca y especialización en rinología y trastornos del sueño"
                 fill
                 sizes="(max-width: 1023px) min(92vw, 28rem), min(40vw, 520px)"
-                className="object-cover object-[center_15%]"
+                className="object-cover object-center"
               />
             </div>
           </PhotoFrame>

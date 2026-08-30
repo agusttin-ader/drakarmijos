@@ -16,29 +16,38 @@ export function Booking() {
       className="scroll-anchor section-divider bg-background-alt/70 brand-pattern section-y"
     >
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16 xl:gap-20">
-          <div className="surface-panel border-l-4 border-l-brand-aqua p-6 sm:p-8 lg:p-10">
-            <p className="eyebrow">Contacto</p>
-            <h2
-              id="booking-heading"
-              className="mt-3 font-display text-[clamp(1.875rem,4vw,2.75rem)] font-light leading-[1.1] tracking-tight text-text-primary"
-            >
-              Citas en CEMIC y Hospital Británico.
-            </h2>
-            <p className="prose-measure mt-4 text-base leading-relaxed text-text-secondary">
-              Miércoles y jueves en CEMIC (Las Heras 2900). También atención en
-              Hospital Británico (Perdriel 74). WhatsApp o formulario: te respondo
-              por el mismo canal.
-            </p>
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch lg:gap-16 xl:gap-20">
+          <div className="surface-panel flex flex-col border-l-4 border-l-brand-aqua p-6 sm:p-8 lg:p-10">
+            <div className="min-w-0">
+              <p className="eyebrow">Contacto</p>
+              <h2
+                id="booking-heading"
+                className="mt-3 font-display text-[clamp(1.875rem,4vw,2.5rem)] font-light leading-[1.12] tracking-tight text-text-primary xl:text-[2.35rem]"
+              >
+                Agendá tu consulta en Buenos Aires
+              </h2>
+              <p className="mt-3 text-sm font-medium tracking-[0.12em] text-primary uppercase">
+                CEMIC · Hospital Británico · COMS
+              </p>
+              <p className="prose-measure mt-5 text-base leading-relaxed text-text-secondary">
+                Miércoles y jueves en CEMIC. También atención en Hospital
+                Británico y COMS. Los datos de cada sede están a la derecha —
+                o escribime por WhatsApp o formulario y te respondo en{" "}
+                {siteData.contact.responseTime}.
+              </p>
+            </div>
 
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-              <BookConsultButton variant="primary" className="w-full sm:w-auto">
+            <div className="mt-auto flex flex-col gap-3 pt-8 sm:flex-row sm:flex-wrap sm:items-center sm:pt-10">
+              <BookConsultButton
+                variant="primary"
+                className="w-full sm:w-auto sm:min-w-[11.5rem]"
+              >
                 {siteData.cta.book}
               </BookConsultButton>
               <Button
                 href={siteData.contact.whatsappUrl}
                 variant="outline"
-                className="w-full gap-2.5 sm:w-auto"
+                className="w-full gap-2.5 sm:w-auto sm:min-w-[11.5rem]"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Escríbeme por WhatsApp"
@@ -51,13 +60,13 @@ export function Booking() {
 
           <aside
             aria-label="Información del consultorio"
-            className="surface-panel overflow-hidden"
+            className="surface-panel flex flex-col overflow-hidden"
           >
-            <ul className="editorial-list divide-y-0 border-y-0">
+            <ul className="editorial-list flex-1 divide-y divide-primary/10 border-y-0">
               {siteData.clinics.map((clinic) => (
                 <li
                   key={clinic.name}
-                  className="border-b border-primary/10 px-5 py-6 last:border-b-0 sm:px-6"
+                  className="px-5 py-5 sm:px-6 sm:py-6"
                 >
                   <InstitutionLogoImage
                     src={clinic.logo}
@@ -68,6 +77,7 @@ export function Booking() {
                     className={cn(
                       "w-auto object-left",
                       institutionLogoClass(clinic.name, "clinic", "h-9"),
+                      clinic.name === "COMS" && "rounded-brand",
                     )}
                   />
                   <p className="mt-3 text-sm leading-relaxed text-text-secondary">
@@ -92,7 +102,7 @@ export function Booking() {
                 </li>
               ))}
 
-              <li className="border-b border-primary/10 px-5 py-6 sm:px-6">
+              <li className="mt-auto border-t border-primary/10 px-5 py-5 sm:px-6 sm:py-6">
                 <div className="flex gap-4">
                   <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/5 text-primary">
                     <Phone className="size-4 stroke-[1.75]" aria-hidden />

@@ -14,6 +14,13 @@ const clinics = [
     address: "Perdriel 74, Ciudad Autónoma de Buenos Aires",
     hours: null,
   },
+  {
+    name: "COMS",
+    logo: "/images/institutions/coms.jpg",
+    address:
+      "Centro de Otorrinolaringología y Medicina del Sueño, Ciudad Autónoma de Buenos Aires",
+    hours: null,
+  },
 ] as const;
 
 const affiliations = [

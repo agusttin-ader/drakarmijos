@@ -12,6 +12,10 @@ export const institutionLogoSizes = {
     desktop: "h-9 sm:h-14 md:h-16",
     clinic: "h-10",
   },
+  COMS: {
+    desktop: "h-9 sm:h-12 md:h-14",
+    clinic: "h-10 sm:h-11",
+  },
 } as const;
 
 export type InstitutionLogoContext = keyof (typeof institutionLogoSizes)["CEMIC"];

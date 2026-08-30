@@ -100,10 +100,10 @@ export function About() {
           >
             <PhotoFrame className="shadow-card">
               <SitePhoto
-                src="/images/fotos-qx/quirofano-sala.webp"
-                alt={`${siteData.doctor.name} en quirófano durante un procedimiento otorrinolaringológico`}
+                src="/images/about/dra-armijos-retrato.jpg"
+                alt={`${siteData.doctor.name}, otorrinolaringóloga especialista en rinología y trastornos del sueño`}
                 sizes="(max-width: 1023px) min(90vw, 28rem), 520px"
-                objectPosition="object-[center_30%]"
+                objectPosition="object-center"
                 className="w-full rounded-none shadow-none ring-0"
               />
             </PhotoFrame>

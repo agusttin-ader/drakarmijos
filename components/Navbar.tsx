@@ -47,6 +47,7 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false);
   const lastScrollY = useRef(0);
   const mountedRef = useRef(false);
+  const suppressNavbarHideRef = useRef(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
 
@@ -77,6 +78,12 @@ export function Navbar() {
       setIsAtTop((prev) => (prev === atTop ? prev : atTop));
 
       if (shouldReduceMotion || isMenuOpen) {
+        setIsHidden((prev) => (prev ? false : prev));
+        lastScrollY.current = scroll;
+        return;
+      }
+
+      if (suppressNavbarHideRef.current) {
         setIsHidden((prev) => (prev ? false : prev));
         lastScrollY.current = scroll;
         return;
@@ -138,13 +145,31 @@ export function Navbar() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  const handleNavLinkClick = () => {
+    closeMenu();
+    setIsHidden(false);
+    suppressNavbarHideRef.current = true;
+    lastScrollY.current = window.scrollY;
+
+    let released = false;
+    const releaseSuppress = () => {
+      if (released) return;
+      released = true;
+      suppressNavbarHideRef.current = false;
+      lastScrollY.current = window.scrollY;
+    };
+
+    window.addEventListener("scrollend", releaseSuppress, { once: true });
+    window.setTimeout(releaseSuppress, 1500);
+  };
+
   const onDarkChrome = isAtTop && !isMenuOpen;
 
   return (
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-out motion-reduce:transition-none",
+          "fixed inset-x-0 top-0 z-[60] transition-transform duration-500 ease-out motion-reduce:transition-none",
           isHidden && !shouldReduceMotion && !isMenuOpen
             ? "-translate-y-[calc(100%+0.5rem)] pointer-events-none"
             : "translate-y-0",
@@ -154,7 +179,7 @@ export function Navbar() {
           aria-hidden
           className={cn(
             "absolute inset-0 bg-background/95 transition-[opacity,box-shadow,backdrop-filter] duration-500 ease-out motion-reduce:transition-none",
-            onDarkChrome
+            onDarkChrome && !isMenuOpen
               ? "opacity-0 shadow-none"
               : "opacity-100 shadow-nav backdrop-blur-md",
           )}
@@ -163,7 +188,7 @@ export function Navbar() {
           aria-hidden
           className={cn(
             "absolute inset-x-0 bottom-0 h-px bg-primary/10 transition-opacity duration-500 ease-out motion-reduce:transition-none",
-            onDarkChrome ? "opacity-0" : "opacity-100",
+            onDarkChrome && !isMenuOpen ? "opacity-0" : "opacity-100",
           )}
         />
 
@@ -173,7 +198,7 @@ export function Navbar() {
 
             <Link
               href="/"
-              onClick={closeMenu}
+              onClick={handleNavLinkClick}
               className={cn(
                 "min-w-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                 onDarkChrome
@@ -185,7 +210,9 @@ export function Navbar() {
                 as="span"
                 className={cn(
                   "block truncate text-[1.5rem] leading-[1.02] sm:text-[1.625rem] 2xl:text-[1.75rem]",
-                  onDarkChrome ? "text-white" : "text-text-primary",
+                  onDarkChrome
+                    ? "text-white shadow-on-photo"
+                    : "text-text-primary",
                 )}
               >
                 {siteData.doctor.shortName}
@@ -193,7 +220,9 @@ export function Navbar() {
               <span
                 className={cn(
                   "mt-1 hidden truncate text-[0.625rem] font-medium uppercase tracking-[0.16em] sm:block lg:text-[0.6875rem]",
-                  onDarkChrome ? "text-white/80" : "text-text-secondary",
+                  onDarkChrome
+                    ? "text-white/95 shadow-on-photo"
+                    : "text-text-secondary",
                 )}
               >
                 {siteData.doctor.title}
@@ -213,11 +242,12 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={handleNavLinkClick}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
                     "relative rounded-md px-1 py-1 text-sm transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 2xl:text-[0.9375rem]",
                     onDarkChrome
-                      ? "text-white/80 hover:text-white focus-visible:ring-brand-aqua focus-visible:ring-offset-transparent"
+                      ? "text-white/95 shadow-on-photo hover:text-white focus-visible:ring-brand-aqua focus-visible:ring-offset-transparent"
                       : isActive
                         ? "font-medium text-primary focus-visible:ring-primary focus-visible:ring-offset-background"
                         : "text-text-secondary hover:text-primary focus-visible:ring-primary focus-visible:ring-offset-background",
@@ -241,7 +271,7 @@ export function Navbar() {
               className={cn(
                 "hidden rounded-md text-xs font-medium tabular-nums tracking-wide xl:inline-block 2xl:text-sm",
                 onDarkChrome
-                  ? "text-white/85 hover:text-white"
+                  ? "text-white/95 shadow-on-photo hover:text-white"
                   : "text-text-secondary hover:text-primary",
               )}
             >
@@ -266,7 +296,7 @@ export function Navbar() {
                 "inline-flex size-10 items-center justify-center rounded-md lg:hidden",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
                 onDarkChrome
-                  ? "text-white focus-visible:ring-brand-aqua focus-visible:ring-offset-transparent"
+                  ? "text-white shadow-on-photo focus-visible:ring-brand-aqua focus-visible:ring-offset-transparent"
                   : "text-text-primary focus-visible:ring-primary focus-visible:ring-offset-background",
               )}
               aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -314,7 +344,28 @@ export function Navbar() {
                   }
                   className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-primary/10 bg-background shadow-elevated lg:hidden"
                 >
-                  <div className="flex h-full flex-col px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6">
+                  <div className="flex h-full flex-col">
+                    <div className="flex items-center justify-between gap-3 border-b border-primary/10 px-5 py-4 sm:px-6 lg:hidden">
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <Logo variant="header" />
+                        <DoctorName
+                          as="span"
+                          className="truncate text-[1.375rem] leading-[1.02] text-text-primary sm:text-[1.5rem]"
+                        >
+                          {siteData.doctor.shortName}
+                        </DoctorName>
+                      </div>
+                      <button
+                        type="button"
+                        className="inline-flex size-10 shrink-0 items-center justify-center rounded-md text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        aria-label="Cerrar menú"
+                        onClick={closeMenu}
+                      >
+                        <X className="size-5 stroke-[1.5]" aria-hidden />
+                      </button>
+                    </div>
+
+                    <div className="flex flex-1 flex-col overflow-hidden px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-4 sm:px-6">
                     <nav aria-label="Menú móvil" className="flex-1 overflow-y-auto">
                       <ul className="space-y-1">
                         {navLinks.map((link) => {
@@ -325,7 +376,7 @@ export function Navbar() {
                             <li key={link.href}>
                               <Link
                                 href={link.href}
-                                onClick={closeMenu}
+                                onClick={handleNavLinkClick}
                                 aria-current={isActive ? "true" : undefined}
                                 className={cn(
                                   "block rounded-brand px-4 py-3.5 font-display text-lg font-light transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
@@ -361,6 +412,7 @@ export function Navbar() {
                       >
                         {siteData.cta.book}
                       </Button>
+                    </div>
                     </div>
                   </div>
                 </motion.div>
