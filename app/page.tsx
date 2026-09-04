@@ -1,7 +1,9 @@
 import dynamic from "next/dynamic";
+import { ComingSoon } from "@/components/coming-soon/coming-soon";
 import { HomeJsonLd } from "@/components/seo/home-json-ld";
 import { Hero } from "@/components/sections/Hero";
 import { Institutions } from "@/components/sections/Institutions";
+import { isSiteComingSoon } from "@/lib/site-config";
 
 const About = dynamic(() =>
   import("@/components/sections/About").then((m) => m.About),
@@ -23,6 +25,10 @@ const Booking = dynamic(() =>
 );
 
 export default function Home() {
+  if (isSiteComingSoon) {
+    return <ComingSoon />;
+  }
+
   return (
     <>
       <HomeJsonLd />

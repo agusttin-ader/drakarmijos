@@ -9,6 +9,7 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { SkipLink } from "@/components/SkipLink";
 import { BookingModalProvider } from "@/components/providers/booking-modal-provider";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { isSiteComingSoon } from "@/lib/site-config";
 import { buildSiteMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -31,7 +32,24 @@ const allura = Allura({
   weight: "400",
 });
 
-export const metadata = buildSiteMetadata();
+export const metadata = isSiteComingSoon
+  ? buildSiteMetadata({
+      title: "Próximamente",
+      description:
+        "Sitio en construcción. Pronto vas a encontrar información sobre otorrinolaringología, ronquidos y apnea del sueño con la Dra. Karla Armijos.",
+      robots: { index: false, follow: false },
+      openGraph: {
+        title: "Próximamente | Dra. Karla Armijos",
+        description:
+          "Estamos trabajando en algo nuevo. Volvemos pronto.",
+      },
+      twitter: {
+        title: "Próximamente | Dra. Karla Armijos",
+        description:
+          "Estamos trabajando en algo nuevo. Volvemos pronto.",
+      },
+    })
+  : buildSiteMetadata();
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -51,17 +69,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col">
         <GoogleAnalytics />
-        <AnchorSmoothScroll />
-        <SmoothScrollProvider>
-          <BookingModalProvider>
-            <SkipLink />
-            <ScrollProgress />
-            <Navbar />
-            {children}
-            <Footer />
-            <MobileNav />
-          </BookingModalProvider>
-        </SmoothScrollProvider>
+        {isSiteComingSoon ? (
+          children
+        ) : (
+          <>
+            <AnchorSmoothScroll />
+            <SmoothScrollProvider>
+              <BookingModalProvider>
+                <SkipLink />
+                <ScrollProgress />
+                <Navbar />
+                {children}
+                <Footer />
+                <MobileNav />
+              </BookingModalProvider>
+            </SmoothScrollProvider>
+          </>
+        )}
       </body>
     </html>
   );
