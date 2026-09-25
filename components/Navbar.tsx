@@ -11,6 +11,7 @@ import { useBookingModal } from "@/components/providers/booking-modal-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
+import { useIsClient } from "@/lib/hooks/use-is-client";
 import { useScrollLock } from "@/lib/hooks/use-scroll-lock";
 import { useActiveSection } from "@/lib/hooks/use-active-section";
 import { motionTransition } from "@/lib/motion";
@@ -44,7 +45,7 @@ export function Navbar() {
   const [isAtTop, setIsAtTop] = useState(true);
   const [isHidden, setIsHidden] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsClient();
   const lastScrollY = useRef(0);
   const mountedRef = useRef(false);
   const suppressNavbarHideRef = useRef(false);
@@ -55,7 +56,6 @@ export function Navbar() {
 
   useEffect(() => {
     mountedRef.current = true;
-    setMounted(true);
     return () => {
       mountedRef.current = false;
     };
@@ -163,7 +163,8 @@ export function Navbar() {
     window.setTimeout(releaseSuppress, 1500);
   };
 
-  const onDarkChrome = isAtTop && !isMenuOpen;
+  const navOverHero = isAtTop && !isMenuOpen;
+  const onDarkChrome = false;
 
   return (
     <>
@@ -179,7 +180,7 @@ export function Navbar() {
           aria-hidden
           className={cn(
             "absolute inset-0 bg-background/95 transition-[opacity,box-shadow,backdrop-filter] duration-500 ease-out motion-reduce:transition-none",
-            onDarkChrome && !isMenuOpen
+            navOverHero && !isMenuOpen
               ? "opacity-0 shadow-none"
               : "opacity-100 shadow-nav backdrop-blur-md",
           )}
@@ -188,7 +189,7 @@ export function Navbar() {
           aria-hidden
           className={cn(
             "absolute inset-x-0 bottom-0 h-px bg-primary/10 transition-opacity duration-500 ease-out motion-reduce:transition-none",
-            onDarkChrome && !isMenuOpen ? "opacity-0" : "opacity-100",
+            navOverHero && !isMenuOpen ? "opacity-0" : "opacity-100",
           )}
         />
 

@@ -1,18 +1,17 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { BookConsultButton } from "@/components/book-consult-button";
+import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/container";
-import { PhotoFrame } from "@/components/ui/photo-frame";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { SiteImage } from "@/components/ui/site-image";
+import Link from "next/link";
+import { BookConsultButton } from "@/components/book-consult-button";
+import { siteData } from "@/lib/site-data";
 import {
-  fadeUpVariants,
+  getAlternatingRevealVariants,
   motionTransition,
   staggerDelay,
   viewportOnce,
 } from "@/lib/motion";
-import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
 const steps = [
@@ -49,13 +48,14 @@ const listVariants = {
   },
 } as const;
 
-const itemVariants = {
-  hidden: fadeUpVariants.hidden,
-  visible: {
-    ...fadeUpVariants.visible,
-    transition: motionTransition,
-  },
-} as const;
+const itemVariants = (index: number) =>
+  ({
+    hidden: getAlternatingRevealVariants(index).hidden,
+    visible: {
+      ...getAlternatingRevealVariants(index).visible,
+      transition: motionTransition,
+    },
+  }) as const;
 
 export function ConsultationPath() {
   const shouldReduceMotion = useReducedMotion();
@@ -64,69 +64,84 @@ export function ConsultationPath() {
     <section
       id="consulta"
       aria-labelledby="consulta-heading"
-      className="scroll-anchor section-divider section-y"
+      className="scroll-anchor section-divider section-y-tight bg-background-alt/40"
     >
       <Container>
-        <div className="grid min-w-0 items-start gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16 2xl:gap-20">
-          <div className="min-w-0">
-            <SectionHeading
-              id="consulta-heading"
-              eyebrow="La consulta"
-              title="Cómo es el camino."
-              subheading="Desde la primera visita hasta el plan: sin menú genérico y con tiempo para entender cada paso."
-              className="mb-10 lg:mb-12"
-            />
-
-            <motion.ol
-              variants={shouldReduceMotion ? undefined : listVariants}
-              initial={shouldReduceMotion ? false : "hidden"}
-              whileInView={shouldReduceMotion ? undefined : "visible"}
-              viewport={viewportOnce}
-              className="editorial-list overflow-hidden rounded-brand bg-background/60 shadow-card"
-            >
-              {steps.map(({ index, title, description }) => (
-                <motion.li
-                  key={title}
-                  variants={shouldReduceMotion ? undefined : itemVariants}
-                  className="relative grid list-none gap-3 px-4 py-7 transition-colors duration-300 hover:bg-background-alt/70 sm:grid-cols-[auto_1fr] sm:gap-6 sm:px-6 sm:py-8"
-                >
-                  <p aria-hidden className="index-number sm:pt-0.5">
-                    {index}
-                  </p>
-                  <div>
-                    <h3 className="font-display text-xl font-light tracking-tight text-text-primary sm:text-[1.35rem]">
-                      {title}
-                    </h3>
-                    <p className="prose-measure mt-2 text-base leading-relaxed text-text-secondary">
-                      {description}
-                    </p>
-                  </div>
-                </motion.li>
-              ))}
-            </motion.ol>
-
-            <div className="mt-10">
-              <BookConsultButton variant="primary">{siteData.cta.book}</BookConsultButton>
+        <Reveal from="left">
+        <header className="border-b border-primary/10 pb-6 lg:grid lg:grid-cols-12 lg:gap-10 lg:pb-7 xl:gap-14">
+          <div className="lg:col-span-7 xl:col-span-8">
+            <div className="flex items-center gap-2.5">
+              <span
+                aria-hidden
+                className="accent-rule w-8 sm:w-10"
+              />
+              <p className="eyebrow text-primary">La consulta</p>
             </div>
+            <h2
+              id="consulta-heading"
+              className="mt-3 font-display text-[clamp(1.625rem,3.6vw,2.5rem)] font-light leading-[1.08] tracking-tight text-text-primary 2xl:text-[clamp(2rem,2.2vw,2.85rem)]"
+            >
+              Cómo es el camino.
+            </h2>
+            <p className="mt-3 max-w-2xl text-[0.9375rem] leading-[1.65] text-text-secondary sm:text-base">
+              Desde la primera visita hasta el plan: sin menú genérico y con tiempo
+              para entender cada paso.
+            </p>
           </div>
+          <div className="mt-6 lg:col-span-5 lg:mt-0 lg:flex lg:items-end lg:justify-end xl:col-span-4">
+            <p className="max-w-sm text-[0.8125rem] leading-relaxed text-text-secondary lg:text-right">
+              Cuatro momentos: escucha, examen, estudios con criterio y plan por
+              escrito.
+            </p>
+          </div>
+        </header>
+        </Reveal>
 
-          <PhotoFrame
-            caption="Consulta personalizada · plan claro"
+        <motion.ol
+            variants={shouldReduceMotion ? undefined : listVariants}
+            initial={shouldReduceMotion ? false : "hidden"}
+            whileInView={shouldReduceMotion ? undefined : "visible"}
+            viewport={viewportOnce}
             className={cn(
-              "mx-auto w-full min-w-0 max-w-md lg:mx-0 lg:max-w-full lg:sticky lg:top-28",
+              "editorial-list mt-0 min-w-0",
+              "lg:grid lg:grid-cols-2 lg:gap-x-10 xl:gap-x-14",
             )}
           >
-            <div className="relative aspect-[3/4] w-full">
-              <SiteImage
-                src="/images/fotos-qx/consulta-bata.jpeg"
-                alt="La Dra. Armijos en consultorio, con bata blanca y especialización en rinología y trastornos del sueño"
-                fill
-                sizes="(max-width: 1023px) min(92vw, 28rem), min(40vw, 520px)"
-                className="object-cover object-center"
-              />
-            </div>
-          </PhotoFrame>
+            {steps.map(({ index, title, description }, stepIndex) => (
+              <motion.li
+                key={title}
+                variants={shouldReduceMotion ? undefined : itemVariants(stepIndex)}
+                className="grid list-none gap-3 py-6 sm:grid-cols-[2.75rem_1fr] sm:gap-5 sm:py-7 lg:py-8"
+              >
+                <p
+                  aria-hidden
+                  className="font-display text-xl font-light tabular-nums leading-none text-brand-aqua sm:pt-0.5 sm:text-2xl"
+                >
+                  {index}
+                </p>
+                <div>
+                  <h3 className="font-display text-[clamp(1.125rem,2.2vw,1.35rem)] font-light tracking-tight text-text-primary">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-[0.9375rem] leading-[1.65] text-text-secondary sm:text-[0.975rem]">
+                    {description}
+                  </p>
+                </div>
+              </motion.li>
+            ))}
+          </motion.ol>
+
+        <Reveal from="right">
+        <div className="mt-8 flex flex-col gap-4 border-t border-primary/10 pt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
+          <BookConsultButton variant="primary">{siteData.cta.book}</BookConsultButton>
+          <Link
+            href="/#booking"
+            className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Sedes y horarios →
+          </Link>
         </div>
+        </Reveal>
       </Container>
     </section>
   );

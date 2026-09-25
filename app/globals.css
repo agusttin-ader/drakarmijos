@@ -5,10 +5,10 @@
   --font-display: var(--font-source-sans);
   --font-sans: var(--font-source-sans);
 
-  /* Fondos papel/tiza cálidos — crema con más calor */
-  --color-background: #f0e6d8;
-  --color-background-alt: #e6dbc9;
-  --color-background-muted: #d9ccb8;
+  /* Papel frío + niebla mint (sello IG) */
+  --color-background: #fafaf8;
+  --color-background-alt: #eff6f5;
+  --color-background-muted: #e2eceb;
 }
 
 @layer base {
@@ -64,12 +64,24 @@
     @apply py-16 md:py-20 lg:py-section xl:py-section-lg 2xl:py-section-xl 3xl:py-section-2xl;
   }
 
+  .section-y-tight {
+    @apply py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 2xl:py-[4.25rem] 3xl:py-[4.5rem] 4xl:py-20;
+  }
+
+  .section-y-compact {
+    @apply py-6 sm:py-8 md:py-10;
+  }
+
   .scroll-anchor {
-    @apply scroll-mt-24 md:scroll-mt-28 2xl:scroll-mt-32;
+    @apply scroll-mt-[5.25rem] sm:scroll-mt-24 md:scroll-mt-28 2xl:scroll-mt-32;
   }
 
   .eyebrow {
-    @apply text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-text-secondary;
+    @apply text-[0.6875rem] font-semibold uppercase tracking-[0.22em] text-text-secondary;
+  }
+
+  .accent-rule {
+    @apply h-px shrink-0 bg-accent-line/80;
   }
 
   .prose-measure {
@@ -78,6 +90,17 @@
 
   .editorial-list {
     @apply divide-y divide-primary/10 border-y border-primary/10;
+  }
+
+  .gpu-layer {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gpu-layer {
+      transform: none;
+    }
   }
 
   .photo-frame {
@@ -98,6 +121,30 @@
 
   .hero-enter {
     animation: hero-enter 600ms ease-out both;
+  }
+
+  .hero-enter-delay-1 {
+    animation-delay: 80ms;
+  }
+
+  .hero-enter-delay-2 {
+    animation-delay: 140ms;
+  }
+
+  .hero-enter-delay-3 {
+    animation-delay: 200ms;
+  }
+
+  .hero-enter-delay-4 {
+    animation-delay: 260ms;
+  }
+
+  .hero-enter-delay-5 {
+    animation-delay: 320ms;
+  }
+
+  .hero-enter-delay-6 {
+    animation-delay: 380ms;
   }
 
   .shadow-on-photo {
@@ -144,6 +191,15 @@ html[data-booking-open] [data-mobile-nav] {
 @media (prefers-reduced-motion: reduce) {
   .hero-enter {
     animation: none;
+  }
+
+  .hero-enter-delay-1,
+  .hero-enter-delay-2,
+  .hero-enter-delay-3,
+  .hero-enter-delay-4,
+  .hero-enter-delay-5,
+  .hero-enter-delay-6 {
+    animation-delay: 0ms;
   }
 
   .select-dropdown-enter,

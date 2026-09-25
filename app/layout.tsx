@@ -7,6 +7,7 @@ import { MobileNav } from "@/components/MobileNav";
 import { Navbar } from "@/components/Navbar";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { SkipLink } from "@/components/SkipLink";
+import { MotionProvider } from "@/components/providers/motion-provider";
 import { BookingModalProvider } from "@/components/providers/booking-modal-provider";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { isSiteComingSoon } from "@/lib/site-config";
@@ -56,8 +57,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F0E6D8" },
-    { media: "(prefers-color-scheme: dark)", color: "#0F5C5C" },
+    { media: "(prefers-color-scheme: light)", color: "#FAFAF8" },
+    { media: "(prefers-color-scheme: dark)", color: "#063636" },
   ],
 };
 
@@ -75,14 +76,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <>
             <AnchorSmoothScroll />
             <SmoothScrollProvider>
-              <BookingModalProvider>
+              <MotionProvider>
+                <BookingModalProvider>
                 <SkipLink />
                 <ScrollProgress />
                 <Navbar />
                 {children}
                 <Footer />
                 <MobileNav />
-              </BookingModalProvider>
+                </BookingModalProvider>
+              </MotionProvider>
             </SmoothScrollProvider>
           </>
         )}

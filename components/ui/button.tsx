@@ -39,7 +39,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   primary:
     "rounded-pill bg-primary pl-7 text-white shadow-soft hover:bg-primary/92 hover:shadow-card active:bg-primary/88 before:absolute before:left-3 before:top-1/2 before:h-[42%] before:w-px before:-translate-y-1/2 before:bg-brand-aqua/90",
   outline:
-    "rounded-pill border border-primary/25 bg-background/80 text-primary shadow-card hover:border-primary/45 hover:bg-primary/[0.04] hover:shadow-soft active:bg-primary/[0.06]",
+    "rounded-pill border border-primary/35 bg-background text-primary shadow-card hover:border-primary/50 hover:bg-primary/[0.04] hover:shadow-soft active:bg-primary/[0.06]",
 };
 
 const MAGNETIC_STRENGTH = 0.14;

@@ -48,13 +48,16 @@ const socialLinks = [
 ] as const;
 
 const linkClassName =
-  "rounded-md text-sm leading-snug text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary";
+  "rounded-md text-sm leading-snug text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary-deep";
+
+const footerHeadingClass =
+  "text-[0.6875rem] font-semibold uppercase tracking-[0.22em] text-brand-aqua/90";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-primary text-white">
+    <footer className="relative overflow-hidden bg-primary-deep text-white">
       <BrandWatermark />
 
       <Container className="relative z-10 py-10 pb-[calc(4.25rem+env(safe-area-inset-bottom,0px))] sm:py-12 md:py-16 md:pb-16 lg:py-20">
@@ -73,7 +76,7 @@ export function Footer() {
           </div>
 
           <nav aria-label="Enlaces del sitio" className="lg:pt-2">
-            <p className="eyebrow text-white/55">Navegación</p>
+            <p className={footerHeadingClass}>Navegación</p>
             <ul className="mt-2.5 space-y-1.5 sm:mt-4 sm:space-y-2.5">
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -86,7 +89,7 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Consultas frecuentes" className="lg:pt-2">
-            <p className="eyebrow text-white/55">Consultas</p>
+            <p className={footerHeadingClass}>Consultas</p>
             <ul className="mt-2.5 space-y-1.5 sm:mt-4 sm:space-y-2.5">
               {serviceLinks.map((link) => (
                 <li key={link.href}>
@@ -99,7 +102,7 @@ export function Footer() {
           </nav>
 
           <div className="lg:pt-2">
-            <p className="eyebrow text-white/55">Contacto</p>
+            <p className={footerHeadingClass}>Contacto</p>
             <ul className="mt-2.5 space-y-2 sm:mt-4 sm:space-y-3">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
@@ -144,7 +147,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Desarrollado por Agustin Ader — agustinaderdev.com (se abre en una pestaña nueva)"
-            className="inline-flex items-center gap-2 rounded-md text-xs text-white/65 transition-colors duration-300 hover:text-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary sm:gap-2.5 sm:shrink-0"
+            className="inline-flex items-center gap-2 rounded-md text-xs text-white/65 transition-colors duration-300 hover:text-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-primary-deep sm:gap-2.5 sm:shrink-0"
           >
             <SiteImage
               src="/images/logo-dev/logo-dev.webp"

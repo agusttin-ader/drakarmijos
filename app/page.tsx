@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <>
       <HomeJsonLd />
-      <main id="main-content" className="flex-1 md:pb-0">
+      <main id="main-content" className="flex-1 pb-mobile-nav md:pb-0">
         <Hero />
         <Institutions />
         <About />

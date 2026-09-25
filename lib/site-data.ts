@@ -16,7 +16,7 @@ const clinics = [
   },
   {
     name: "COMS",
-    logo: "/images/institutions/coms.png",
+    logo: "/images/institutions/coms.jpg",
     website: "https://otorrinosdelsueno.com",
     address: "José E. Uriburu 1252, Depto 2B, Ciudad Autónoma de Buenos Aires",
     hours: [{ day: "Jueves", time: "10:00 – 13:00 hs" }],
@@ -144,7 +144,7 @@ export const siteData = {
       "https://wa.me/5491164144515?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20cita%20con%20la%20Dra.%20Armijos.",
   },
   social: {
-    instagram: "https://instagram.com/dra.karmijos",
+    instagram: "https://www.instagram.com/dra.karmijos/",
     instagramHandle: "@dra.karmijos",
     linkedin: "https://www.linkedin.com/in/karla-armijos-56a5b719a",
     linkedinHandle: "Karla Armijos",

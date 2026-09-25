@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/container";
 import { HighlightBadge } from "@/components/ui/highlight-badge";
-import { SectionHeading } from "@/components/ui/section-heading";
 import type { HighlightVariant } from "@/components/ui/highlight-badge";
 import {
-  fadeUpVariants,
+  getAlternatingRevealVariants,
   motionTransition,
   staggerDelay,
   viewportOnce,
@@ -28,7 +28,7 @@ type Specialty = {
 const specialties: Specialty[] = [
   {
     id: "respira-mejor",
-    highlight: "orl",
+    highlight: "respira",
     index: "01",
     title: "Respira Mejor",
     focus: "Rinología · oído, nariz y garganta",
@@ -49,7 +49,7 @@ const specialties: Specialty[] = [
   },
   {
     id: "cirugia-nasal",
-    highlight: "orl",
+    highlight: "cirugiaNasal",
     index: "03",
     title: "Cirugía Nasal",
     focus: "Rinoplastia funcional y estética",
@@ -63,18 +63,20 @@ const specialties: Specialty[] = [
 const listVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: staggerDelay + 0.06 },
+    transition: { staggerChildren: staggerDelay + 0.04 },
   },
 } as const;
 
-const rowVariants = {
-  hidden: fadeUpVariants.hidden,
-  visible: {
-    ...fadeUpVariants.visible,
-    transition: motionTransition,
-  },
-} as const;
+const rowVariants = (index: number) =>
+  ({
+    hidden: getAlternatingRevealVariants(index).hidden,
+    visible: {
+      ...getAlternatingRevealVariants(index).visible,
+      transition: motionTransition,
+    },
+  }) as const;
 
+/** Especialidades — grid ancho + panel lateral en desktop. */
 export function Specialties() {
   const shouldReduceMotion = useReducedMotion();
 
@@ -82,77 +84,95 @@ export function Specialties() {
     <section
       id="specialties"
       aria-labelledby="specialties-heading"
-      className="scroll-anchor section-divider bg-background-alt/50 section-y"
+      className="scroll-anchor section-divider section-y-tight bg-background"
     >
       <Container>
-        <SectionHeading
-          id="specialties-heading"
-          eyebrow="Especialidades"
-          title="Qué veo en consulta."
-          subheading="Problemas de respiración nasal, ronquidos, apnea y cirugía nasal. Te explico opciones, tiempos y límites con claridad."
-          className="mb-14 lg:mb-20"
-        />
+        <Reveal from="right">
+        <header className="border-b border-primary/10 pb-6 lg:grid lg:grid-cols-12 lg:gap-10 lg:pb-7 xl:gap-14">
+          <div className="lg:col-span-7 xl:col-span-8">
+            <div className="flex items-center gap-2.5">
+              <span
+                aria-hidden
+                className="accent-rule w-8 sm:w-10"
+              />
+              <p className="eyebrow text-primary">Especialidades</p>
+            </div>
+            <h2
+              id="specialties-heading"
+              className="mt-3 font-display text-[clamp(1.625rem,3.6vw,2.5rem)] font-light leading-[1.08] tracking-tight text-text-primary 2xl:text-[clamp(2rem,2.2vw,2.85rem)]"
+            >
+              Qué veo en consulta.
+            </h2>
+            <p className="mt-3 max-w-2xl text-[0.9375rem] leading-[1.65] text-text-secondary sm:text-base">
+              Respiración nasal, ronquidos, apnea y cirugía nasal — opciones y
+              límites explicados con claridad.
+            </p>
+          </div>
+          <div className="mt-6 lg:col-span-5 lg:mt-0 lg:flex lg:items-end lg:justify-end xl:col-span-4">
+            <p className="max-w-sm text-[0.8125rem] leading-relaxed text-text-secondary lg:text-right">
+              Tres ejes de trabajo: vías aéreas, sueño y cirugía nasal funcional.
+            </p>
+          </div>
+        </header>
+        </Reveal>
 
         <motion.ol
-          variants={shouldReduceMotion ? undefined : listVariants}
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView={shouldReduceMotion ? undefined : "visible"}
-          viewport={viewportOnce}
-          className="editorial-list overflow-hidden rounded-brand bg-background/70 shadow-card"
-        >
-          {specialties.map(
-            ({ id, highlight, index, title, focus, description, details }) => (
-              <motion.li
-                key={id}
-                variants={shouldReduceMotion ? undefined : rowVariants}
-                className="list-none"
-              >
-                <article
-                  id={id}
-                  className={cn(
-                    "scroll-anchor grid gap-5 px-4 py-9 transition-colors duration-300 sm:grid-cols-[auto_1fr_auto] sm:items-start sm:gap-8 sm:px-6 sm:py-11 lg:gap-12 lg:px-8 lg:py-12",
-                    "hover:bg-background-alt/80",
-                  )}
+            variants={shouldReduceMotion ? undefined : listVariants}
+            initial={shouldReduceMotion ? false : "hidden"}
+            whileInView={shouldReduceMotion ? undefined : "visible"}
+            viewport={viewportOnce}
+            className={cn(
+              "editorial-list mt-0 min-w-0",
+              "lg:grid lg:grid-cols-2 lg:gap-x-10 xl:gap-x-14 xl:[&>li:nth-child(3)]:col-span-2",
+            )}
+          >
+            {specialties.map(
+              ({ id, highlight, index, title, focus, description, details }, i) => (
+                <motion.li
+                  key={id}
+                  variants={shouldReduceMotion ? undefined : rowVariants(i)}
+                  className={cn("list-none", index === "03" && "xl:col-span-2")}
                 >
-                  <p aria-hidden className="index-number sm:pt-0.5">
-                    {index}
-                  </p>
-
-                  <div className="min-w-0">
-                    <p className="eyebrow tracking-[0.18em]">{focus}</p>
-                    <h3 className="mt-2 font-display text-2xl font-light tracking-tight text-text-primary sm:text-[1.65rem]">
-                      {title}
-                    </h3>
-                    <p className="prose-measure mt-3 text-base leading-relaxed text-text-secondary">
-                      {description}
-                    </p>
-                    <p className="prose-measure mt-3 text-sm leading-relaxed text-text-secondary/90 sm:text-base">
-                      {details}
-                    </p>
-                    <Link
-                      href="/#booking"
-                      className="mt-4 inline-flex text-sm font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                    >
-                      Agendar consulta →
-                    </Link>
-                  </div>
-
-                  <div
-                    aria-hidden
-                    className="flex shrink-0 items-start opacity-90 sm:pt-1"
+                  <article
+                    id={id}
+                    className="scroll-anchor grid gap-3 py-6 sm:grid-cols-[2.75rem_1fr] sm:gap-5 sm:py-7 lg:py-8"
                   >
-                    <div className="rounded-full bg-background-alt/80 p-2 ring-1 ring-primary/8">
-                      <HighlightBadge
-                        variant={highlight}
-                        className="size-10 sm:size-12"
-                      />
+                    <p
+                      aria-hidden
+                      className="font-display text-xl font-light tabular-nums leading-none text-brand-aqua sm:pt-0.5 sm:text-2xl"
+                    >
+                      {index}
+                    </p>
+
+                    <div className="min-w-0">
+                      <p className="text-[0.625rem] font-medium uppercase tracking-[0.2em] text-text-secondary">
+                        {focus}
+                      </p>
+                      <div className="mt-1.5 flex items-baseline gap-2.5 sm:gap-3">
+                        <h3 className="font-display text-[clamp(1.25rem,2.5vw,1.5rem)] font-light tracking-tight text-text-primary">
+                          {title}
+                        </h3>
+                        <HighlightBadge
+                          variant={highlight}
+                          className="size-6 shrink-0 stroke-[1.5] text-primary/70 sm:size-7"
+                        />
+                      </div>
+                      <p className="mt-2.5 text-[0.9375rem] leading-[1.65] text-text-secondary sm:text-[0.975rem] sm:leading-[1.7]">
+                        {description}{" "}
+                        <span className="text-text-secondary">{details}</span>
+                      </p>
+                      <Link
+                        href="/#booking"
+                        className="mt-3 inline-flex text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-primary underline-offset-[5px] transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      >
+                        Agendar consulta
+                      </Link>
                     </div>
-                  </div>
-                </article>
-              </motion.li>
-            ),
-          )}
-        </motion.ol>
+                  </article>
+                </motion.li>
+              ),
+            )}
+          </motion.ol>
       </Container>
     </section>
   );

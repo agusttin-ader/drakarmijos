@@ -8,21 +8,24 @@ const config: Config = {
         "4xl": "2560px",
       },
       colors: {
-        // Turquesa Pantone 318 C del manual. Demasiado claro para texto o
-        // botones: usarlo en superficies, acentos y detalles.
+        // Pantone 318 C — relleno del sello (foto de perfil IG @dra.karmijos).
         "brand-aqua": "#98D6D5",
-        // Teal profundo para CTAs y contraste (derivado del aqua de marca).
-        primary: "#0F5C5C",
-        "primary-deep": "#0A2E2E",
-        "primary-light": "#5EC9C4",
-        // Fondos papel/tiza cálidos (crema con más calor).
-        background: "#F0E6D8",
-        "background-alt": "#E6DBC9",
-        "background-muted": "#D9CCB8",
-        // Texto con contraste WCAG AA+ sobre fondos claros.
-        "text-primary": "#1B2A2E",
-        "text-secondary": "#4A5759",
-        "accent-gold": "#A87F2E",
+        "brand-mint-soft": "#D8EFEE",
+        "brand-mint-wash": "#ECF6F5",
+        // Teal profundo — texto, CTAs, contraste (luna / sueño del emblema).
+        primary: "#0B4B4B",
+        "primary-deep": "#063636",
+        "primary-light": "#5BB8B6",
+        // Papel frío tipo feed — menos amarillo que la crema anterior.
+        background: "#FAFAF8",
+        "background-alt": "#EFF6F5",
+        "background-muted": "#E2ECEB",
+        "text-primary": "#132828",
+        /** Cuerpo y metadatos — más oscuro que #476060 para WCAG en fondos mint/crema. */
+        "text-secondary": "#2E4545",
+        // Reglas editoriales (sustituye dorado; misma función visual).
+        "accent-line": "#98D6D5",
+        "accent-gold": "#98D6D5",
       },
       borderRadius: {
         brand: "0.5rem 1.75rem 0.5rem 1.75rem",
@@ -32,10 +35,11 @@ const config: Config = {
         modal: "1.25rem 0.375rem 1.25rem 0.375rem",
       },
       boxShadow: {
-        soft: "0 4px 24px -8px rgba(15, 92, 92, 0.08)",
-        card: "0 2px 16px -4px rgba(15, 92, 92, 0.07)",
-        elevated: "0 16px 48px -20px rgba(15, 92, 92, 0.14)",
-        nav: "0 1px 0 0 rgba(15, 92, 92, 0.06), 0 8px 24px -12px rgba(15, 92, 92, 0.1)",
+        soft: "0 4px 24px -8px rgba(11, 75, 75, 0.08)",
+        card: "0 2px 16px -4px rgba(11, 75, 75, 0.07)",
+        elevated: "0 16px 48px -20px rgba(11, 75, 75, 0.12)",
+        nav: "0 1px 0 0 rgba(11, 75, 75, 0.06), 0 8px 24px -12px rgba(11, 75, 75, 0.08)",
+        mint: "0 12px 40px -16px rgba(152, 214, 213, 0.45)",
       },
       fontFamily: {
         sans: ["var(--font-source-sans)", "sans-serif"],

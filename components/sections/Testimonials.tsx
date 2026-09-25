@@ -1,13 +1,22 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/container";
-import { premiumEase } from "@/lib/motion";
+import { HighlightBadge } from "@/components/ui/highlight-badge";
+import type { HighlightVariant } from "@/components/ui/highlight-badge";
+import { Reveal } from "@/components/motion/reveal";
+import {
+  getAlternatingRevealVariants,
+  motionTransition,
+  staggerDelay,
+  viewportOnce,
+} from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type FrequentCase = {
+  index: string;
+  highlight: HighlightVariant;
   title: string;
   context: string;
   description: string;
@@ -15,24 +24,32 @@ type FrequentCase = {
 
 const frequentCases: FrequentCase[] = [
   {
+    index: "01",
+    highlight: "dormirBien",
     title: "Ronquidos y apnea",
     context: "Sueño · estudio y CPAP",
     description:
       "Pacientes con ronquido habitual, pausas respiratorias o fatiga diurna. La evaluación define si hay apnea y qué opciones encajan: estudio del sueño, CPAP u otras alternativas.",
   },
   {
+    index: "02",
+    highlight: "cirugiaNasal",
     title: "Obstrucción nasal",
     context: "Rinología · septoplastia",
     description:
       "Desviación de tabique, sinusitis crónica o pérdida de olfato. Muchas veces el plan empieza con tratamiento médico; la cirugía se plantea solo cuando aporta un beneficio concreto.",
   },
   {
+    index: "03",
+    highlight: "respira",
     title: "Respiración bucal en niños",
     context: "Pediatría ORL",
     description:
       "Niños que respiran por la boca, con adenoides o amígdalas inflamadas. La familia recibe un plan claro: cuándo observar, cuándo estudiar y qué opciones hay antes de operar.",
   },
   {
+    index: "04",
+    highlight: "dormirBien",
     title: "Bruxismo y sueño fragmentado",
     context: "Sueño · mandíbula y fatiga",
     description:
@@ -40,176 +57,117 @@ const frequentCases: FrequentCase[] = [
   },
 ];
 
-const AUTOPLAY_MS = 8500;
+const listVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: staggerDelay + 0.04 },
+  },
+} as const;
 
 export function Testimonials() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isInView, setIsInView] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
-
-  const goTo = useCallback((index: number) => {
-    setActiveIndex((index + frequentCases.length) % frequentCases.length);
-  }, []);
-
-  const goToNext = useCallback(() => {
-    goTo(activeIndex + 1);
-  }, [activeIndex, goTo]);
-
-  const goToPrev = useCallback(() => {
-    goTo(activeIndex - 1);
-  }, [activeIndex, goTo]);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(Boolean(entry?.isIntersecting)),
-      { rootMargin: "80px", threshold: 0.15 },
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (isPaused || shouldReduceMotion || !isInView) return;
-
-    const interval = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % frequentCases.length);
-    }, AUTOPLAY_MS);
-
-    return () => window.clearInterval(interval);
-  }, [isPaused, shouldReduceMotion, isInView]);
-
-  const slideTransition = shouldReduceMotion
-    ? { duration: 0 }
-    : { duration: 0.35, ease: premiumEase };
-
-  const active = frequentCases[activeIndex];
 
   return (
     <section
       id="testimonials"
-      ref={sectionRef}
       aria-labelledby="testimonials-heading"
-      className="scroll-anchor section-divider bg-background-alt/35 section-y"
+      className="scroll-anchor section-y-tight border-b border-brand-aqua/30 bg-background"
     >
       <Container>
-        <div
-          className="grid gap-8 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,1fr)] lg:gap-16 xl:gap-20"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onFocusCapture={() => setIsPaused(true)}
-          onBlurCapture={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) {
-              setIsPaused(false);
-            }
-          }}
-        >
-          <div className="surface-panel flex flex-col justify-between gap-10 border-l-4 border-l-brand-aqua p-6 sm:p-8 lg:min-h-[340px]">
-            <div>
-              <p className="eyebrow tracking-[0.24em]">Consulta</p>
+        <Reveal from="left">
+          <header className="border-b border-primary/10 pb-6 lg:grid lg:grid-cols-12 lg:gap-10 lg:pb-7 xl:gap-14">
+            <div className="lg:col-span-7 xl:col-span-8">
+              <div className="flex items-center gap-2.5">
+                <span aria-hidden className="accent-rule w-8 sm:w-10" />
+                <p className="eyebrow text-primary">Motivos de consulta</p>
+              </div>
               <h2
                 id="testimonials-heading"
-                className="mt-3 font-display text-[clamp(1.65rem,3vw,2.25rem)] font-light leading-[1.12] tracking-tight text-text-primary"
+                className="mt-3 font-display text-[clamp(1.625rem,3.6vw,2.5rem)] font-light leading-[1.08] tracking-tight text-text-primary"
               >
-                Motivos frecuentes de consulta.
+                Lo que más consultan.
               </h2>
-
-              <div className="mt-8 sm:mt-10">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.div
-                    key={activeIndex}
-                    initial={shouldReduceMotion ? false : { opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-                    transition={slideTransition}
-                  >
-                    <p className="font-display text-2xl font-light text-text-primary">
-                      {active.title}
-                    </p>
-                    <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">
-                      {active.context}
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
             </div>
+            <p className="mt-4 max-w-md text-[0.9375rem] leading-[1.65] text-text-secondary lg:col-span-5 lg:mt-0 lg:flex lg:items-end lg:justify-end lg:text-right xl:col-span-4">
+              Orientación general — cada caso se evalúa en consulta.
+            </p>
+          </header>
+        </Reveal>
 
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={goToPrev}
-                aria-label="Motivo anterior"
-                className="inline-flex size-10 items-center justify-center rounded-control border border-primary/12 bg-background text-text-secondary shadow-card transition-all duration-300 hover:border-primary/25 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        <motion.ol
+          variants={shouldReduceMotion ? undefined : listVariants}
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView={shouldReduceMotion ? undefined : "visible"}
+          viewport={viewportOnce}
+          className={cn(
+            "editorial-list mt-0 min-w-0",
+            "lg:grid lg:grid-cols-2 lg:gap-x-10 xl:gap-x-14",
+          )}
+        >
+          {frequentCases.map(
+            ({ index, highlight, title, context, description }, i) => (
+              <motion.li
+                key={title}
+                variants={
+                  shouldReduceMotion
+                    ? undefined
+                    : {
+                        hidden: getAlternatingRevealVariants(i).hidden,
+                        visible: {
+                          ...getAlternatingRevealVariants(i).visible,
+                          transition: motionTransition,
+                        },
+                      }
+                }
+                className="grid list-none gap-3 py-6 sm:grid-cols-[2.75rem_1fr] sm:gap-5 sm:py-7 lg:py-8"
               >
-                <ChevronLeft className="size-4 stroke-[1.5]" aria-hidden />
-              </button>
-
-              <div
-                className="flex flex-1 items-center gap-2"
-                role="tablist"
-                aria-label="Seleccionar motivo de consulta"
-              >
-                {frequentCases.map((item, index) => (
-                  <button
-                    key={item.title}
-                    type="button"
-                    role="tab"
-                    aria-selected={activeIndex === index}
-                    aria-label={`Ver ${item.title}`}
-                    onClick={() => goTo(index)}
-                    className={cn(
-                      "h-1 flex-1 rounded-full transition-all duration-300 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                      activeIndex === index
-                        ? "bg-brand-aqua"
-                        : "bg-primary/12 hover:bg-primary/25",
-                    )}
-                  />
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={goToNext}
-                aria-label="Motivo siguiente"
-                className="inline-flex size-10 items-center justify-center rounded-control border border-primary/12 bg-background text-text-secondary shadow-card transition-all duration-300 hover:border-primary/25 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-              >
-                <ChevronRight className="size-4 stroke-[1.5]" aria-hidden />
-              </button>
-            </div>
-          </div>
-
-          <div
-            aria-live="polite"
-            aria-atomic="true"
-            aria-roledescription="carousel"
-            className="relative flex items-center lg:py-4"
-          >
-            <div className="surface-panel relative w-full p-6 sm:p-8 lg:p-10">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.figure
-                  key={activeIndex}
-                  initial={shouldReduceMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-                  transition={slideTransition}
-                  className="relative"
+                <p
+                  aria-hidden
+                  className="font-display text-xl font-light tabular-nums leading-none text-brand-aqua sm:pt-0.5 sm:text-2xl"
                 >
-                  <p className="prose-measure font-display text-[clamp(1.35rem,2.6vw,2rem)] font-light leading-[1.5] text-text-primary lg:leading-[1.45]">
-                    {active.description}
+                  {index}
+                </p>
+                <div className="min-w-0">
+                  <p className="text-[0.625rem] font-medium uppercase tracking-[0.2em] text-text-secondary">
+                    {context}
                   </p>
+                  <div className="mt-1.5 flex items-baseline gap-2.5 sm:gap-3">
+                    <h3 className="font-display text-[clamp(1.125rem,2.2vw,1.4rem)] font-light tracking-tight text-text-primary">
+                      {title}
+                    </h3>
+                    <HighlightBadge
+                      variant={highlight}
+                      className="size-6 shrink-0 text-primary/70 sm:size-7"
+                    />
+                  </div>
+                  <p className="mt-2.5 text-[0.9375rem] leading-[1.65] text-text-secondary sm:text-[0.975rem]">
+                    {description}
+                  </p>
+                </div>
+              </motion.li>
+            ),
+          )}
+        </motion.ol>
 
-                  <figcaption className="sr-only">
-                    {active.title}, {active.context}
-                  </figcaption>
-                </motion.figure>
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
+        <Reveal from="up" delay={0.05}>
+          <p className="mt-8 border-t border-primary/10 pt-6 text-[0.8125rem] text-text-secondary">
+            <Link
+              href="/#booking"
+              className="font-semibold uppercase tracking-[0.14em] text-primary underline-offset-[5px] hover:underline"
+            >
+              Agendar consulta
+            </Link>
+            <span className="mx-2 text-primary/25" aria-hidden>
+              ·
+            </span>
+            <Link
+              href="/#faq"
+              className="font-medium text-text-secondary underline-offset-4 hover:text-primary hover:underline"
+            >
+              Ver preguntas frecuentes
+            </Link>
+          </p>
+        </Reveal>
       </Container>
     </section>
   );

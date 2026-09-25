@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { useState } from "react";
 import { Container } from "@/components/ui/container";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { Reveal } from "@/components/motion/reveal";
 import { premiumEase } from "@/lib/motion";
 import { siteData } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -21,31 +21,44 @@ export function Faq() {
     <section
       id="faq"
       aria-labelledby="faq-heading"
-      className="scroll-anchor section-divider section-y"
+      className="scroll-anchor section-y-tight bg-brand-mint-wash/45"
     >
-      <Container>
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
-          <SectionHeading
-            id="faq-heading"
-            eyebrow="Preguntas"
-            title="Lo que más me preguntan."
-            subheading="Recuperación, estudios y cuándo consultar. Son orientaciones generales: tu caso se define en consulta."
-          />
+      <Container className="max-w-3xl lg:max-w-[52rem]">
+        <Reveal from="up">
+          <header className="text-center lg:text-left">
+            <div className="flex items-center justify-center gap-2.5 lg:justify-start">
+              <span
+                aria-hidden
+                className="hidden h-px w-8 bg-primary/20 sm:block sm:w-10"
+              />
+              <p className="eyebrow text-primary">Preguntas</p>
+              <span
+                aria-hidden
+                className="hidden h-px w-8 bg-primary/20 sm:block sm:w-10"
+              />
+            </div>
+            <h2
+              id="faq-heading"
+              className="mt-3 font-display text-[clamp(1.625rem,3.6vw,2.5rem)] font-light leading-[1.08] tracking-tight text-text-primary"
+            >
+              Dudas frecuentes
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-[0.9375rem] leading-[1.65] text-text-secondary lg:mx-0">
+              Recuperación, estudios y cómo agendar. Respuestas generales — en
+              consulta vemos tu caso.
+            </p>
+          </header>
+        </Reveal>
 
-          <div className="overflow-hidden rounded-brand bg-background/70 shadow-card ring-1 ring-primary/10">
+        <Reveal from="up" delay={0.06} className="mt-8 sm:mt-10 lg:mt-12">
+          <div className="editorial-list border-y border-primary/15 bg-background/70">
             {siteData.faqs.map((item, index) => {
               const isOpen = openIndex === index;
               const panelId = `faq-panel-${index}`;
               const buttonId = `faq-button-${index}`;
 
               return (
-                <div
-                  key={item.question}
-                  className={cn(
-                    "border-b border-primary/10 last:border-b-0",
-                    isOpen && "bg-background-alt/70",
-                  )}
-                >
+                <div key={item.question} className="list-none">
                   <h3>
                     <button
                       type="button"
@@ -54,9 +67,9 @@ export function Faq() {
                       aria-controls={panelId}
                       onClick={() => setOpenIndex(isOpen ? null : index)}
                       className={cn(
-                        "flex w-full items-start justify-between gap-4 px-4 py-5 text-left transition-colors duration-300 sm:px-6 sm:py-6",
-                        "hover:bg-background-alt/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary",
-                        isOpen && "border-l-2 border-l-brand-aqua pl-[calc(1rem-2px)] sm:pl-[calc(1.5rem-2px)]",
+                        "flex w-full items-start justify-between gap-4 px-4 py-4 text-left transition-colors duration-300 sm:px-6 sm:py-5",
+                        "hover:bg-brand-mint-wash/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary",
+                        isOpen && "bg-brand-mint-wash/60",
                       )}
                     >
                       <span
@@ -72,7 +85,7 @@ export function Faq() {
                         className={cn(
                           "mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300",
                           isOpen
-                            ? "border-primary/20 bg-primary/5 text-primary"
+                            ? "border-primary/25 bg-primary/5 text-primary"
                             : "border-primary/12 bg-background text-primary/80",
                         )}
                       >
@@ -92,9 +105,7 @@ export function Faq() {
                         role="region"
                         aria-labelledby={buttonId}
                         initial={
-                          shouldReduceMotion
-                            ? false
-                            : { height: 0, opacity: 0 }
+                          shouldReduceMotion ? false : { height: 0, opacity: 0 }
                         }
                         animate={{ height: "auto", opacity: 1 }}
                         exit={
@@ -105,7 +116,7 @@ export function Faq() {
                         transition={accordionTransition}
                         className="overflow-hidden"
                       >
-                        <p className="prose-measure px-4 pb-6 text-base leading-relaxed text-text-secondary sm:px-6 sm:pb-7">
+                        <p className="prose-measure px-4 pb-5 text-[0.9375rem] leading-[1.65] text-text-secondary sm:px-6 sm:pb-6">
                           {item.answer}
                         </p>
                       </motion.div>
@@ -115,7 +126,7 @@ export function Faq() {
               );
             })}
           </div>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

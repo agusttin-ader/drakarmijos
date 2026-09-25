@@ -12,6 +12,7 @@ import {
 import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useIsClient } from "@/lib/hooks/use-is-client";
 
 const fieldStyles =
   "peer w-full rounded-field border border-primary/18 bg-background px-4 pb-3 pt-6 text-text-primary outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-transparent focus:border-primary/45 focus:shadow-soft focus:ring-0 disabled:cursor-not-allowed disabled:opacity-60";
@@ -164,7 +165,7 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
     const [menuMounted, setMenuMounted] = useState(false);
     const [menuClosing, setMenuClosing] = useState(false);
     const closeTimerRef = useRef<number | null>(null);
-    const [mounted, setMounted] = useState(false);
+    const isClient = useIsClient();
     const [menuRect, setMenuRect] = useState<{
       top: number;
       left: number;
@@ -181,19 +182,12 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
     const hasValue = Boolean(selectedValue);
 
     useEffect(() => {
-      setMounted(true);
       return () => {
         if (closeTimerRef.current !== null) {
           window.clearTimeout(closeTimerRef.current);
         }
       };
     }, []);
-
-    useEffect(() => {
-      if (value !== undefined) {
-        setInternalValue(String(value));
-      }
-    }, [value]);
 
     const updateMenuRect = useCallback(() => {
       const trigger = triggerRef.current;
@@ -314,7 +308,7 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
     };
 
     const dropdown =
-      menuMounted && menuRect && mounted ? (
+      menuMounted && menuRect && isClient ? (
         <ul
           ref={listboxRef}
           id={listboxId}
@@ -413,8 +407,10 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-controls={listboxId}
-          aria-invalid={ariaInvalid ?? Boolean(error)}
-          aria-describedby={error ? errorId : undefined}
+          aria-describedby={
+            error ? errorId : ariaInvalid ? `${fieldId}-invalid` : undefined
+          }
+          data-invalid={error || ariaInvalid ? "" : undefined}
           onBlur={
             onBlur as unknown as React.FocusEventHandler<HTMLButtonElement>
           }
@@ -466,7 +462,7 @@ export const FloatingSelect = forwardRef<HTMLSelectElement, FloatingSelectProps>
           </span>
         </button>
 
-        {mounted && dropdown ? createPortal(dropdown, document.body) : null}
+        {isClient && dropdown ? createPortal(dropdown, document.body) : null}
 
         {error ? (
           <p id={errorId} className="mt-1.5 text-sm text-red-700" role="alert">

@@ -12,6 +12,8 @@ type InstitutionLogoProps = {
   showSeparator?: boolean;
   maxWidthClass?: string;
   className?: string;
+  /** false si el padre ya es `<li>` (p. ej. RevealItem). */
+  asListItem?: boolean;
 };
 
 export function InstitutionLogo({
@@ -21,9 +23,12 @@ export function InstitutionLogo({
   showSeparator = false,
   maxWidthClass = "max-w-[9rem] sm:max-w-[13rem] md:max-w-[15rem]",
   className,
+  asListItem = true,
 }: InstitutionLogoProps) {
+  const Tag = asListItem ? "li" : "div";
+
   return (
-    <li
+    <Tag
       className={cn(
         "flex list-none items-center gap-x-4 sm:gap-x-8 lg:gap-x-10",
         className,
@@ -43,6 +48,6 @@ export function InstitutionLogo({
         interactive="hover"
         className={cn(maxWidthClass, institutionLogoClass(name, context))}
       />
-    </li>
+    </Tag>
   );
 }
