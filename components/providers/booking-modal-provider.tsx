@@ -133,7 +133,7 @@ function BookingModalOverlay({ isOpen, close }: BookingModalOverlayProps) {
               exit={shouldReduceMotion ? undefined : "exit"}
               transition={modalPanelTransition}
               className={cn(
-                "gpu-layer pointer-events-auto relative z-10 flex max-h-[min(100dvh-2rem,calc(100dvh-env(safe-area-inset-bottom)-1rem))] w-full max-w-lg flex-col overflow-hidden rounded-modal bg-background shadow-elevated ring-1 ring-primary/12",
+                "pointer-events-auto relative z-10 flex max-h-[min(100dvh-2rem,calc(100dvh-env(safe-area-inset-bottom)-1rem))] w-full max-w-lg flex-col overflow-hidden rounded-modal bg-background shadow-elevated ring-1 ring-primary/12",
               )}
               onClick={(event) => event.stopPropagation()}
             >

@@ -7,9 +7,7 @@ import { MobileNav } from "@/components/MobileNav";
 import { Navbar } from "@/components/Navbar";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { SkipLink } from "@/components/SkipLink";
-import { MotionProvider } from "@/components/providers/motion-provider";
-import { BookingModalProvider } from "@/components/providers/booking-modal-provider";
-import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { AppProviders } from "@/components/providers/app-providers";
 import { isSiteComingSoon } from "@/lib/site-config";
 import { buildSiteMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -75,18 +73,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         ) : (
           <>
             <AnchorSmoothScroll />
-            <SmoothScrollProvider>
-              <MotionProvider>
-                <BookingModalProvider>
-                <SkipLink />
-                <ScrollProgress />
-                <Navbar />
-                {children}
-                <Footer />
-                <MobileNav />
-                </BookingModalProvider>
-              </MotionProvider>
-            </SmoothScrollProvider>
+            <AppProviders>
+              <SkipLink />
+              <ScrollProgress />
+              <Navbar />
+              {children}
+              <Footer />
+              <MobileNav />
+            </AppProviders>
           </>
         )}
       </body>

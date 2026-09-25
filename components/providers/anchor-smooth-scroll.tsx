@@ -39,6 +39,21 @@ export function scrollToSection(id: string, smooth = !prefersReducedMotion()) {
 /** Scroll suave al hacer clic en anclas internas (#sección). No afecta la rueda del mouse. */
 export function AnchorSmoothScroll() {
   useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    if (window.location.hash) {
+      history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}`,
+      );
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const onClick = (event: MouseEvent) => {
       if (
         event.defaultPrevented ||

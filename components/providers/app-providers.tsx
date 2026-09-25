@@ -2,19 +2,21 @@
 
 import { MotionConfig } from "framer-motion";
 import type { ReactNode } from "react";
+import { BookingModalProvider } from "@/components/providers/booking-modal-provider";
 import { premiumEase } from "@/lib/motion";
 
-type MotionProviderProps = {
+type AppProvidersProps = {
   children: ReactNode;
 };
 
-export function MotionProvider({ children }: MotionProviderProps) {
+/** Un solo boundary cliente: motion global + modal de cita. */
+export function AppProviders({ children }: AppProvidersProps) {
   return (
     <MotionConfig
       reducedMotion="user"
       transition={{ duration: 0.58, ease: premiumEase }}
     >
-      {children}
+      <BookingModalProvider>{children}</BookingModalProvider>
     </MotionConfig>
   );
 }

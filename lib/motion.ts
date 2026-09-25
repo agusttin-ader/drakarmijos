@@ -3,12 +3,6 @@ export const premiumEase = [0.22, 1, 0.36, 1] as const;
 /** Entradas en viewport (~580ms) */
 export const motionDuration = 0.58;
 
-/** Shared duration for GSAP scroll entrances */
-export const gsapDuration = 0.75;
-
-/** GSAP easing aligned with premium feel */
-export const gsapEase = "power2.out";
-
 export const staggerDelay = 0.07;
 
 export const viewportOnce = { once: true, margin: "-72px" } as const;
@@ -47,12 +41,6 @@ export const motionTransition = {
   ease: premiumEase,
 } as const;
 
-export const motionTransitionFast = motionTransition;
-
-export const revealItemTransition = {
-  ...motionTransition,
-} as const;
-
 export const staggerContainerVariants = {
   hidden: {},
   visible: {
@@ -62,16 +50,6 @@ export const staggerContainerVariants = {
     },
   },
 } as const;
-
-export function revealItemVariants(axis: RevealAxis) {
-  return {
-    hidden: getRevealVariants(axis).hidden,
-    visible: {
-      ...getRevealVariants(axis).visible,
-      transition: revealItemTransition,
-    },
-  } as const;
-}
 
 /** Modal — solo opacity/transform, transiciones cortas */
 export const modalBackdropTransition = {

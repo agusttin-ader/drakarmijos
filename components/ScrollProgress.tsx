@@ -1,19 +1,22 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useScrollContext } from "@/components/providers/smooth-scroll-provider";
 
 export function ScrollProgress() {
-  const { subscribeProgress } = useScrollContext();
   const barRef = useRef<HTMLDivElement>(null);
   const idleTimerRef = useRef<number | null>(null);
+  const lastProgressRef = useRef(0);
 
   useEffect(() => {
-    return subscribeProgress((progress) => {
+    const updateBar = (progress: number) => {
       const bar = barRef.current;
       if (!bar) return;
 
-      bar.style.transform = `scaleX(${progress})`;
+      const next = Math.max(0, Math.min(1, progress));
+      if (Math.abs(next - lastProgressRef.current) < 0.0005) return;
+      lastProgressRef.current = next;
+
+      bar.style.transform = `scaleX(${next})`;
       bar.style.willChange = "transform";
 
       if (idleTimerRef.current !== null) {
@@ -25,11 +28,19 @@ export function ScrollProgress() {
         }
         idleTimerRef.current = null;
       }, 160);
-    });
-  }, [subscribeProgress]);
+    };
 
-  useEffect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      updateBar(max > 0 ? window.scrollY / max : 0);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => {
+      window.removeEventListener("scroll", onScroll);
       if (idleTimerRef.current !== null) {
         window.clearTimeout(idleTimerRef.current);
       }

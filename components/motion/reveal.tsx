@@ -13,14 +13,13 @@ import {
   viewportOnce,
   type RevealAxis,
 } from "@/lib/motion";
-import { cn } from "@/lib/utils";
 
 type RevealProps = HTMLMotionProps<"div"> & {
   from?: RevealAxis;
   delay?: number;
 };
 
-/** Entrada al scroll — opacity + slide ligero (GPU-friendly). */
+/** Entrada al scroll — opacity + slide ligero. */
 export function Reveal({
   from = "up",
   delay = 0,
@@ -33,7 +32,7 @@ export function Reveal({
 
   return (
     <motion.div
-      className={cn("gpu-layer", className)}
+      className={className}
       initial={shouldReduceMotion ? false : "hidden"}
       whileInView={shouldReduceMotion ? undefined : "visible"}
       viewport={viewportOnce}
@@ -93,7 +92,7 @@ export function RevealItem({
   };
 
   return (
-    <motion.li className={cn("gpu-layer", className)} variants={variants} {...rest}>
+    <motion.li className={className} variants={variants} {...rest}>
       {children}
     </motion.li>
   );
